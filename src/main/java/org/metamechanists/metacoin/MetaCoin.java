@@ -1,4 +1,4 @@
-package org.metamechanists.metatemplate;
+package org.metamechanists.metacoin;
 
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
@@ -7,13 +7,13 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.metamechanists.metatemplate.core.Groups;
-import org.metamechanists.metatemplate.core.Items;
+import org.metamechanists.metacoin.core.Groups;
+import org.metamechanists.metacoin.core.Items;
 
 import javax.annotation.Nonnull;
 
-public final class MetaTemplate extends JavaPlugin implements SlimefunAddon {
-    private static @Getter MetaTemplate instance;
+public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
+    private static @Getter MetaCoin instance;
 
     @Override
     public void onEnable() {

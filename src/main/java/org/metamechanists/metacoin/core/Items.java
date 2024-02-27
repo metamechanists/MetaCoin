@@ -1,4 +1,4 @@
-package org.metamechanists.metatemplate.core;
+package org.metamechanists.metacoin.core;
 
 public class Items {
     public static void init() {

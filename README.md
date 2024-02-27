@@ -1,0 +1,45 @@
+- Npcs setup at spawn
+    - Name: Indra
+      - Idra but in a trench coat
+      - has his own full setup
+      - gives a player a limited machine: MetaCoin:tm: Miner
+      - only gives one per player
+    - Name: Tom
+      - Is a Genius 
+      - Villager NPC
+      - Has a setup with tons of placed metacoin
+      - Can be conversed with to *eventually* compress metacoin
+        - Job for Eden 
+        - Cannot skip the dialogue
+        - is at minimum 8 sections long
+        - talks all about how metacoin is the future of cc
+
+- MetaCoin:tm: Miner
+  - Slowly mines for meta coin (like void harvester)
+  - requires no energy
+  - use noteblock & block state + resourcepack for custom texture OR display model texture
+  - explodes after [REDACTED], turns into "machine slag" a magma block OR if using display model, fun messed up display model
+    - "The meta coin miner seems to have overheated slightly"
+    - Randomly stalls / malfunctions and must be manually fixed (mentions this is *possible* in the lore)
+    - makes noise & particles
+  - Can be upgraded with coins
+      - Speed: how long it takes
+          - Upgrading decreases timer per craft & decreases stability
+      - Production: how many it creates
+          - Upgrading increases # of coin per craft (by 1) & decreases stability
+      - Stability: how much it stalls
+          - Upgrading increases stability
+
+- Aurelium Skills MetaCoin something Artifact
+  - meta coins can be applied to apply random souls
+  - the more coins applied the better the random soul
+
+- Meta Coin
+  - New currency
+  - Can be compressed by a *very smart* NPC at spawn (permanent)
+    - Amount in a single stack is shown in the lore
+  - has custom texture with rp
+  - Can be thrown as a projectile, more compressed > more damage
+  - Can be placed as a display model
+    - you can place multiple in a block and it will stack together
+    - send stuff to #alerts in case anything goes wrong

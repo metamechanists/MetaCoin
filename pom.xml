@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.metamechanists</groupId>
-  <artifactId>MetaTemplate</artifactId>
+  <artifactId>MetaCoin</artifactId>
   <version>1.0</version>
   <packaging>jar</packaging>
 
     <build>
-        <finalName>MetaTemplate</finalName>
+        <finalName>MetaCoin</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -33,15 +33,15 @@
                     <relocations>
                         <relocation>
                             <pattern>org.metamechanists.metalib</pattern>
-                            <shadedPattern>org.metamechanists.metatemplate.metalib</shadedPattern>
+                            <shadedPattern>org.metamechanists.metacoin.metalib</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>org.metamechanists.metatemplate.acf</shadedPattern>
+                            <shadedPattern>org.metamechanists.metacoin.acf</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>co.aikar.locales</pattern>
-                            <shadedPattern>org.metamechanists.metatemplate.locales</shadedPattern>
+                            <shadedPattern>org.metamechanists.metacoin.locales</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -57,7 +57,7 @@
         </plugins>
     </build>
 
-    <description>Template plugin description!</description>
+    <description>Meta Coin!</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -121,6 +121,14 @@
             <artifactId>api</artifactId>
             <version>5.4</version>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>me.justahuman.furnished</groupId>
+            <artifactId>Furnished</artifactId>
+            <version>0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/Furnished.jar</systemPath>
         </dependency>
 
         <!-- Compile Time Dependencies -->

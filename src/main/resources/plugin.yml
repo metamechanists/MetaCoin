@@ -1,9 +1,9 @@
-name: MetaTemplate
+name: MetaCoin
 version: '${project.version}'
-main: org.metamechanists.metatemplate.MetaTemplate
+main: org.metamechanists.metacoin.MetaCoin
 api-version: '1.20'
 prefix: MT
 softdepend: [Slimefun, LuckPerms, PlaceholderAPI]
 authors: [JustAHuman]
-description: A template for all meta mechanist plugins
+description: MetaCoin :D
 website: metamechanists.org
