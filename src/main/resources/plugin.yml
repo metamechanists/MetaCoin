@@ -1,0 +1,9 @@
+name: MetaTemplate
+version: '${project.version}'
+main: org.metamechanists.metatemplate.MetaTemplate
+api-version: '1.20'
+prefix: MT
+softdepend: [Slimefun, LuckPerms, PlaceholderAPI]
+authors: [JustAHuman]
+description: A template for all meta mechanist plugins
+website: metamechanists.org
