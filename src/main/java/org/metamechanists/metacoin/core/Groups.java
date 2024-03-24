@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.metamechanists.metacoin.utils.Keys;
 
 public class Groups {
-    ItemGroup group = new DummyItemGroup(Keys.epicItems, new ItemStack(Material.DEAD_BUSH));
+    ItemGroup group = new DummyItemGroup(Keys.metaCoinItems, new ItemStack(Material.DEAD_BUSH));
 
     public static void init() {
         // Register slimefun item groups here!

@@ -15,20 +15,21 @@
         - talks all about how metacoin is the future of cc
 
 - MetaCoin:tm: Miner
+  - has owner, upgrade levels, and total coins mined in the lore 
   - Slowly mines for meta coin (like void harvester)
   - requires no energy
   - use noteblock & block state + resourcepack for custom texture OR display model texture
-  - explodes after [REDACTED], turns into "machine slag" a magma block OR if using display model, fun messed up display model
+  - explodes after [REDACTED], turns into "machine slag" a magma block **with the final upgrade numbers & total coins mined in the lore** OR if using display model, fun messed up display model
     - "The meta coin miner seems to have overheated slightly"
-    - Randomly stalls / malfunctions and must be manually fixed (mentions this is *possible* in the lore)
-    - makes noise & particles
+    - Randomly malfunctions, turning off breakers and must be manually fixed in the control panel (mentions this is *possible* in the lore)
+      - makes noise & particles
   - Can be upgraded with coins
       - Speed: how long it takes
-          - Upgrading decreases timer per craft & decreases stability
+          - Upgrading decreases timer per craft & decreases reliability
       - Production: how many it creates
-          - Upgrading increases # of coin per craft (by 1) & decreases stability
-      - Stability: how much it stalls
-          - Upgrading increases stability
+          - Upgrading increases # of coin per craft (by 1) & decreases reliability
+      - Reliability: the speed at which breakers turn off in the control panel
+          - Upgrading increases reliability
 
 - Aurelium Skills MetaCoin something Artifact
   - meta coins can be applied to apply random souls

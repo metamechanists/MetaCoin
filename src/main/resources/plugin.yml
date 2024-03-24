@@ -1,9 +1,9 @@
-name: MetaCoin
+name: MetaCoinItem
 version: '${project.version}'
-main: org.metamechanists.metacoin.MetaCoin
+main: org.metamechanists.metacoin.MetaCoinItem
 api-version: '1.20'
 prefix: MT
 softdepend: [Slimefun, LuckPerms, PlaceholderAPI]
 authors: [JustAHuman]
-description: MetaCoin :D
+description: MetaCoinItem :D
 website: metamechanists.org
