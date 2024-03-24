@@ -98,6 +98,22 @@ public class MetaCoinItem extends SlimefunItem {
         return coins;
     }
 
+    public static boolean canRemoveCoins(Player player, long coins) {
+        for (ItemStack itemStack : getWeightedCoins(player)) {
+            if (!(SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem metaCoinItem) || metaCoinItem.value > coins) {
+                continue;
+            }
+
+            final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / metaCoinItem.value));
+            coins -= countToRemove * metaCoinItem.value;
+
+            if (coins <= 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void removeCoins(Player player, long coins) {
         for (ItemStack itemStack : getWeightedCoins(player)) {
             if (!(SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem metaCoinItem) || metaCoinItem.value > coins) {

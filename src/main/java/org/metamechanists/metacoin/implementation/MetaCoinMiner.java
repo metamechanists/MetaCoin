@@ -27,6 +27,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -48,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
@@ -72,7 +74,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int[] PRODUCTION_CORES = { 12, 13, 14, 21, 22, 23, 30, 31, 32 };
     private static final int[] RELIABILITY_CORES = { 15, 16, 17, 24, 25, 26, 33, 34, 35 };
 
-    private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
+    private static final Map<BlockPosition, Integer> PROGRESS = new ConcurrentHashMap<>();
     private static final Set<BlockPosition> MALFUNCTIONING = new HashSet<>();
     private static final int TICKS_PER_PROGRESS = 4;
 
@@ -88,7 +90,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
             @Override
             public void tick(Block miner, SlimefunItem slimefunItem, Config config) {
-                final int[] levels = Upgrades.getLevels(miner);
+                final int[] levels = Upgrades.getLevels(config.getConfiguration());
                 final BlockPosition minerPosition = new BlockPosition(miner);
                 if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(levels[0] + levels[1] - levels[2])) {
                     MetaCoinMiner.this.malfunction(miner, levels);
@@ -151,7 +153,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     public void malfunction(Block miner, int[] levels) {
         final List<Integer> enabledCores = new ArrayList<>(ALL_CORES);
-        final StringBuilder disabledCores = new StringBuilder();
+        final List<Integer> disabledCores = new ArrayList<>();
 
         if (!getDisabledCores(miner).isEmpty()) {
             return;
@@ -164,13 +166,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
             final int core = RandomUtils.randomChoice(enabledCores);
             enabledCores.remove(core);
-
-            if (!disabledCores.isEmpty()) {
-                disabledCores.append(",");
-            }
-            disabledCores.append(core);
+            disabledCores.add(core);
         }
-        BlockStorage.addBlockInfo(miner, "DISABLED_CORES", disabledCores.toString());
+        setDisabledCores(miner, disabledCores);
     }
 
     public void tick(BlockPosition minerPosition, int[] levels) {
@@ -201,7 +199,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void malfunctionTick(Location miner, int[] levels) {
-        new ParticleBuilder(Particle.SMOKE_LARGE).count(levels[0] + levels[1]).location(miner).offset(0.5, 0.5, 0.5).spawn();
+        new ParticleBuilder(Particle.CAMPFIRE_SIGNAL_SMOKE).count(levels[0] + levels[1]).location(miner).offset(0.5, 0.5, 0.5).spawn();
     }
 
     public void updateMenu(BlockMenu menu, BlockPosition miner) {
@@ -282,34 +280,25 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         });
 
         final List<Integer> disabledCores = getDisabledCores(miner);
-        addCores(menu, SPEED_CORES, "Speed", "&e", disabledCores);
-        addCores(menu, PRODUCTION_CORES, "Production", "&b", disabledCores);
-        addCores(menu, RELIABILITY_CORES, "Reliability", "&d", disabledCores);
-
-        menu.addMenuCloseHandler(o1 -> {
-           final StringBuilder cores = new StringBuilder();
-           for (int coreSlot : ALL_CORES) {
-               if (menu.getItemInSlot(coreSlot).getType() == Material.RED_STAINED_GLASS_PANE) {
-                   if (!cores.isEmpty()) {
-                       cores.append(",");
-                   }
-                   cores.append(coreSlot);
-               }
-           }
-           BlockStorage.addBlockInfo(miner, "DISABLED_CORES", cores.toString());
-        });
+        addCores(miner, menu, SPEED_CORES, "Speed", "&e", disabledCores);
+        addCores(miner, menu, PRODUCTION_CORES, "Production", "&b", disabledCores);
+        addCores(miner, menu, RELIABILITY_CORES, "Reliability", "&d", disabledCores);
 
         menu.open(player);
     }
 
-    public void addCores(ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
+    public void addCores(Block miner, ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
         int index = 1;
         for (int coreSlot : cores) {
             int currentIndex = index;
             menu.addItem(coreSlot, ItemStacks.core(type, color, currentIndex, !disabledCores.contains(coreSlot)));
             menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
+                final List<Integer> newDisabledCores = getDisabledCores(miner);
                 final boolean running = itemStack.getType() == Material.LIME_STAINED_GLASS_PANE;
+                disabledCores.add(coreSlot);
+
                 menu.replaceExistingItem(coreSlot, ItemStacks.core(type, color, currentIndex, !running));
+                setDisabledCores(miner, newDisabledCores);
                 return false;
             });
             index++;
@@ -331,6 +320,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         menu.addItem(PAGE_BACK, ItemStacks.pageBack(page, 3), ChestMenuUtils.getEmptyClickHandler());
         menu.addItem(PAGE_FORWARD, ItemStacks.pageForward(page, 3), ChestMenuUtils.getEmptyClickHandler());
+        menu.setPlayerInventoryClickable(true);
     }
 
     public UUID getOwner(Block miner) {
@@ -344,6 +334,17 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         } catch (Exception ignored) {
             return null;
         }
+    }
+
+    public void setDisabledCores(Block miner, List<Integer> disabledCores) {
+        final StringBuilder cores = new StringBuilder();
+        for (int coreSlot : disabledCores) {
+            if (!cores.isEmpty()) {
+                cores.append(",");
+            }
+            cores.append(coreSlot);
+        }
+        BlockStorage.addBlockInfo(miner, "DISABLED_CORES", cores.toString());
     }
 
     public List<Integer> getDisabledCores(Block miner) {
@@ -487,6 +488,11 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                     return false;
                 }
 
+                if (!MetaCoinItem.canRemoveCoins(player, cost)) {
+                    player.sendMessage(ChatColor.RED + "Your coins are not the right sizes! (Can only remove %,d/%,d)");
+                    return false;
+                }
+
                 MetaCoinItem.removeCoins(player, cost);
                 setLevel(miner, level + 1);
                 menu.replaceExistingItem(i, getDisplay(miner));
@@ -515,8 +521,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             BlockStorage.addBlockInfo(miner, name(), String.valueOf(level));
         }
 
-        public static int[] getLevels(Block miner) {
-            return new int[] { SPEED.getLevel(miner), PRODUCTION.getLevel(miner), RELIABILITY.getLevel(miner) };
+        public static int[] getLevels(FileConfiguration minerConfig) {
+            return new int[] { minerConfig.getInt("SPEED"), minerConfig.getInt("PRODUCTION"), minerConfig.getInt("RELIABILITY") };
         }
     }
 }
