@@ -66,7 +66,7 @@ public class MetaCoinItem extends SlimefunItem {
     public static Optional<Long> getClosestValue(long targetValue) {
         for (long value : getWeightedValues()) {
             if (value <= targetValue) {
-                return Optional.of(targetValue);
+                return Optional.of(value);
             }
         }
         return Optional.empty();
