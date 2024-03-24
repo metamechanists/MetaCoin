@@ -199,7 +199,7 @@ public class ItemStacks {
     public static ItemStack core(String type, String color, int number, boolean running) {
         return Utils.format(
                 running ? CORE_RUNNING : CORE_OFFLINE,
-                "type", color + type,
+                "type", type,
                 "color", color,
                 "number", number
         );

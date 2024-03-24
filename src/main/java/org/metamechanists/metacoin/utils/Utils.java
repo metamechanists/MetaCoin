@@ -3,6 +3,7 @@ package org.metamechanists.metacoin.utils;
 import io.github.bakedlibs.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.core.services.CustomTextureService;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import org.bukkit.inventory.ItemStack;
@@ -26,15 +27,17 @@ public class Utils {
     }
 
     public static ItemStack format(ItemStack itemStack, Object... placeholders) {
+        itemStack = new ItemStack(itemStack);
+        
         final ItemMeta itemMeta = itemStack.getItemMeta();
         final List<String> lore = itemMeta.getLore() != null ? itemMeta.getLore() : new ArrayList<>();
         String displayName = itemMeta.getDisplayName();
         for (int i = 0; i < placeholders.length; i++) {
             if (i % 2 == 0) {
                 for (int li = 0; li < lore.size(); li++) {
-                    lore.set(li, lore.get(li).replace("%" + placeholders[i] + "%", String.valueOf(placeholders[i + 1])));
+                    lore.set(li, lore.get(li).replace("%" + placeholders[i] + "%", ChatColors.color(String.valueOf(placeholders[i + 1]))));
                 }
-                displayName = displayName.replace("%" + placeholders[i] + "%", String.valueOf(placeholders[i + 1]));
+                displayName = displayName.replace("%" + placeholders[i] + "%", ChatColors.color(String.valueOf(placeholders[i + 1])));
             }
         }
         itemMeta.setDisplayName(displayName);
