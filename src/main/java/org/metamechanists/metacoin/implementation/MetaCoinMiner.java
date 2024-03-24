@@ -23,6 +23,7 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
@@ -175,24 +176,28 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void tick(Block miner, int[] levels) {
+        final Location minerLocation = miner.getLocation();
         final BlockPosition position = new BlockPosition(miner);
         if (MALFUNCTIONING.contains(position)) {
-            malfunctionTick(miner, levels);
+            malfunctionTick(minerLocation, levels);
             return;
-        } else if (!"".equals(BlockStorage.getLocationInfo(miner.getLocation(), "DISABLED_CORES"))) {
+        }
+
+        final String disabledCores = BlockStorage.getLocationInfo(minerLocation, "DISABLED_CORES");
+        if (disabledCores != null && !disabledCores.isBlank()) {
             MALFUNCTIONING.add(position);
-            malfunctionTick(miner, levels);
+            malfunctionTick(minerLocation, levels);
             return;
         }
 
         final int progress = PROGRESS.getOrDefault(position, 0);
         if (progress < MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
             PROGRESS.put(position, progress + levels[0]);
-            updateMenu(BlockStorage.getInventory(miner), position);
+            updateMenu(BlockStorage.getInventory(minerLocation), position);
             return;
         }
 
-        final BlockMenu menu = BlockStorage.getInventory(miner);
+        final BlockMenu menu = BlockStorage.getInventory(minerLocation);
         if (menu == null) {
             return;
         }
@@ -202,8 +207,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         menu.pushItem(MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
     }
 
-    public void malfunctionTick(Block miner, int[] levels) {
-        new ParticleBuilder(Particle.SMOKE_LARGE).count(levels[0] + levels[1]).location(miner.getLocation()).offset(0.5, 0.5, 0.5).spawn();
+    public void malfunctionTick(Location miner, int[] levels) {
+        new ParticleBuilder(Particle.SMOKE_LARGE).count(levels[0] + levels[1]).location(miner).offset(0.5, 0.5, 0.5).spawn();
     }
 
     public void updateMenu(BlockMenu menu, BlockPosition miner) {
