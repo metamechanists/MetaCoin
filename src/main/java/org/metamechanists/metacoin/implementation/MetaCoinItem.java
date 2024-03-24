@@ -57,18 +57,19 @@ public class MetaCoinItem extends SlimefunItem {
         final Optional<Long> closestValue = getClosestValue(value);
         Bukkit.broadcastMessage("closestValue: " + closestValue);
         if (closestValue.isEmpty()) {
-            return new ItemStack(Material.WOODEN_HOE);
+            return new ItemStack(Material.AIR);
         }
         Bukkit.broadcastMessage("has key: " + COINS.containsKey(closestValue.get()));
         Bukkit.broadcastMessage("count: " + (int) Math.min(64, value / closestValue.get()));
         return new CustomItemStack(COINS.get(closestValue.get()), (int) Math.min(64, value / closestValue.get()));
     }
     public static Optional<Long> getClosestValue(long targetValue) {
-        // "targetValue / coin * coin" may seem like a worthless operation but
-        // the value of the operation will not always be targetValue because of integer division
-        return COINS.keySet().stream()
-                .map(coin -> targetValue / coin * coin)
-                .reduce((value1, value2) ->  Utils.getClosest(value1, value2, targetValue));
+        for (long value : getWeightedValues()) {
+            if (value <= targetValue) {
+                return Optional.of(targetValue);
+            }
+        }
+        return Optional.empty();
     }
 
     public static long getTotalCoinValue(Player player) {
@@ -79,6 +80,12 @@ public class MetaCoinItem extends SlimefunItem {
             }
         }
         return totalValue;
+    }
+
+    public static List<Long> getWeightedValues() {
+        final List<Long> coins = new ArrayList<>(COINS.keySet());
+        coins.sort(Comparator.comparingLong(Long::longValue));
+        return coins;
     }
 
     public static List<ItemStack> getWeightedCoins(Player player) {
