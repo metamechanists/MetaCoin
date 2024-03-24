@@ -175,17 +175,13 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     public void tick(BlockPosition minerPosition, int[] levels) {
         final Location minerLocation = minerPosition.toLocation();
-        if (MALFUNCTIONING.contains(minerPosition)) {
-            malfunctionTick(minerLocation, levels);
-            return;
-        }
-
         final String disabledCores = BlockStorage.getLocationInfo(minerLocation, "DISABLED_CORES");
         if (disabledCores != null && !disabledCores.isBlank()) {
             MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation, levels);
             return;
         }
+        MALFUNCTIONING.remove(minerPosition);
 
         final int progress = PROGRESS.getOrDefault(minerPosition, 0);
         if (progress < MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
