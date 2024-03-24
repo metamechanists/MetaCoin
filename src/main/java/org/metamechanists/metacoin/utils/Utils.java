@@ -56,6 +56,7 @@ public class Utils {
                 configField.setAccessible(true);
                 modelConfig = (Config) configField.get(Slimefun.getItemTextureService());
                 modelConfig.setValue(id, model);
+                modelConfig.save();
             } catch (Exception e) {
                 Slimefun.logger().severe("Couldn't get the model config!");
                 Slimefun.logger().severe("Some items may not have the custom texture!");

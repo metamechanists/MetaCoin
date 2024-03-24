@@ -1,7 +1,6 @@
 package org.metamechanists.metacoin.core;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.metamechanists.metacoin.utils.Utils;
@@ -95,18 +94,18 @@ public class ItemStacks {
             "&8⇨ &eUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
     );
     // PANEL PAGE
-    public static final ItemStack CORE_DISABLED = new SlimefunItemStack(
+    public static final ItemStack CORE_OFFLINE = new SlimefunItemStack(
             "_UI_MM_CORE_DISABLED",
             Material.RED_STAINED_GLASS_PANE,
-            "%type% Core #%number%",
+            "%color%%type% &8Core &f#%number%",
             "&8⇨ %color%Click &7to toggle",
             "",
             "&8⇨ %color%Status: &cOffline"
     );
-    public static final ItemStack CORE_ENABLED = new SlimefunItemStack(
+    public static final ItemStack CORE_RUNNING = new SlimefunItemStack(
             "_UI_MM_CORE_ENABLED",
             Material.LIME_STAINED_GLASS_PANE,
-            "%type% Core #%number%",
+            "%color%%type% &8Core &f#%number%",
             "&8⇨ %color%Click &7to toggle",
             "",
             "&8⇨ %color%Status: &aOnline"
@@ -125,7 +124,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
-            "&or used to upgrade the MetaMiner™",
+            "&7or used to upgrade the MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "1&f\uE803"
     );
@@ -135,27 +134,27 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
-            "&or used to upgrade the MetaMiner™",
+            "&7or used to upgrade the MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "64&f\uE803"
     );
     public static final SlimefunItemStack DOUBLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "DOUBLE_COMPRESSED_META_COIN",
             Material.HEART_OF_THE_SEA,
-            ColorUtils.MM_YELLOW + "MetaCoin™",
+            ColorUtils.MM_YELLOW + "2x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
-            "&or used to upgrade the MetaMiner™",
+            "&7or used to upgrade the MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "4,096&f\uE803"
     );
     public static final SlimefunItemStack TRIPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "TRIPLE_COMPRESSED_META_COIN",
             Material.HEART_OF_THE_SEA,
-            ColorUtils.MM_YELLOW + "MetaCoin™",
+            ColorUtils.MM_YELLOW + "3x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
-            "&or used to upgrade the MetaMiner™",
+            "&7or used to upgrade the MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "262,144&f\uE803"
     );
@@ -195,5 +194,14 @@ public class ItemStacks {
     }
     public static ItemStack reliabilityUpgrade(long cost, long level, long maxLevel) {
         return upgrade(RELIABILITY_UPGRADE, cost, level, maxLevel);
+    }
+    // CONTROL PANEL
+    public static ItemStack core(String type, String color, int number, boolean running) {
+        return Utils.format(
+                running ? CORE_RUNNING : CORE_OFFLINE,
+                "type", color + type,
+                "color", color,
+                "number", number
+        );
     }
 }

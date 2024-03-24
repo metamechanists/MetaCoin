@@ -61,7 +61,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int UPGRADE_PRODUCTION = 22;
     private static final int UPGRADE_RELIABILITY = 25;
     // Panel Page
-    private static final int[] CORE_SLOTS = IntStream.range(9, 35).toArray();
+    private static final int[] ALL_CORES = IntStream.range(9, 35).toArray();
+    private static final int[] SPEED_CORES = IntStream.range(9, 17).toArray();
+    private static final int[] PRODUCTION_CORES = IntStream.range(18, 26).toArray();
+    private static final int[] RELIABILITY_CORES = IntStream.range(27, 35).toArray();
 
     private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
     private static final int TICKS_PER_PROGRESS = 4;
@@ -237,18 +240,13 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         });
 
         final List<Integer> disabledCores = getDisabledCores(miner);
-        for (int coreSlot : CORE_SLOTS) {
-            menu.addItem(coreSlot, disabledCores.contains(coreSlot) ? ItemStacks.CORE_DISABLED : ItemStacks.CORE_ENABLED);
-            menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
-                final boolean disabled = itemStack.getType() == Material.RED_STAINED_GLASS_PANE;
-                menu.replaceExistingItem(coreSlot, disabled ? ItemStacks.CORE_ENABLED : ItemStacks.CORE_DISABLED);
-                return false;
-            });
-        }
+        addCores(menu, SPEED_CORES, "Speed", "&e", disabledCores);
+        addCores(menu, PRODUCTION_CORES, "Production", "&b", disabledCores);
+        addCores(menu, RELIABILITY_CORES, "Reliability", "&d", disabledCores);
 
         menu.addMenuCloseHandler(o1 -> {
            final StringBuilder cores = new StringBuilder();
-           for (int coreSlot : CORE_SLOTS) {
+           for (int coreSlot : ALL_CORES) {
                if (menu.getItemInSlot(coreSlot).getType() == Material.RED_STAINED_GLASS_PANE) {
                    if (!cores.isEmpty()) {
                        cores.append(",");
@@ -260,6 +258,20 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         });
 
         menu.open(player);
+    }
+
+    public void addCores(ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
+        int index = 0;
+        for (int coreSlot : cores) {
+            int currentIndex = index;
+            menu.addItem(coreSlot, ItemStacks.core(type, color, currentIndex, disabledCores.contains(coreSlot)));
+            menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
+                final boolean offline = itemStack.getType() == Material.RED_STAINED_GLASS_PANE;
+                menu.replaceExistingItem(coreSlot, ItemStacks.core(type, color, currentIndex, !offline));
+                return false;
+            });
+            index++;
+        }
     }
 
     public ChestMenu setupMenu(String suffix, int page) {
