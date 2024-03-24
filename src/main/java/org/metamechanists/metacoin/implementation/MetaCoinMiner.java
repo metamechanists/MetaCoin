@@ -147,7 +147,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     public void tick(Block miner, Config config) {
         final BlockPosition position = new BlockPosition(miner);
         final int progress = PROGRESS.getOrDefault(position, 0);
-        if (progress <= MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
+        if (progress < MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
             PROGRESS.put(position, progress + Upgrades.SPEED.getLevel(miner));
             updateMenu(BlockStorage.getInventory(miner), position);
             return;
@@ -171,7 +171,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         int index = 1;
         final int progress = PROGRESS.getOrDefault(miner, 0);
         for (int slot : MINER_PROGRESS) {
-            menu.replaceExistingItem(slot, index * 4 >= progress ? ItemStacks.MINER_PROGRESS_FALSE : ItemStacks.MINER_PROGRESS_TRUE);
+            menu.replaceExistingItem(slot, index * 4 > progress ? ItemStacks.MINER_PROGRESS_FALSE : ItemStacks.MINER_PROGRESS_TRUE);
             index++;
         }
     }
@@ -264,10 +264,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         int index = 0;
         for (int coreSlot : cores) {
             int currentIndex = index;
-            menu.addItem(coreSlot, ItemStacks.core(type, color, currentIndex, disabledCores.contains(coreSlot)));
+            menu.addItem(coreSlot, ItemStacks.core(type, color, currentIndex, !disabledCores.contains(coreSlot)));
             menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
-                final boolean offline = itemStack.getType() == Material.RED_STAINED_GLASS_PANE;
-                menu.replaceExistingItem(coreSlot, ItemStacks.core(type, color, currentIndex, !offline));
+                final boolean running = itemStack.getType() == Material.LIME_STAINED_GLASS_PANE;
+                menu.replaceExistingItem(coreSlot, ItemStacks.core(type, color, currentIndex, !running));
                 return false;
             });
             index++;

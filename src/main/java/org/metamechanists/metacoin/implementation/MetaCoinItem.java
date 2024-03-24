@@ -1,5 +1,6 @@
 package org.metamechanists.metacoin.implementation;
 
+import com.google.common.collect.Lists;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -82,6 +83,7 @@ public class MetaCoinItem extends SlimefunItem {
     public static List<Long> getWeightedValues() {
         final List<Long> coins = new ArrayList<>(COINS.keySet());
         coins.sort(Comparator.comparingLong(Long::longValue));
+        Lists.reverse(coins);
         return coins;
     }
 
