@@ -42,14 +42,12 @@ import org.metamechanists.metalib.utils.RandomUtils;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
@@ -91,10 +89,11 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             @Override
             public void tick(Block miner, SlimefunItem slimefunItem, Config config) {
                 final int[] levels = Upgrades.getLevels(miner);
-                if (RandomUtils.chance(levels[0] + levels[1] - levels[2])) {
+                final BlockPosition minerPosition = new BlockPosition(miner);
+                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(levels[0] + levels[1] - levels[2])) {
                     MetaCoinMiner.this.malfunction(miner, levels);
                 }
-                MetaCoinMiner.this.tick(miner, levels);
+                MetaCoinMiner.this.tick(minerPosition, levels);
             }
         });
     }
@@ -152,48 +151,46 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     public void malfunction(Block miner, int[] levels) {
         final List<Integer> enabledCores = new ArrayList<>(ALL_CORES);
-        final List<Integer> disabledCores = getDisabledCores(miner);
-        final StringBuilder newDisabledCores = new StringBuilder();
+        final StringBuilder disabledCores = new StringBuilder();
 
-        for (int core : disabledCores) {
-            if (!newDisabledCores.isEmpty()) {
-                newDisabledCores.append(",");
-            }
-            newDisabledCores.append(core);
-            enabledCores.remove(core);
+        if (!getDisabledCores(miner).isEmpty()) {
+            return;
         }
 
         for (int i = 0; i < levels[0] + levels[1]; i++) {
+            if (enabledCores.isEmpty()) {
+                break;
+            }
+
             final int core = RandomUtils.randomChoice(enabledCores);
             enabledCores.remove(core);
 
-            if (!newDisabledCores.isEmpty()) {
-                newDisabledCores.append(",");
+            if (!disabledCores.isEmpty()) {
+                disabledCores.append(",");
             }
-            newDisabledCores.append(core);
+            disabledCores.append(core);
         }
-        BlockStorage.addBlockInfo(miner, "DISABLED_CORES", newDisabledCores.toString());
+        BlockStorage.addBlockInfo(miner, "DISABLED_CORES", disabledCores.toString());
     }
 
-    public void tick(Block miner, int[] levels) {
-        final Location minerLocation = miner.getLocation();
-        final BlockPosition position = new BlockPosition(miner);
-        if (MALFUNCTIONING.contains(position)) {
+    public void tick(BlockPosition minerPosition, int[] levels) {
+        final Location minerLocation = minerPosition.toLocation();
+        if (MALFUNCTIONING.contains(minerPosition)) {
             malfunctionTick(minerLocation, levels);
             return;
         }
 
         final String disabledCores = BlockStorage.getLocationInfo(minerLocation, "DISABLED_CORES");
         if (disabledCores != null && !disabledCores.isBlank()) {
-            MALFUNCTIONING.add(position);
+            MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation, levels);
             return;
         }
 
-        final int progress = PROGRESS.getOrDefault(position, 0);
+        final int progress = PROGRESS.getOrDefault(minerPosition, 0);
         if (progress < MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
-            PROGRESS.put(position, progress + levels[0]);
-            updateMenu(BlockStorage.getInventory(minerLocation), position);
+            PROGRESS.put(minerPosition, progress + levels[0]);
+            updateMenu(BlockStorage.getInventory(minerLocation), minerPosition);
             return;
         }
 
@@ -202,8 +199,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
-        PROGRESS.put(position, 0);
-        updateMenu(menu, position);
+        PROGRESS.put(minerPosition, 0);
+        updateMenu(menu, minerPosition);
         menu.pushItem(MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
     }
 
@@ -364,7 +361,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         for (String core : cores) {
             try {
                 disabledCores.add(Integer.parseInt(core));
-            } catch (Exception ignored) {};
+            } catch (Exception ignored) {}
         }
 
         return disabledCores;
