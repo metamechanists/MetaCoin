@@ -18,6 +18,7 @@ import me.justahuman.furnished.implementation.furniture.interfaces.Sittable;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
+import me.mrCookieSlime.Slimefun.api.BlockInfoConfig;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
@@ -90,7 +91,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
             @Override
             public void tick(Block miner, SlimefunItem slimefunItem, Config config) {
-                final int[] levels = Upgrades.getLevels(config.getConfiguration());
+                final int[] levels = Upgrades.getLevels(miner);
                 final BlockPosition minerPosition = new BlockPosition(miner);
                 if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(levels[0] + levels[1] - levels[2])) {
                     MetaCoinMiner.this.malfunction(miner, levels);
@@ -521,8 +522,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             BlockStorage.addBlockInfo(miner, name(), String.valueOf(level));
         }
 
-        public static int[] getLevels(FileConfiguration minerConfig) {
-            return new int[] { minerConfig.getInt("SPEED"), minerConfig.getInt("PRODUCTION"), minerConfig.getInt("RELIABILITY") };
+        public static int[] getLevels(Block miner) {
+            return new int[] { SPEED.getLevel(miner), PRODUCTION.getLevel(miner), RELIABILITY.getLevel(miner) };
         }
     }
 }
