@@ -296,7 +296,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
                 final List<Integer> newDisabledCores = getDisabledCores(miner);
                 final boolean running = itemStack.getType() == Material.LIME_STAINED_GLASS_PANE;
-                disabledCores.add(coreSlot);
+                newDisabledCores.add(coreSlot);
 
                 menu.replaceExistingItem(coreSlot, ItemStacks.core(type, color, currentIndex, !running));
                 setDisabledCores(miner, newDisabledCores);
@@ -489,8 +489,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                     return false;
                 }
 
-                if (!MetaCoinItem.canRemoveCoins(player, cost)) {
-                    player.sendMessage(ChatColor.RED + "Your coins are not the right sizes! (Can only remove %,d/%,d)");
+                final long removableValue = MetaCoinItem.getRemovableCoinValue(player, cost);
+                if (removableValue < cost) {
+                    player.sendMessage(ChatColor.RED + "Your coins are not the right sizes! (Can only remove %,d/%,d)".formatted(removableValue, cost));
                     return false;
                 }
 
