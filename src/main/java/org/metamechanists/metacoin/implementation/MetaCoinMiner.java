@@ -61,10 +61,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int UPGRADE_PRODUCTION = 22;
     private static final int UPGRADE_RELIABILITY = 25;
     // Panel Page
-    private static final int[] ALL_CORES = IntStream.range(9, 35).toArray();
-    private static final int[] SPEED_CORES = IntStream.range(9, 17).toArray();
-    private static final int[] PRODUCTION_CORES = IntStream.range(18, 26).toArray();
-    private static final int[] RELIABILITY_CORES = IntStream.range(27, 35).toArray();
+    private static final int[] ALL_CORES = IntStream.range(9, 36).toArray();
+    private static final int[] SPEED_CORES = { 9, 10, 11, 18, 19, 20, 27, 28, 29 };
+    private static final int[] PRODUCTION_CORES = { 12, 13, 14, 21, 22, 23, 30, 31, 32 };
+    private static final int[] RELIABILITY_CORES = { 15, 16, 17, 24, 25, 26, 33, 34, 35 };
 
     private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
     private static final int TICKS_PER_PROGRESS = 4;
