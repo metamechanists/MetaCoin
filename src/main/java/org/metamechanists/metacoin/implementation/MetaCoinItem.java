@@ -55,12 +55,9 @@ public class MetaCoinItem extends SlimefunItem {
 
     public static ItemStack withValue(long value) {
         final Optional<Long> closestValue = getClosestValue(value);
-        Bukkit.broadcastMessage("closestValue: " + closestValue);
         if (closestValue.isEmpty()) {
             return new ItemStack(Material.AIR);
         }
-        Bukkit.broadcastMessage("has key: " + COINS.containsKey(closestValue.get()));
-        Bukkit.broadcastMessage("count: " + (int) Math.min(64, value / closestValue.get()));
         return new CustomItemStack(COINS.get(closestValue.get()), (int) Math.min(64, value / closestValue.get()));
     }
     public static Optional<Long> getClosestValue(long targetValue) {
@@ -105,7 +102,7 @@ public class MetaCoinItem extends SlimefunItem {
                 continue;
             }
 
-            final int countToRemove = (int) (coins / metaCoinItem.value);
+            final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / metaCoinItem.value));
             itemStack.subtract(countToRemove);
             coins -= countToRemove * metaCoinItem.value;
 
