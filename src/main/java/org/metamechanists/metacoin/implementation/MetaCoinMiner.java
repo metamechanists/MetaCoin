@@ -57,9 +57,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int[] MINER_BACKGROUND = { 9, 17, 18, 19, 25, 26, 27, 28, 29, 33, 34, 35};
     private static final int MINER_OUTPUT = 49;
     // Upgrades Page
-    private static final int UPGRADE_SPEED = 28;
-    private static final int UPGRADE_PRODUCTION = 31;
-    private static final int UPGRADE_RELIABILITY = 34;
+    private static final int UPGRADE_SPEED = 19;
+    private static final int UPGRADE_PRODUCTION = 22;
+    private static final int UPGRADE_RELIABILITY = 25;
     // Panel Page
     private static final int[] CORE_SLOTS = IntStream.range(9, 35).toArray();
 
@@ -146,7 +146,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         final int progress = PROGRESS.getOrDefault(position, 0);
         if (progress <= MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
             PROGRESS.put(position, progress + Upgrades.SPEED.getLevel(miner));
-            //updateMenu(BlockStorage.getInventory(miner), position);
+            updateMenu(BlockStorage.getInventory(miner), position);
             return;
         }
 

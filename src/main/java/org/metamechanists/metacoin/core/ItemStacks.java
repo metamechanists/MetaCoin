@@ -121,7 +121,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack META_COIN = new SlimefunItemStack(
             "META_COIN",
-            new CustomItemStack(Material.HEART_OF_THE_SEA, meta -> meta.setCustomModelData(66613)),
+            Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
@@ -130,8 +130,8 @@ public class ItemStacks {
             "&7Value: " + ColorUtils.MM_YELLOW + "1&f\uE803"
     );
     public static final SlimefunItemStack COMPRESSED_META_COIN = new SlimefunItemStack(
-            "META_COIN",
-            new CustomItemStack(Material.HEART_OF_THE_SEA, meta -> meta.setCustomModelData(66613)),
+            "COMPRESSED_META_COIN",
+            Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
@@ -140,8 +140,8 @@ public class ItemStacks {
             "&7Value: " + ColorUtils.MM_YELLOW + "64&f\uE803"
     );
     public static final SlimefunItemStack DOUBLE_COMPRESSED_META_COIN = new SlimefunItemStack(
-            "META_COIN",
-            new CustomItemStack(Material.HEART_OF_THE_SEA, meta -> meta.setCustomModelData(66613)),
+            "DOUBLE_COMPRESSED_META_COIN",
+            Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
@@ -150,8 +150,8 @@ public class ItemStacks {
             "&7Value: " + ColorUtils.MM_YELLOW + "4,096&f\uE803"
     );
     public static final SlimefunItemStack TRIPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
-            "META_COIN",
-            new CustomItemStack(Material.HEART_OF_THE_SEA, meta -> meta.setCustomModelData(66613)),
+            "TRIPLE_COMPRESSED_META_COIN",
+            Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Can be placed, thrown, compressed",
