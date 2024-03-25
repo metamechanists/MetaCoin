@@ -90,8 +90,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             @Override
             public void tick(Block miner, SlimefunItem slimefunItem, Config config) {
                 final int[] levels = Upgrades.getLevels(miner);
+                final int[] realLevels = { levels[0] - 1, levels[1] - 1, levels[2] - 1 };
                 final BlockPosition minerPosition = new BlockPosition(miner);
-                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(levels[0] + levels[1] - levels[2])) {
+                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1] - realLevels[2])) {
                     MetaCoinMiner.this.malfunction(miner, levels);
                 }
                 MetaCoinMiner.this.tick(minerPosition, levels);
@@ -158,7 +159,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
-        for (int i = 0; i < levels[0] + levels[1]; i++) {
+        for (int i = 0; i < levels[0] + levels[1] - 2; i++) {
             if (enabledCores.isEmpty()) {
                 break;
             }
@@ -288,13 +289,18 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     public void addCores(Block miner, ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
         int index = 1;
-        for (int coreSlot : cores) {
+        for (Integer coreSlot : cores) {
             int currentIndex = index;
             menu.addItem(coreSlot, ItemStacks.core(type, color, currentIndex, !disabledCores.contains(coreSlot)));
             menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
                 final List<Integer> newDisabledCores = getDisabledCores(miner);
                 final boolean running = itemStack.getType() == Material.LIME_STAINED_GLASS_PANE;
-                newDisabledCores.add(coreSlot);
+                if (!running) {
+                    newDisabledCores.add(coreSlot);
+                } else {
+                    newDisabledCores.remove(coreSlot);
+                }
+
 
                 menu.replaceExistingItem(coreSlot, ItemStacks.core(type, color, currentIndex, !running));
                 setDisabledCores(miner, newDisabledCores);
