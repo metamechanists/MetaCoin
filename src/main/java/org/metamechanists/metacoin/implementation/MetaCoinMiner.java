@@ -18,17 +18,14 @@ import me.justahuman.furnished.implementation.furniture.interfaces.Sittable;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
-import me.mrCookieSlime.Slimefun.api.BlockInfoConfig;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -38,6 +35,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.metacoin.core.ItemStacks;
+import org.metamechanists.metacoin.utils.Keys;
+import org.metamechanists.metacoin.utils.Language;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -50,7 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
@@ -75,7 +73,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int[] PRODUCTION_CORES = { 12, 13, 14, 21, 22, 23, 30, 31, 32 };
     private static final int[] RELIABILITY_CORES = { 15, 16, 17, 24, 25, 26, 33, 34, 35 };
 
-    private static final Map<BlockPosition, Integer> PROGRESS = new ConcurrentHashMap<>();
+    private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
     private static final Set<BlockPosition> MALFUNCTIONING = new HashSet<>();
     private static final int TICKS_PER_PROGRESS = 4;
 
@@ -133,12 +131,12 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             @ParametersAreNonnullByDefault
             public void newInstance(BlockMenu menu, Block miner) {
                 menu.addMenuOpeningHandler(player -> {
-                    BlockStorage.addBlockInfo(miner, "LAST_MENU", "MINER");
+                    BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "MINER");
                     updateMenu(menu, new BlockPosition(miner));
                 });
 
                 menu.addMenuClickHandler(PAGE_FORWARD, (player, ignored1, ignored2, ignored3) -> {
-                    BlockStorage.addBlockInfo(miner, "LAST_MENU", "UPGRADES");
+                    BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "UPGRADES");
                     openUpgrades(player, menu, miner);
                     return false;
                 });
@@ -148,8 +146,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     @Override
     protected void onBlockPlace(@NotNull BlockPlaceEvent event) {
-        super.onBlockPlace(event);
-        BlockStorage.addBlockInfo(event.getBlock(), "OWNER", event.getPlayer().getUniqueId().toString());
+        // super.onBlockPlace(event);
+        BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, event.getPlayer().getUniqueId().toString());
     }
 
     public void malfunction(Block miner, int[] levels) {
@@ -174,7 +172,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     public void tick(BlockPosition minerPosition, int[] levels) {
         final Location minerLocation = minerPosition.toLocation();
-        final String disabledCores = BlockStorage.getLocationInfo(minerLocation, "DISABLED_CORES");
+        final String disabledCores = BlockStorage.getLocationInfo(minerLocation, Keys.BS_DISABLED_CORES);
         if (disabledCores != null && !disabledCores.isBlank()) {
             MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation, levels);
@@ -226,12 +224,12 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         event.setUseBlock(Event.Result.DENY);
         if (!player.getUniqueId().equals(getOwner(miner))) {
-            player.sendMessage(ChatColor.RED + "This isn't your miner!");
+            Language.sendMessage(player, "miner.menu.no-permission");
             return;
         }
 
         final BlockMenu minerMenu = BlockStorage.getInventory(miner);
-        final String lastMenu = BlockStorage.getLocationInfo(miner.getLocation(), "LAST_MENU");
+        final String lastMenu = BlockStorage.getLocationInfo(miner.getLocation(), Keys.BS_LAST_MENU);
         if (lastMenu == null) {
             minerMenu.open(player);
             return;
@@ -259,7 +257,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         });
 
         menu.addMenuClickHandler(PAGE_FORWARD, (o1, o2, o3, o4) -> {
-            BlockStorage.addBlockInfo(miner, "LAST_MENU", "CONTROL_PANEL");
+            BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "CONTROL_PANEL");
             openControlPanel(player, minerMenu, miner);
             return false;
         });
@@ -275,7 +273,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         final ChestMenu menu = setupMenu("Control Panel", 3);
 
         menu.addMenuClickHandler(PAGE_BACK, (o1, o2, o3, o4) -> {
-            BlockStorage.addBlockInfo(miner, "LAST_MENU", "UPGRADES");
+            BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "UPGRADES");
             openUpgrades(player, minerMenu, miner);
             return false;
         });
@@ -325,7 +323,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public UUID getOwner(Block miner) {
-        final String uuidString = BlockStorage.getLocationInfo(miner.getLocation(), "OWNER");
+        final String uuidString = BlockStorage.getLocationInfo(miner.getLocation(), Keys.BS_OWNER);
         if (uuidString == null) {
             return null;
         }
@@ -345,11 +343,11 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             }
             cores.append(coreSlot);
         }
-        BlockStorage.addBlockInfo(miner, "DISABLED_CORES", cores.toString());
+        BlockStorage.addBlockInfo(miner, Keys.BS_DISABLED_CORES, cores.toString());
     }
 
     public List<Integer> getDisabledCores(Block miner) {
-        final String coresString = BlockStorage.getLocationInfo(miner.getLocation(), "DISABLED_CORES");
+        final String coresString = BlockStorage.getLocationInfo(miner.getLocation(), Keys.BS_DISABLED_CORES);
         if (coresString == null) {
             return new ArrayList<>();
         }
@@ -478,20 +476,20 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return (player, i, o2, o3) -> {
                 final int level = getLevel(miner);
                 if (level >= getMaxLevel()) {
-                    player.sendMessage(ChatColor.RED + "That upgrade is already max level!");
+                    Language.sendMessage(player, "miner.upgrade.max-level");
                     return false;
                 }
 
                 final long cost = getCost(miner);
                 final long playerValue = MetaCoinItem.getTotalCoinValue(player);
                 if (playerValue < cost) {
-                    player.sendMessage(ChatColor.RED + "You don't have enough coins! (%,d/%,d)".formatted(playerValue, cost));
+                    Language.sendFormatted(player, "miner.upgrade.too-expensive", playerValue, cost);
                     return false;
                 }
 
                 final long removableValue = MetaCoinItem.getRemovableCoinValue(player, cost);
                 if (removableValue < cost) {
-                    player.sendMessage(ChatColor.RED + "Your coins are not the right sizes! (Can only remove %,d/%,d)".formatted(removableValue, cost));
+                    Language.sendFormatted(player, "miner.upgrade.cant-remove", removableValue, cost);
                     return false;
                 }
 

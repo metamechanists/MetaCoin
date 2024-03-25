@@ -69,7 +69,7 @@ public class ItemStacks {
             Material.YELLOW_CONCRETE,
             "&eSpeed Upgrade",
             "&8⇨ &aIncreases &7the rate of production",
-            "&8⇨ &cDescreases &7machine reliability",
+            "&8⇨ &cDecreases &7machine reliability",
             "",
             "&8⇨ &eCost: &7%upgrade_cost%\uE803",
             "&8⇨ &eUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
@@ -79,7 +79,7 @@ public class ItemStacks {
             Material.LIGHT_BLUE_CONCRETE,
             "&bProduction Upgrade",
             "&8⇨ &aIncreases &7the production amount",
-            "&8⇨ &cDescreases &7machine reliability",
+            "&8⇨ &cDecreases &7machine reliability",
             "",
             "&8⇨ &eCost: &7%upgrade_cost%&f\uE803",
             "&8⇨ &eUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"

@@ -7,18 +7,18 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.metacoin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class MetaCoinItem extends SlimefunItem {
@@ -59,7 +59,12 @@ public class MetaCoinItem extends SlimefunItem {
         if (closestValue.isEmpty()) {
             return new ItemStack(Material.AIR);
         }
-        return new CustomItemStack(COINS.get(closestValue.get()), (int) Math.min(64, value / closestValue.get()));
+        
+        final ItemStack result = new CustomItemStack(COINS.get(closestValue.get()), (int) Math.min(64, value / closestValue.get()));
+        final ItemMeta meta = result.getItemMeta();
+        meta.setCustomModelData(66613);
+        result.setItemMeta(meta);
+        return result;
     }
     public static Optional<Long> getClosestValue(long targetValue) {
         for (long value : getWeightedValues()) {
@@ -94,7 +99,7 @@ public class MetaCoinItem extends SlimefunItem {
                 coins.add(itemStack);
             }
         }
-        coins.sort(Comparator.comparingLong(itemStack -> ((MetaCoinItem) SlimefunItem.getByItem(itemStack)).value));
+        coins.sort(Comparator.comparingLong(itemStack -> ((MetaCoinItem) Objects.requireNonNull(SlimefunItem.getByItem(itemStack))).value));
         return coins;
     }
 
