@@ -163,7 +163,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 break;
             }
 
-            final int core = RandomUtils.randomChoice(enabledCores);
+            final Integer core = RandomUtils.randomChoice(enabledCores);
             enabledCores.remove(core);
             disabledCores.add(core);
         }

@@ -59,7 +59,7 @@ public class MetaCoinItem extends SlimefunItem {
         if (closestValue.isEmpty()) {
             return new ItemStack(Material.AIR);
         }
-        
+
         final ItemStack result = new CustomItemStack(COINS.get(closestValue.get()), (int) Math.min(64, value / closestValue.get()));
         final ItemMeta meta = result.getItemMeta();
         meta.setCustomModelData(66613);
