@@ -22,6 +22,7 @@ import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -75,6 +76,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
     private static final Set<BlockPosition> MALFUNCTIONING = new HashSet<>();
+    private static final Set<UUID> ACCESSING_CONTROL_PANEL = new HashSet<>();
     private static final int TICKS_PER_PROGRESS = 4;
 
     public MetaCoinMiner(ItemGroup itemGroup, SlimefunItemStack item) {
@@ -92,7 +94,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 final int[] levels = Upgrades.getLevels(miner);
                 final int[] realLevels = { levels[0] - 1, levels[1] - 1, levels[2] - 1 };
                 final BlockPosition minerPosition = new BlockPosition(miner);
-                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1] - realLevels[2])) {
+                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1], 100 + 3 * realLevels[2])) {
                     MetaCoinMiner.this.malfunction(miner, levels);
                 }
                 MetaCoinMiner.this.tick(minerPosition, levels);
@@ -169,6 +171,14 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             disabledCores.add(core);
         }
         setDisabledCores(miner, disabledCores);
+
+        for (UUID uuid : ACCESSING_CONTROL_PANEL) {
+            final Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                player.closeInventory();
+                openControlPanel(player, BlockStorage.getInventory(miner), miner);
+            }
+        }
     }
 
     public void tick(BlockPosition minerPosition, int[] levels) {
@@ -247,6 +257,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     @ParametersAreNonnullByDefault
     protected void onBlockBreak(BlockBreakEvent event, ItemStack itemStack, List<ItemStack> drops) {
         super.onBlockBreak(event, itemStack, drops);
+        final BlockMenu menu = BlockStorage.getInventory(event.getBlock());
+        if (menu != null) {
+            menu.dropItems(event.getBlock().getLocation(), MINER_OUTPUT);
+        }
     }
 
     public void openUpgrades(Player player, BlockMenu minerMenu, Block miner) {
@@ -284,7 +298,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         addCores(miner, menu, PRODUCTION_CORES, "Production", "&b", disabledCores);
         addCores(miner, menu, RELIABILITY_CORES, "Reliability", "&d", disabledCores);
 
+        menu.addMenuCloseHandler(o1 -> ACCESSING_CONTROL_PANEL.remove(player.getUniqueId()));
         menu.open(player);
+
+        ACCESSING_CONTROL_PANEL.add(player.getUniqueId());
     }
 
     public void addCores(Block miner, ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
