@@ -28,6 +28,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
@@ -41,6 +42,7 @@ import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
 import org.metamechanists.metacoin.utils.Utils;
+import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
 import javax.annotation.Nonnull;
@@ -196,7 +198,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         if (malfunctioning) {
             MALFUNCTIONING.add(minerPosition);
-            malfunctionTick(minerLocation, levels);
+            malfunctionTick(minerLocation);
         } else {
             MALFUNCTIONING.remove(minerPosition);
         }
@@ -218,8 +220,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         menu.pushItem(productionMalfunction ? MetaCoinItem.withValue(1) : MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
     }
 
-    public void malfunctionTick(Location miner, int[] levels) {
-        new ParticleBuilder(Particle.CAMPFIRE_SIGNAL_SMOKE).count(levels[0] + levels[1] - 2 * levels[2]).location(miner).offset(0.5, 0.5, 0.5).spawn();
+    public void malfunctionTick(Location miner) {
+        ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(1, 8));
+        ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.LAVA, 0.5, 4);
+        miner.getWorld().playSound(miner.toCenterLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, 0.8F);
     }
 
     public void updateMenu(BlockMenu menu, BlockPosition miner) {
