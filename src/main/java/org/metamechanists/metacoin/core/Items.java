@@ -21,6 +21,12 @@ public class Items {
         new MetaCoinItem(group, ItemStacks.COMPRESSED_META_COIN, 64).register(addon);
         new MetaCoinItem(group, ItemStacks.DOUBLE_COMPRESSED_META_COIN, 4096).register(addon);
         new MetaCoinItem(group, ItemStacks.TRIPLE_COMPRESSED_META_COIN, 262144).register(addon);
+
+        MetaCoinItem.COINS.put(262144L, ItemStacks.TRIPLE_COMPRESSED_META_COIN);
+        MetaCoinItem.COINS.put(4096L, ItemStacks.DOUBLE_COMPRESSED_META_COIN);
+        MetaCoinItem.COINS.put(64L, ItemStacks.COMPRESSED_META_COIN);
+        MetaCoinItem.COINS.put(1L, ItemStacks.META_COIN);
+
         new MetaCoinMiner(group, ItemStacks.META_COIN_MINER).register(addon);
     }
 }
