@@ -15,21 +15,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 public class MetaCoinItem extends SlimefunItem {
-    private static final Map<Long, ItemStack> COINS = new HashMap<>();
+    public static final Map<Long, ItemStack> COINS = new LinkedHashMap<>();
     private final long value;
 
     public MetaCoinItem(ItemGroup itemGroup, SlimefunItemStack item, long value) {
         super(itemGroup, item, RecipeType.NULL, new ItemStack[0]);
 
         this.value = value;
-        COINS.put(value, item);
     }
 
     @Override
@@ -94,12 +92,13 @@ public class MetaCoinItem extends SlimefunItem {
 
     public static List<ItemStack> getWeightedCoins(Player player) {
         final List<ItemStack> coins = new ArrayList<>();
-        for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem) {
-                coins.add(itemStack);
+        for (long value : COINS.keySet()) {
+            for (ItemStack itemStack : player.getInventory().getContents()) {
+                if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem coin && coin.value == value) {
+                    coins.add(itemStack);
+                }
             }
         }
-        coins.sort(Comparator.comparingLong(itemStack -> ((MetaCoinItem) Objects.requireNonNull(SlimefunItem.getByItem(itemStack))).value));
         return coins;
     }
 
@@ -112,7 +111,7 @@ public class MetaCoinItem extends SlimefunItem {
 
             final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / metaCoinItem.value));
             coins -= countToRemove * metaCoinItem.value;
-            removableCoins += countToRemove;
+            removableCoins += countToRemove * metaCoinItem.value;
 
             if (coins <= 0) {
                 break;
