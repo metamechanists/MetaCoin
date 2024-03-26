@@ -421,158 +421,227 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     public ModelBuilder getDisplayModel() {
         return new ModelBuilder()
                 .add("base-pillar-1", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(1.5F, 0.5F, 0.0F)
                         .rotation(0))
                 .add("base-pillar-2", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(1.06F, 0.5F, 1.06F)
                         .rotation(Math.PI / 4))
                 .add("base-pillar-3", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(0.0F, 0.5F, 1.5F)
                         .rotation(0))
                 .add("base-pillar-4", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(-1.06F, 0.5F, 1.06F)
                         .rotation(Math.PI / 4))
                 .add("base-pillar-5", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(-1.5F, 0.5F, 0.0F)
                         .rotation(0))
                 .add("base-pillar-6", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(1.06F, 0.5F, -1.06F)
                         .rotation(Math.PI / 4))
                 .add("base-pillar-7", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(0.0F, 0.5F, -1.5F)
                         .rotation(0))
                 .add("base-pillar-8", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.0F, 0.35F)
                         .location(-1.06F, 0.5F, -1.06F)
                         .rotation(Math.PI / 4))
 
                 .add("pillar-top-1", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(3.4F, 1.0F, 1.4F)
                         .location(0, 2.0F, 0)
                         .rotation(0))
                 .add("pillar-top-2", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(3.4F, 1.0F, 1.34F)
                         .location(0, 2.0F, 0)
                         .rotation(Math.PI / 4))
                 .add("pillar-top-3", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(3.4F, 1.0F, 1.4F)
                         .location(0, 2.0F, 0)
                         .rotation(Math.PI / 2))
                 .add("pillar-top-4", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(3.4F, 1.0F, 1.4F)
                         .location(0, 2.0F, 0)
                         .rotation(Math.PI * 3 / 4))
 
                 .add("pillar-top-outset-1", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.BLUE_CONCRETE)
                         .size(3.5F, 0.7F, 1.1F)
                         .location(0, 2.0F, 0)
                         .rotation(0))
                 .add("pillar-top-outset-2", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.BLUE_CONCRETE)
                         .size(3.5F, 0.7F, 1.1F)
                         .location(0, 2.0F, 0)
                         .rotation(Math.PI / 4))
                 .add("pillar-top-outset-3", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.BLUE_CONCRETE)
                         .size(3.5F, 0.7F, 1.1F)
                         .location(0, 2.0F, 0)
                         .rotation(Math.PI / 2))
                 .add("pillar-top-outset-4", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.BLUE_CONCRETE)
                         .size(3.5F, 0.7F, 1.1F)
                         .location(0, 2.0F, 0)
                         .rotation(Math.PI * 3 / 4))
 
-                .add("rotated-shroomlight-2", new ModelDiamond()
-                        .brightness(15)
-                        .material(Material.SHROOMLIGHT)
-                        .size(2.0F)
-                        .location(0.0F, 2.0F, 0.0F))
-
                 .add("bottom-slanted-pillar-1", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(0.9F, 3.5F, 0.0F)
                         .rotation(0, 0, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-2", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(0.64F, 3.5F, -0.64F)
                         .rotation(0, Math.PI / 4, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-3", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(0.0F, 3.5F, -0.9F)
                         .rotation(0, Math.PI / 2, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-4", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(-0.64F, 3.5F, -0.64F)
                         .rotation(0, Math.PI * 3 / 4, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-5", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(-0.9F, 3.5F, 0.0F)
                         .rotation(0, Math.PI, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-6", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(-0.64F, 3.5F, 0.64F)
                         .rotation(0, Math.PI * 5 / 4, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-7", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(0, 3.5F, 0.9F)
                         .rotation(0, Math.PI * 3 / 2, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-8", new ModelCuboid()
-                        .brightness(15)
+                        
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
                         .location(0.64F, 3.5F, 0.64F)
-                        .rotation(0, Math.PI * 7/ 4, Math.PI * 1 / 6));
+                        .rotation(0, Math.PI * 7/ 4, Math.PI * 1 / 6))
+
+                .add("bottom-shroomlight", new ModelDiamond()
+                        
+                        .material(Material.SHROOMLIGHT)
+                        .size(2.0F)
+                        .location(0.0F, 2.0F, 0.0F))
+
+                .add("bottom-laser", new ModelCuboid()
+                        
+                        .material(Material.RED_CONCRETE)
+                        .size(0.1F, 1.5F, 0.1F)
+                        .location(0.64F, 2.5F, 0.64F)
+                        .rotation(0, Math.PI * 7/ 4, -Math.PI * 1 / 6))
+
+                .add("top-laser", new ModelCuboid()
+
+                        .material(Material.RED_CONCRETE)
+                        .size(0.1F, 1.5F, 0.1F)
+                        .location(0.64F, 4.5F, 0.64F)
+                        .rotation(0, Math.PI * 7/ 4, -Math.PI * 1 / 6))
+
+                .add("top-shroomlight", new ModelDiamond()
+                        
+                        .material(Material.SHROOMLIGHT)
+                        .size(2.0F)
+                        .location(0.0F, 5.0F, 0.0F))
+
+                .add("top-slanted-pillar-1", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(0.9F, 6.5F, 0.0F)
+                        .rotation(0, 0, -Math.PI * 1 / 6))
+                .add("top-slanted-pillar-2", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(0.64F, 6.5F, -0.64F)
+                        .rotation(0, Math.PI / 4, -Math.PI * 1 / 6))
+                .add("top-slanted-pillar-3", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(0.0F, 6.5F, -0.9F)
+                        .rotation(0, Math.PI / 2, -Math.PI * 1 / 6))
+                .add("top-slanted-pillar-4", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(-0.64F, 6.5F, -0.64F)
+                        .rotation(0, Math.PI * 3 / 4, -Math.PI * 1 / 6))
+                .add("top-slanted-pillar-5", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(-0.9F, 6.5F, 0.0F)
+                        .rotation(0, Math.PI, Math.PI * 1 / 6))
+                .add("top-slanted-pillar-6", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(-0.64F, 6.5F, 0.64F)
+                        .rotation(0, Math.PI * 5 / 4, -Math.PI * 1 / 6))
+                .add("top-slanted-pillar-7", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(0, 6.5F, 0.9F)
+                        .rotation(0, Math.PI * 3 / 2, -Math.PI * 1 / 6))
+                .add("top-slanted-pillar-8", new ModelCuboid()
+                        
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.5F, 0.35F)
+                        .location(0.64F, 6.5F, 0.64F)
+                        .rotation(0, Math.PI * 7/ 4, -Math.PI * 1 / 6));
     }
 
     @Override
