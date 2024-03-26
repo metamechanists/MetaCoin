@@ -95,7 +95,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 final int[] levels = Upgrades.getLevels(miner);
                 final int[] realLevels = { levels[0] - 1, levels[1] - 1, levels[2] - 1 };
                 final BlockPosition minerPosition = new BlockPosition(miner);
-                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1], 100 + 3 * realLevels[2])) {
+                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1] - 2 * realLevels[2])) {
                     MetaCoinMiner.this.malfunction(miner, realLevels);
                 }
                 MetaCoinMiner.this.tick(minerPosition, levels);
@@ -162,7 +162,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
-        for (int i = 0; i < Math.max(1, levels[0] + levels[1] - levels[2]); i++) {
+        for (int i = 0; i < Math.max(1, levels[0] + levels[1] - 2 * levels[2]); i++) {
             if (enabledCores.isEmpty()) {
                 break;
             }
@@ -214,7 +214,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void malfunctionTick(Location miner, int[] levels) {
-        new ParticleBuilder(Particle.CAMPFIRE_SIGNAL_SMOKE).count(levels[0] + levels[1]).location(miner).offset(0.5, 0.5, 0.5).spawn();
+        new ParticleBuilder(Particle.CAMPFIRE_SIGNAL_SMOKE).count(levels[0] + levels[1] - 2 * levels[2]).location(miner).offset(0.5, 0.5, 0.5).spawn();
     }
 
     public void updateMenu(BlockMenu menu, BlockPosition miner) {
