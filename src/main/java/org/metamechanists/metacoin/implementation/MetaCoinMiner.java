@@ -149,7 +149,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     @Override
     protected void onBlockPlace(@NotNull BlockPlaceEvent event) {
-        // super.onBlockPlace(event);
+        super.onBlockPlace(event);
         BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, event.getPlayer().getUniqueId().toString());
     }
 
