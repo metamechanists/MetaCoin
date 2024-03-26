@@ -295,7 +295,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             menu.addMenuClickHandler(coreSlot, (o1, o2, itemStack, o4) -> {
                 final List<Integer> newDisabledCores = getDisabledCores(miner);
                 final boolean running = itemStack.getType() == Material.LIME_STAINED_GLASS_PANE;
-                if (!running) {
+                if (running) {
                     newDisabledCores.add(coreSlot);
                 } else {
                     newDisabledCores.remove(coreSlot);
