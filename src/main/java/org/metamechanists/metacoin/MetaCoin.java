@@ -9,6 +9,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
 import org.metamechanists.metacoin.core.Items;
+import org.metamechanists.metacoin.utils.Language;
 
 import javax.annotation.Nonnull;
 
@@ -19,6 +20,7 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
 
+        Language.init();
         Groups.init();
         Items.init();
 

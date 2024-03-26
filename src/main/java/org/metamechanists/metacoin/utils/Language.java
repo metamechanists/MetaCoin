@@ -7,7 +7,7 @@ import org.metamechanists.metalib.language.LanguageStorage;
 public class Language {
     private static LanguageStorage languageStorage;
 
-    public static void initialize() {
+    public static void init() {
         languageStorage = new LanguageStorage(MetaCoin.getInstance());
     }
 
