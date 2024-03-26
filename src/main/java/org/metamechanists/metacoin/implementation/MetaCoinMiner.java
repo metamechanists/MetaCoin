@@ -162,7 +162,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
-        for (int i = 0; i < levels[0] + levels[1] - levels[2]; i++) {
+        for (int i = 0; i < Math.max(1, levels[0] + levels[1] - levels[2]); i++) {
             if (enabledCores.isEmpty()) {
                 break;
             }
