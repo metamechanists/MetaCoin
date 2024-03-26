@@ -42,10 +42,10 @@ public class MetaCoinItem extends SlimefunItem {
         }
 
         if (productionLevel < 129) {
-            return 64 * productionLevel;
+            return 64 * (productionLevel - 64);
         }
 
-        return 64 * 64 * productionLevel;
+        return 64 * 64 * (productionLevel - 128);
     }
 
     public static ItemStack fromProductionLevel(int productionLevel) {
@@ -65,7 +65,7 @@ public class MetaCoinItem extends SlimefunItem {
         return result;
     }
     public static Optional<Long> getClosestValue(long targetValue) {
-        for (long value : getWeightedValues()) {
+        for (long value : COINS.keySet()) {
             if (value <= targetValue) {
                 return Optional.of(value);
             }
@@ -81,13 +81,6 @@ public class MetaCoinItem extends SlimefunItem {
             }
         }
         return totalValue;
-    }
-
-    public static List<Long> getWeightedValues() {
-        final List<Long> coins = new ArrayList<>(COINS.keySet());
-        coins.sort(Comparator.comparingLong(Long::longValue));
-        Lists.reverse(coins);
-        return coins;
     }
 
     public static List<ItemStack> getWeightedCoins(Player player) {
