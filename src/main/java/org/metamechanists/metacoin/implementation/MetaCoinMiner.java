@@ -528,7 +528,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
                         .size(0.35F, 2.5F, 0.35F)
-                        .location(0.8F, 3.8F, 0.0F)
+                        .location(0.9F, 3.6F, 0.0F)
                         .rotation(0, 0, Math.PI * 1 / 6))
                 .add("bottom-slanted-pillar-2", new ModelCuboid()
                         .brightness(15)
