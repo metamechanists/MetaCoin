@@ -75,8 +75,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int[] RELIABILITY_CORES = { 15, 16, 17, 24, 25, 26, 33, 34, 35 };
 
     private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
+    private static final Map<BlockPosition, UUID> ACCESSING_CONTROL_PANEL = new HashMap<>();
     private static final Set<BlockPosition> MALFUNCTIONING = new HashSet<>();
-    private static final Set<UUID> ACCESSING_CONTROL_PANEL = new HashSet<>();
     private static final int TICKS_PER_PROGRESS = 4;
 
     public MetaCoinMiner(ItemGroup itemGroup, SlimefunItemStack item) {
@@ -172,7 +172,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
         setDisabledCores(miner, disabledCores);
 
-        for (UUID uuid : ACCESSING_CONTROL_PANEL) {
+        final UUID uuid = ACCESSING_CONTROL_PANEL.remove(new BlockPosition(miner));
+        if (uuid != null) {
             final Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
                 player.closeInventory();
@@ -298,10 +299,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         addCores(miner, menu, PRODUCTION_CORES, "Production", "&b", disabledCores);
         addCores(miner, menu, RELIABILITY_CORES, "Reliability", "&d", disabledCores);
 
-        menu.addMenuCloseHandler(o1 -> ACCESSING_CONTROL_PANEL.remove(player.getUniqueId()));
+        menu.addMenuCloseHandler(o1 -> ACCESSING_CONTROL_PANEL.remove(new BlockPosition(miner)));
         menu.open(player);
 
-        ACCESSING_CONTROL_PANEL.add(player.getUniqueId());
+        ACCESSING_CONTROL_PANEL.put(new BlockPosition(miner), player.getUniqueId());
     }
 
     public void addCores(Block miner, ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
