@@ -111,7 +111,7 @@ public class MetaCoinItem extends SlimefunItem {
 
             final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / metaCoinItem.value));
             coins -= countToRemove * metaCoinItem.value;
-            removableCoins += countToRemove;
+            removableCoins += countToRemove * metaCoinItem.value;
 
             if (coins <= 0) {
                 break;
