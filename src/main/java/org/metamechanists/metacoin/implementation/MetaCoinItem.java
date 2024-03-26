@@ -42,10 +42,10 @@ public class MetaCoinItem extends SlimefunItem {
         }
 
         if (productionLevel < 129) {
-            return 64 * (productionLevel - 64);
+            return 64 * (productionLevel - 63);
         }
 
-        return 64 * 64 * (productionLevel - 128);
+        return 64 * 64 * (productionLevel - 127);
     }
 
     public static ItemStack fromProductionLevel(int productionLevel) {

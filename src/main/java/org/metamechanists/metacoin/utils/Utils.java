@@ -40,4 +40,13 @@ public class Utils {
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
+
+    public static <E> boolean containsAny(List<E> disabledCores, List<E> productionCores) {
+        for (E e : productionCores) {
+            if (disabledCores.contains(e)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

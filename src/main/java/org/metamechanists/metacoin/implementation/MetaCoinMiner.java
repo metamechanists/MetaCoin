@@ -54,6 +54,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+@SuppressWarnings("deprecation")
 public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     // All Pages
     private static final int[] SPEED_DISPLAY = { 0, 1, 2, 36, 37, 38 };
@@ -72,9 +73,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     private static final int UPGRADE_RELIABILITY = 25;
     // Panel Page
     private static final List<Integer> ALL_CORES = IntStream.range(9, 36).boxed().toList();
-    private static final int[] SPEED_CORES = { 9, 10, 11, 18, 19, 20, 27, 28, 29 };
-    private static final int[] PRODUCTION_CORES = { 12, 13, 14, 21, 22, 23, 30, 31, 32 };
-    private static final int[] RELIABILITY_CORES = { 15, 16, 17, 24, 25, 26, 33, 34, 35 };
+    private static final List<Integer> SPEED_CORES = List.of(9, 10, 11, 18, 19, 20, 27, 28, 29);
+    private static final List<Integer> PRODUCTION_CORES = List.of(12, 13, 14, 21, 22, 23, 30, 31, 32);
+    private static final List<Integer> RELIABILITY_CORES = List.of(15, 16, 17, 24, 25, 26, 33, 34, 35);
 
     private static final Map<BlockPosition, Integer> PROGRESS = new HashMap<>();
     private static final Map<BlockPosition, UUID> ACCESSING_CONTROL_PANEL = new HashMap<>();
@@ -188,8 +189,11 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     public void tick(BlockPosition minerPosition, int[] levels) {
         final Location minerLocation = minerPosition.toLocation();
-        final String disabledCores = BlockStorage.getLocationInfo(minerLocation, Keys.BS_DISABLED_CORES);
-        final boolean malfunctioning = disabledCores != null && !disabledCores.isBlank();
+        final List<Integer> disabledCores = getDisabledCores(minerPosition.getBlock());
+        final boolean malfunctioning = !disabledCores.isEmpty();
+        boolean productionMalfunction = malfunctioning && Utils.containsAny(disabledCores, PRODUCTION_CORES);
+        boolean speedMalfunction = malfunctioning && Utils.containsAny(disabledCores, SPEED_CORES);
+
         if (malfunctioning) {
             MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation, levels);
@@ -199,7 +203,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         final int progress = PROGRESS.getOrDefault(minerPosition, 0);
         if (progress < MINER_PROGRESS.length * TICKS_PER_PROGRESS) {
-            PROGRESS.put(minerPosition, progress + (malfunctioning ? 1 : levels[0]));
+            PROGRESS.put(minerPosition, progress + (speedMalfunction ? 1 : levels[0]));
             updateMenu(BlockStorage.getInventory(minerLocation), minerPosition);
             return;
         }
@@ -211,7 +215,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         PROGRESS.put(minerPosition, 0);
         updateMenu(menu, minerPosition);
-        menu.pushItem(malfunctioning ? MetaCoinItem.withValue(1) : MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
+        menu.pushItem(productionMalfunction ? MetaCoinItem.withValue(1) : MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
     }
 
     public void malfunctionTick(Location miner, int[] levels) {
@@ -310,7 +314,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         ACCESSING_CONTROL_PANEL.put(new BlockPosition(miner), player.getUniqueId());
     }
 
-    public void addCores(Block miner, ChestMenu menu, int[] cores, String type, String color, List<Integer> disabledCores) {
+    public void addCores(Block miner, ChestMenu menu, List<Integer> cores, String type, String color, List<Integer> disabledCores) {
         int index = 1;
         for (Integer coreSlot : cores) {
             int currentIndex = index;
