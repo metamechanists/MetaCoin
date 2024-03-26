@@ -396,68 +396,68 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         return new Vector(0.5, 0.5, 0.5);
     }
 
+    @Override
     @Nonnull
     public Material getBaseMaterial() {
-        return Material.BARRIER;
+        return Material.BEACON;
     }
 
     @Override
     public Material getFakeMaterial() {
-        return Material.IRON_BLOCK;
+        return Material.BEACON;
     }
 
     @Override
     public ModelBuilder getDisplayModel() {
         return new ModelBuilder()
-                .add("base-octagon-bottom-1", new ModelCuboid()
+                .add("base-pillar-1", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, -0.25F, 0.0F)
-                        .rotation(Math.PI / 2))
-                .add("base-octagon-bottom-2", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(1.5F, 1.5F, 0.0F)
+                        .rotation(0))
+                .add("base-pillar-2", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, -0.25F, 0.0F)
-                        .rotation(Math.PI))
-                .add("base-octagon-bottom-3", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(1.06F, 1.5F, 1.06F)
+                        .rotation(Math.PI / 4))
+                .add("base-pillar-3", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, -0.25F, 0.0F)
-                        .rotation(Math.PI))
-                .add("base-octagon-bottom-4", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(0.0F, 1.5F, 1.5F)
+                        .rotation(0))
+                .add("base-pillar-4", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, -0.25F, 0.0F)
-                        .rotation(Math.PI * 3 / 2))
-
-                .add("base-octagon-top-1", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(-1.06F, 1.5F, 1.06F)
+                        .rotation(Math.PI / 4))
+                .add("base-pillar-5", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, 0.25F, 0.0F)
-                        .rotation(Math.PI / 2))
-                .add("base-octagon-top-2", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(-1.5F, 1.5F, 0.0F)
+                        .rotation(0))
+                .add("base-pillar-6", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, 0.25F, 0.0F)
-                        .rotation(Math.PI))
-                .add("base-octagon-top-3", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(-1.06F, 1.5F, -1.06F)
+                        .rotation(Math.PI / 4))
+                .add("base-pillar-7", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, 0.25F, 0.0F)
-                        .rotation(Math.PI))
-                .add("base-octagon-top-4", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(0.0F, 1.5F, -1.5F)
+                        .rotation(0))
+                .add("base-pillar-8", new ModelCuboid()
                         .brightness(15)
-                        .material(Material.GRAY_CONCRETE)
-                        .size(2.0F, 0.5F, 1.0F)
-                        .location(0.0F, 0.25F, 0.0F)
-                        .rotation(Math.PI * 3 / 2));
+                        .material(Material.WHITE_CONCRETE)
+                        .size(0.35F, 2.0F, 0.35F)
+                        .location(-1.06F, 1.5F, -1.06F)
+                        .rotation(Math.PI / 4));
     }
 
     @Override
