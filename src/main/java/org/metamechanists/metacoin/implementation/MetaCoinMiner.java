@@ -507,7 +507,32 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                         .material(Material.BLUE_CONCRETE)
                         .size(3.5F, 0.7F, 1.1F)
                         .location(0, 2.0F, 0)
-                        .rotation(Math.PI * 3 / 4));
+                        .rotation(Math.PI * 3 / 4))
+
+                .add("bottom-slanted-1", new ModelCuboid()
+                        .brightness(15)
+                        .material(Material.WHITE_CONCRETE)
+                        .size(3.5F, 0.7F, 1.1F)
+                        .location(0, 2.0F, 0)
+                        .rotation(0, 0, Math.PI / 4))
+                .add("bottom-slanted-2", new ModelCuboid()
+                        .brightness(15)
+                        .material(Material.WHITE_CONCRETE)
+                        .size(3.5F, 0.7F, 1.1F)
+                        .location(0, 2.0F, 0)
+                        .rotation(0, Math.PI / 4, Math.PI / 4))
+                .add("bottom-slanted-3", new ModelCuboid()
+                        .brightness(15)
+                        .material(Material.WHITE_CONCRETE)
+                        .size(3.5F, 0.7F, 1.1F)
+                        .location(0, 2.0F, 0)
+                        .rotation(0, Math.PI / 2, Math.PI / 4))
+                .add("bottom-slanted-4", new ModelCuboid()
+                        .brightness(15)
+                        .material(Material.WHITE_CONCRETE)
+                        .size(3.5F, 0.7F, 1.1F)
+                        .location(0, 2.0F, 0)
+                        .rotation(0, Math.PI * 3 / 4, Math.PI / 4));
     }
 
     @Override
