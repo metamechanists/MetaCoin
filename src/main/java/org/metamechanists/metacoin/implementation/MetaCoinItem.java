@@ -100,6 +100,7 @@ public class MetaCoinItem extends SlimefunItem {
             }
         }
         coins.sort(Comparator.comparingLong(itemStack -> ((MetaCoinItem) Objects.requireNonNull(SlimefunItem.getByItem(itemStack))).value));
+        Lists.reverse(coins);
         return coins;
     }
 
