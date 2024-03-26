@@ -181,9 +181,9 @@ public class ItemStacks {
     public static ItemStack upgrade(ItemStack base, long cost, long level, long maxLevel) {
         return Utils.format(
                 base,
-                "upgrade_cost", cost,
-                "upgrade_level", level,
-                "max_upgrade_level", maxLevel
+                "upgrade_cost", "%,d".formatted(cost),
+                "upgrade_level", "%,d".formatted(level),
+                "max_upgrade_level", "%,d".formatted(maxLevel)
         );
     }
     public static ItemStack speedUpgrade(long cost, long level, long maxLevel) {
