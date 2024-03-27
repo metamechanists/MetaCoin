@@ -15,6 +15,7 @@ import me.justahuman.furnished.displaymodellib.builders.BlockDisplayBuilder;
 import me.justahuman.furnished.displaymodellib.models.ModelBuilder;
 import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
 import me.justahuman.furnished.displaymodellib.models.components.ModelDiamond;
+import me.justahuman.furnished.displaymodellib.models.components.ModelItem;
 import me.justahuman.furnished.implementation.furniture.absraction.DisplayModelBlock;
 import me.justahuman.furnished.implementation.furniture.interfaces.Sittable;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -31,6 +32,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Display.Billboard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -56,6 +58,9 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
+
+import static org.metamechanists.metacoin.core.ItemStacks.META_COIN;
+
 
 @SuppressWarnings("deprecation")
 public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
@@ -586,6 +591,13 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                         .size(0.1F, 2.5F, 0.1F)
                         .location(0, 4.0F, 0))
 
+                .add("metacoin", new ModelItem()
+                        .brightness(15)
+                        .item(META_COIN)
+                        .billboard(Billboard.CENTER)
+                        .size(2.0F)
+                        .location(0, 6.0F, 0))
+
                 .add("top-laser", new ModelCuboid()
                         .brightness(15)
                         .material(Material.RED_CONCRETE)
@@ -700,49 +712,49 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 .add("top-spike-pillar-1", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(0.9F, 14.0F, 0.0F)
                         .rotation(0, 0, Math.PI * 1 / 12))
                 .add("top-spike-pillar-2", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(0.64F, 14.0F, -0.64F)
                         .rotation(0, Math.PI / 4, Math.PI * 1 / 12))
                 .add("top-spike-pillar-3", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(0.0F, 14.0F, -0.9F)
                         .rotation(0, Math.PI / 2, Math.PI * 1 / 12))
                 .add("top-spike-pillar-4", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(-0.64F, 14.0F, -0.64F)
                         .rotation(0, Math.PI * 3 / 4, Math.PI * 1 / 12))
                 .add("top-spike-pillar-5", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(-0.9F, 14.0F, 0.0F)
                         .rotation(0, Math.PI, Math.PI * 1 / 12))
                 .add("top-spike-pillar-6", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(-0.64F, 14.0F, 0.64F)
                         .rotation(0, Math.PI * 5 / 4, Math.PI * 1 / 12))
                 .add("top-spike-pillar-7", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(0, 14.0F, 0.9F)
                         .rotation(0, Math.PI * 3 / 2, Math.PI * 1 / 12))
                 .add("top-spike-pillar-8", new ModelCuboid()
                         .brightness(15)
                         .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 7.0F, 0.35F)
+                        .size(0.35F, 6.0F, 0.35F)
                         .location(0.64F, 14.0F, 0.64F)
                         .rotation(0, Math.PI * 7/ 4, Math.PI * 1 / 12));
     }
