@@ -9,6 +9,7 @@ public class Keys {
     public static final String BS_OWNER = "OWNER";
     public static final String BS_LAST_MENU = "LAST_MENU";
     public static final String BS_MALFUNCTION_LEVEL = "MALFUNCTION_LEVEL";
+    public static final String BS_MODEL_LEVEL = "MODEL_LEVEL";
 
     public static NamespacedKey newKey(String key) {
         return new NamespacedKey(MetaCoin.getInstance(), key);
