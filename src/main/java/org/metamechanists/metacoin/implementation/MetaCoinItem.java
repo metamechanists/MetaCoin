@@ -31,12 +31,9 @@ public class MetaCoinItem extends SlimefunItem {
     }
 
     @Override
-    public void postRegister() {
+    public void register(@NotNull SlimefunAddon addon) {
+        super.register(addon);
         setHidden(true);
-    }
-
-    public static ItemStack fromProductionLevel(int productionLevel) {
-        return withValue(getValueFromProductionLevel(productionLevel));
     }
 
     public static int getValueFromProductionLevel(int productionLevel) {
@@ -51,6 +48,10 @@ public class MetaCoinItem extends SlimefunItem {
         return 64 * 64 * (productionLevel - 127);
     }
 
+    public static ItemStack fromProductionLevel(int productionLevel) {
+        return withValue(getValueFromProductionLevel(productionLevel));
+    }
+
     public static ItemStack withValue(long value) {
         final Optional<Long> closestValue = getClosestValue(value);
         if (closestValue.isEmpty()) {
@@ -63,7 +64,6 @@ public class MetaCoinItem extends SlimefunItem {
         result.setItemMeta(meta);
         return result;
     }
-
     public static Optional<Long> getClosestValue(long targetValue) {
         for (long value : COINS.keySet()) {
             if (value <= targetValue) {
