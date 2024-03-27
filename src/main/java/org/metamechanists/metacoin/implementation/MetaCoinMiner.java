@@ -256,10 +256,12 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void malfunctionTick(Location miner) {
-        malfunctionModel(miner, Math.min(getMalfunctionLevel(miner) + 1, 10));
         ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(1, 3));
         ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.LAVA, 0.5, RandomUtils.randomInteger(1, 3));
-        Slimefun.runSync(() -> miner.getWorld().playSound(miner.toCenterLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F)));
+        Slimefun.runSync(() -> {
+            miner.getWorld().playSound(miner.toCenterLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F));
+            malfunctionModel(miner, Math.min(getMalfunctionLevel(miner) + 1, 10));
+        });
     }
 
     public void updateMenu(BlockMenu menu, BlockPosition miner) {
