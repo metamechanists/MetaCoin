@@ -1,6 +1,5 @@
 package org.metamechanists.metacoin.implementation;
 
-import com.destroystokyo.paper.ParticleBuilder;
 import io.github.bakedlibs.dough.blocks.BlockPosition;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
@@ -13,6 +12,7 @@ import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import lombok.Getter;
 import me.justahuman.furnished.displaymodellib.builders.BlockDisplayBuilder;
 import me.justahuman.furnished.displaymodellib.models.ModelBuilder;
+import me.justahuman.furnished.displaymodellib.models.components.ModelComponent;
 import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
 import me.justahuman.furnished.displaymodellib.models.components.ModelDiamond;
 import me.justahuman.furnished.displaymodellib.models.components.ModelItem;
@@ -102,13 +102,14 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
             @Override
             public void tick(Block miner, SlimefunItem slimefunItem, Config config) {
-                final int[] levels = Upgrades.getLevels(miner);
-                final int[] realLevels = { levels[0] - 1, levels[1] - 1, levels[2] - 1 };
                 final BlockPosition minerPosition = new BlockPosition(miner);
+                final Location minerLocation = miner.getLocation();
+                final int[] levels = Upgrades.getLevels(minerLocation);
+                final int[] realLevels = { levels[0] - 1, levels[1] - 1, levels[2] - 1 };
                 if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1] - 2 * realLevels[2])) {
-                    MetaCoinMiner.this.malfunction(miner, realLevels);
+                    MetaCoinMiner.this.malfunction(minerLocation, realLevels);
                 }
-                MetaCoinMiner.this.tick(minerPosition, levels);
+                MetaCoinMiner.this.tick(minerLocation, minerPosition, levels);
             }
         });
     }
@@ -144,6 +145,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             @Override
             @ParametersAreNonnullByDefault
             public void newInstance(BlockMenu menu, Block miner) {
+                final Location minerLocation = miner.getLocation();
                 menu.addMenuOpeningHandler(player -> {
                     BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "MINER");
                     updateMenu(menu, new BlockPosition(miner));
@@ -151,7 +153,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
                 menu.addMenuClickHandler(PAGE_FORWARD, (player, ignored1, ignored2, ignored3) -> {
                     BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "UPGRADES");
-                    openUpgrades(player, menu, miner);
+                    openUpgrades(player, menu, minerLocation);
                     return false;
                 });
             }
@@ -162,9 +164,23 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     protected void onBlockPlace(@NotNull BlockPlaceEvent event) {
         super.onBlockPlace(event);
         BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, event.getPlayer().getUniqueId().toString());
+        BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_MALFUNCTION_LEVEL, "0");
     }
 
-    public void malfunction(Block miner, int[] levels) {
+    public void malfunctionModel(Location miner, int malfunctionLevel) {
+        final ModelBuilder malfunctionModel = getDisplayModel();
+        for (ModelComponent component : malfunctionModel.getComponents().values()) {
+            if (component instanceof ModelCuboid cuboid) {
+                cuboid.brightness(15 - malfunctionLevel);
+                cuboid.getRotation().mul(malfunctionLevel * 0.2);
+                cuboid.getLocation().mul(malfunctionLevel * 0.2F);
+                cuboid.getSize().mul(malfunctionLevel * 0.2F);
+            }
+        }
+        updateDisplayModel(miner.getBlock(), getDisplayGroup(miner), malfunctionModel);
+    }
+
+    public void malfunction(Location miner, int[] levels) {
         final List<Integer> enabledCores = new ArrayList<>(ALL_CORES);
         final List<Integer> disabledCores = new ArrayList<>();
 
@@ -195,17 +211,21 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
     }
 
-    public void tick(BlockPosition minerPosition, int[] levels) {
-        final Location minerLocation = minerPosition.toLocation();
-        final List<Integer> disabledCores = getDisabledCores(minerPosition.getBlock());
+    public void tick(Location minerLocation, BlockPosition minerPosition, int[] levels) {
+        final List<Integer> disabledCores = getDisabledCores(minerLocation);
         final boolean malfunctioning = !disabledCores.isEmpty();
         boolean productionMalfunction = malfunctioning && Utils.containsAny(disabledCores, PRODUCTION_CORES);
         boolean speedMalfunction = malfunctioning && Utils.containsAny(disabledCores, SPEED_CORES);
+        int malfunctionLevel = getMalfunctionLevel(minerLocation);
 
         if (malfunctioning) {
             MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation);
         } else {
+            if (malfunctionLevel > 0) {
+                malfunctionLevel--;
+                malfunctionModel(minerLocation, malfunctionLevel);
+            }
             MALFUNCTIONING.remove(minerPosition);
         }
 
@@ -226,7 +246,17 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         menu.pushItem(productionMalfunction ? MetaCoinItem.withValue(1) : MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
     }
 
+    private int getMalfunctionLevel(Location miner) {
+        try {
+            return Integer.parseInt(BlockStorage.getLocationInfo(miner, Keys.BS_MALFUNCTION_LEVEL));
+        } catch (Exception ignored) {
+            BlockStorage.addBlockInfo(miner, Keys.BS_MALFUNCTION_LEVEL, "0");
+        }
+        return 0;
+    }
+
     public void malfunctionTick(Location miner) {
+        malfunctionModel(miner, Math.min(getMalfunctionLevel(miner) + 1, 10));
         ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(1, 3));
         ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.LAVA, 0.5, RandomUtils.randomInteger(1, 3));
         Slimefun.runSync(() -> miner.getWorld().playSound(miner.toCenterLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F)));
@@ -259,6 +289,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
+        final Location minerLocation = miner.getLocation();
         final BlockMenu minerMenu = BlockStorage.getInventory(miner);
         final String lastMenu = BlockStorage.getLocationInfo(miner.getLocation(), Keys.BS_LAST_MENU);
         if (lastMenu == null) {
@@ -267,8 +298,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
 
         switch (lastMenu) {
-            case "UPGRADES" -> openUpgrades(player, minerMenu, miner);
-            case "CONTROL_PANEL" -> openControlPanel(player, minerMenu, miner);
+            case "UPGRADES" -> openUpgrades(player, minerMenu, minerLocation);
+            case "CONTROL_PANEL" -> openControlPanel(player, minerMenu, minerLocation);
             default -> minerMenu.open(player);
         }
     }
@@ -283,7 +314,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
     }
 
-    public void openUpgrades(Player player, BlockMenu minerMenu, Block miner) {
+    public void openUpgrades(Player player, BlockMenu minerMenu, Location miner) {
         final ChestMenu menu = setupMenu("Upgrades", 2);
 
         menu.addMenuClickHandler(PAGE_BACK, (o1, o2, o3, o4) -> {
@@ -304,7 +335,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         menu.open(player);
     }
 
-    public void openControlPanel(Player player, BlockMenu minerMenu, Block miner) {
+    public void openControlPanel(Player player, BlockMenu minerMenu, Location miner) {
         final ChestMenu menu = setupMenu("Control Panel", 3);
 
         menu.addMenuClickHandler(PAGE_BACK, (o1, o2, o3, o4) -> {
@@ -324,7 +355,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         ACCESSING_CONTROL_PANEL.put(new BlockPosition(miner), player.getUniqueId());
     }
 
-    public void addCores(Block miner, ChestMenu menu, List<Integer> cores, String type, String color, List<Integer> disabledCores) {
+    public void addCores(Location miner, ChestMenu menu, List<Integer> cores, String type, String color, List<Integer> disabledCores) {
         int index = 1;
         for (Integer coreSlot : cores) {
             int currentIndex = index;
@@ -378,7 +409,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
     }
 
-    public void setDisabledCores(Block miner, List<Integer> disabledCores) {
+    public void setDisabledCores(Location miner, List<Integer> disabledCores) {
         final StringBuilder cores = new StringBuilder();
         for (int coreSlot : disabledCores) {
             if (!cores.isEmpty()) {
@@ -389,8 +420,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         BlockStorage.addBlockInfo(miner, Keys.BS_DISABLED_CORES, cores.toString());
     }
 
-    public List<Integer> getDisabledCores(Block miner) {
-        final String coresString = BlockStorage.getLocationInfo(miner.getLocation(), Keys.BS_DISABLED_CORES);
+    public List<Integer> getDisabledCores(Location miner) {
+        final String coresString = BlockStorage.getLocationInfo(miner, Keys.BS_DISABLED_CORES);
         if (coresString == null) {
             return new ArrayList<>();
         }
@@ -791,7 +822,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             this.maxLevel = maxLevel;
         }
 
-        public ItemStack getDisplay(Block miner) {
+        public ItemStack getDisplay(Location miner) {
             return switch (this) {
                 case SPEED -> ItemStacks.speedUpgrade(getCost(miner), getLevel(miner), getMaxLevel());
                 case PRODUCTION -> ItemStacks.productionUpgrade(getCost(miner), getLevel(miner), getMaxLevel());
@@ -799,7 +830,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             };
         }
 
-        public ChestMenu.MenuClickHandler getClickHandler(ChestMenu menu, Block miner) {
+        public ChestMenu.MenuClickHandler getClickHandler(ChestMenu menu, Location miner) {
             return (player, i, o2, o3) -> {
                 final int level = getLevel(miner);
                 if (level >= getMaxLevel()) {
@@ -827,7 +858,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             };
         }
 
-        public long getCost(Block miner) {
+        public long getCost(Location miner) {
             return getCost(getLevel(miner));
         }
 
@@ -835,20 +866,20 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return currentLevel;
         }
 
-        public int getLevel(Block miner) {
+        public int getLevel(Location miner) {
             try {
-                return Integer.parseInt(BlockStorage.getLocationInfo(miner.getLocation(), name()));
+                return Integer.parseInt(BlockStorage.getLocationInfo(miner, name()));
             } catch (Exception ignored) {
                 BlockStorage.addBlockInfo(miner, name(), "1");
                 return 1;
             }
         }
 
-        public void setLevel(Block miner, int level) {
+        public void setLevel(Location miner, int level) {
             BlockStorage.addBlockInfo(miner, name(), String.valueOf(level));
         }
 
-        public static int[] getLevels(Block miner) {
+        public static int[] getLevels(Location miner) {
             return new int[] { SPEED.getLevel(miner), PRODUCTION.getLevel(miner), RELIABILITY.getLevel(miner) };
         }
     }
