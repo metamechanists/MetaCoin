@@ -219,11 +219,14 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         int malfunctionLevel = getMalfunctionLevel(minerLocation);
 
         if (malfunctioning) {
+            malfunctionLevel++;
             MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation);
+            setMalfunctionLevel(minerLocation, malfunctionLevel);
         } else {
             if (malfunctionLevel > 0) {
                 malfunctionLevel--;
+                setMalfunctionLevel(minerLocation, malfunctionLevel);
                 malfunctionModel(minerLocation, malfunctionLevel);
             }
             MALFUNCTIONING.remove(minerPosition);
@@ -244,15 +247,6 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         PROGRESS.put(minerPosition, 0);
         updateMenu(menu, minerPosition);
         menu.pushItem(productionMalfunction ? MetaCoinItem.withValue(1) : MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
-    }
-
-    private int getMalfunctionLevel(Location miner) {
-        try {
-            return Integer.parseInt(BlockStorage.getLocationInfo(miner, Keys.BS_MALFUNCTION_LEVEL));
-        } catch (Exception ignored) {
-            BlockStorage.addBlockInfo(miner, Keys.BS_MALFUNCTION_LEVEL, "0");
-        }
-        return 0;
     }
 
     public void malfunctionTick(Location miner) {
@@ -409,6 +403,19 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         } catch (Exception ignored) {
             return null;
         }
+    }
+
+    private void setMalfunctionLevel(Location miner, int level) {
+        BlockStorage.addBlockInfo(miner, Keys.BS_MALFUNCTION_LEVEL, String.valueOf(level));
+    }
+
+    private int getMalfunctionLevel(Location miner) {
+        try {
+            return Integer.parseInt(BlockStorage.getLocationInfo(miner, Keys.BS_MALFUNCTION_LEVEL));
+        } catch (Exception ignored) {
+            BlockStorage.addBlockInfo(miner, Keys.BS_MALFUNCTION_LEVEL, "0");
+        }
+        return 0;
     }
 
     public void setDisabledCores(Location miner, List<Integer> disabledCores) {
