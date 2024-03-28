@@ -2,7 +2,6 @@ package org.metamechanists.metacoin.implementation.slimefun;
 
 import io.github.bakedlibs.dough.blocks.BlockPosition;
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -161,15 +160,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     @Override
     protected void onBlockPlace(@NotNull BlockPlaceEvent event) {
+        super.onBlockPlace(event);
+
         final Block block = event.getBlock();
         final Player player = event.getPlayer();
-        if (PersistentDataAPI.getOptionalBoolean(player, Keys.minerPlaced).orElse(false)) {
-            Language.sendMessage(player, "miner.error.placed-already");
-            event.setCancelled(true);
-            return;
-        }
-
-        super.onBlockPlace(event);
         PersistentDataAPI.setBoolean(player, Keys.minerPlaced, true);
         BlockStorage.addBlockInfo(block, Keys.BS_OWNER, player.getUniqueId().toString());
         BlockStorage.addBlockInfo(block, Keys.BS_MALFUNCTION_LEVEL, "0");
@@ -306,19 +300,16 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     @Override
     @ParametersAreNonnullByDefault
     protected void onBlockBreak(BlockBreakEvent event, ItemStack itemStack, List<ItemStack> drops) {
+        super.onBlockBreak(event, itemStack, drops);
+
         final Player player = event.getPlayer();
         final Block miner = event.getBlock();
         final Location minerLocation = miner.getLocation();
-        if (!player.getUniqueId().equals(getOwner(miner))) {
-            Language.sendMessage(player, "miner.error.no-permission");
-            return;
-        }
 
         event.setDropItems(false);
         miner.getWorld().dropItemNaturally(minerLocation, ItemStacks.metaCoinMiner(player, Upgrades.getLevels(minerLocation)));
         PersistentDataAPI.setBoolean(player, Keys.minerPlaced, false);
 
-        super.onBlockBreak(event, itemStack, drops);
         final BlockMenu menu = BlockStorage.getInventory(miner);
         if (menu != null) {
             for (ItemStack coin : MetaCoinItem.withTotalValue(ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT)))) {
@@ -409,7 +400,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         menu.setPlayerInventoryClickable(true);
     }
 
-    public UUID getOwner(Block miner) {
+    public static UUID getOwner(Block miner) {
         final String uuidString = BlockStorage.getLocationInfo(miner.getLocation(), Keys.BS_OWNER);
         if (uuidString == null) {
             return null;
