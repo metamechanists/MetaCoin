@@ -2,7 +2,12 @@ package org.metamechanists.metacoin.core;
 
 import dev.sefiraat.sefilib.slimefun.itemgroup.DummyItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import org.bukkit.inventory.ItemStack;
 import org.metamechanists.metacoin.MetaCoin;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinMiner;
@@ -28,5 +33,11 @@ public class Items {
         MetaCoinItem.COINS.put(1L, ItemStacks.META_COIN);
 
         new MetaCoinMiner(group, ItemStacks.META_COIN_MINER).register(addon);
+        new UnplaceableBlock(group, ItemStacks.MACHINE_SLAG, RecipeType.NULL, new ItemStack[0]) {
+            @Override
+            public void postRegister() {
+                setHidden(true);
+            }
+        }.register(addon);
     }
 }

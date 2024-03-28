@@ -109,8 +109,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     @Override
-    public void register(@NotNull SlimefunAddon addon) {
-        super.register(addon);
+    public void postRegister() {
         setHidden(true);
     }
 

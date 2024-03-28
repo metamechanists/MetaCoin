@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -87,8 +88,8 @@ public class ItemStacks {
             "&8⇨ &aIncreases &7the production amount",
             "&8⇨ &cDecreases &7machine reliability",
             "",
-            "&8⇨ &eCost: &7%upgrade_cost%&f\uE803",
-            "&8⇨ &eUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
+            "&8⇨ &bCost: &7%upgrade_cost%&f\uE803",
+            "&8⇨ &bUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
     );
     public static final ItemStack RELIABILITY_UPGRADE = new SlimefunItemStack(
             "_UI_MM_RELIABILITY_UPGRADE",
@@ -96,8 +97,8 @@ public class ItemStacks {
             "&dReliability Upgrade",
             "&8⇨ &aIncreases &7machine reliability",
             "",
-            "&8⇨ &eCost: &7%upgrade_cost%&f\uE803",
-            "&8⇨ &eUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
+            "&8⇨ &dCost: &7%upgrade_cost%&f\uE803",
+            "&8⇨ &dUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
     );
     // PANEL PAGE
     public static final ItemStack CORE_OFFLINE = new SlimefunItemStack(
@@ -122,22 +123,22 @@ public class ItemStacks {
             "META_COIN_MINER",
             Material.BEACON,
             ColorUtils.MM_YELLOW + "MetaCoin™ Miner™",
-            "&7The epitome of blockchain technology,",
-            "&7this state-of-the-art MetaCoin™ Miner™ harnesses",
+            "&7The epitome of " + ColorUtils.MM_YELLOW + "blockchain &7technology,",
+            "&7this " + ColorUtils.MM_YELLOW + "state-of-the-art &7encrypted " + ColorUtils.MM_YELLOW + "MetaCoin™ Miner™ &7harnesses",
             "&7the raw power of quantum computing to mine",
-            "&7MetaCoins™ from the digital ether.",
+            ColorUtils.MM_YELLOW + "MetaCoins™ &7from the digital ether.",
             "",
-            "&7With its patented Proof-of-Play™ algorithm,",
-            "&7it ensures a fair distribution of MetaCoins™",
-            "&7to all players in the MetaMechanists UniVerse™.",
+            "&7With its patented " + ColorUtils.MM_YELLOW + "Proof-of-Play™ &7algorithm,",
+            "&7it ensures a fair distribution of " + ColorUtils.MM_YELLOW + "&7MetaCoins™",
+            "&7to all players in the " + ColorUtils.MM_YELLOW + "&7MetaMechanists UniVerse™.",
             "",
-            "&7Experience the future of decentralized finance",
-            "&7with the MetaCoin™ Miner™.",
+            "&7Experience the future of " + ColorUtils.MM_YELLOW + "decentralized &7finance",
+            "&7with the " + ColorUtils.MM_YELLOW + "MetaCoin™ Miner™.",
             "",
-            "&7Owner: %player%",
-            "&7Speed Level: %speed_level%",
-            "&7Production Level: %production_level%",
-            "&7Reliability Level: %reliability_level%"
+            "&fOwner&7: %player%",
+            "&eSpeed &7Level: &e%speed_level%",
+            "&bProduction &7Level: &b%production_level%",
+            "&dReliability &7Level: &d%reliability_level%"
     );
     public static final SlimefunItemStack MACHINE_SLAG = new SlimefunItemStack(
             "MACHINE_SLAG",
@@ -147,19 +148,19 @@ public class ItemStacks {
             "&7the MetaCoin™ Miner™ has been reduced to",
             "&7a mere husk of its former glory.",
             "",
-            "&7The blockchain dream has turned into a nightmare.",
-            "&7The quantum cores have overheated, the circuits",
-            "&7have melted, and all that remains is this slag.",
+            "&7The " + ColorUtils.LAVA_ORANGE + "blockchain &7dream has turned into a " + ColorUtils.LAVA_ORANGE + "nightmare&7.",
+            "&7The quantum " + ColorUtils.LAVA_ORANGE + "cores &7have overheated, the circuits",
+            "&7have melted, and all that remains is this " + ColorUtils.LAVA_ORANGE + "slag&7.",
             "",
-            "&7And who's to blame? Look no further than the mirror.",
-            "&7Your insatiable greed for MetaCoins™ has led to this disaster.",
-            "&7But don't despair, for every end is a new beginning.",
-            "&7Who knows what the future holds?",
+            "&7And who's to " + ColorUtils.LAVA_ORANGE + "blame&7? Look no further than the " + ColorUtils.LAVA_ORANGE + "mirror&7.",
+            "&7Your insatiable greed for " + ColorUtils.LAVA_ORANGE + "MetaCoins™ &7has led to this disaster.",
+            "&7But don't despair, for every end is a new " + ColorUtils.LAVA_ORANGE + "beginning&7.",
+            "&7Who knows what the " + ColorUtils.LAVA_ORANGE + "future &7holds?",
             "",
-            "&7Owner: %player%",
-            "&7Speed Level: %speed_level%",
-            "&7Production Level: %production_level%",
-            "&7Reliability Level: %reliability_level%"
+            ColorUtils.BLAZE_ORANGE + "Owner&7: " + ColorUtils.LAVA_ORANGE + "%player%",
+            ColorUtils.LAVA_ORANGE + "Speed &7Level: " + ColorUtils.LAVA_ORANGE + "%speed_level%",
+            ColorUtils.LAVA_ORANGE + "Production &7Level: " + ColorUtils.LAVA_ORANGE + "%production_level%",
+            ColorUtils.LAVA_ORANGE + "Reliability &7Level: " + ColorUtils.LAVA_ORANGE + "%reliability_level%"
     );
     public static final SlimefunItemStack META_COIN = new SlimefunItemStack(
             "META_COIN",
@@ -222,6 +223,13 @@ public class ItemStacks {
             miner.setItemMeta(itemMeta);
         }
         return miner;
+    }
+    public static ItemStack machineSlag(Player player, int... levels) {
+        return Utils.format(new CustomItemStack(MACHINE_SLAG),
+                "player", player.getName(),
+                "speed_level", levels[0],
+                "production_level", levels[1],
+                "reliability_level", levels[2]);
     }
     // ALL PAGES
     public static ItemStack pageBack(int currentPage, int pageCount) {
