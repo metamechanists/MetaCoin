@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import me.justahuman.furnished.metalib.utils.ItemUtils;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.metamechanists.metacoin.core.ItemStacks;
@@ -15,8 +16,8 @@ import org.metamechanists.metacoin.utils.Keys;
 public class MinerCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
-    public void giveMiner(ConsoleCommandSender sender, Player player) {
-        if (PersistentDataAPI.hasBoolean(player, Keys.receivedMiner)) {
+    public void giveMiner(CommandSender sender, Player player) {
+        if (sender instanceof Player || PersistentDataAPI.hasBoolean(player, Keys.receivedMiner)) {
              return;
         }
 
