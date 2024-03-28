@@ -5,7 +5,9 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.ColorUtils;
@@ -118,9 +120,46 @@ public class ItemStacks {
     // SLIMEFUN ITEMS
     public static final SlimefunItemStack META_COIN_MINER = new SlimefunItemStack(
             "META_COIN_MINER",
-            Material.BLAST_FURNACE,
+            Material.BEACON,
             ColorUtils.MM_YELLOW + "MetaCoin™ Miner™",
-            "&7>tba<"
+            "&7The epitome of blockchain technology,",
+            "&7this state-of-the-art MetaCoin™ Miner™ harnesses",
+            "&7the raw power of quantum computing to mine",
+            "&7MetaCoins™ from the digital ether.",
+            "",
+            "&7With its patented Proof-of-Play™ algorithm,",
+            "&7it ensures a fair distribution of MetaCoins™",
+            "&7to all players in the MetaMechanists UniVerse™.",
+            "",
+            "&7Experience the future of decentralized finance",
+            "&7with the MetaCoin™ Miner™.",
+            "",
+            "&7Owner: %player%",
+            "&7Speed Level: %speed_level%",
+            "&7Production Level: %production_level%",
+            "&7Reliability Level: %reliability_level%"
+    );
+    public static final SlimefunItemStack MACHINE_SLAG = new SlimefunItemStack(
+            "MACHINE_SLAG",
+            Material.MAGMA_BLOCK,
+            ColorUtils.LAVA_ORANGE + "Machine Slag™",
+            "&7Once a beacon of hope and prosperity,",
+            "&7the MetaCoin™ Miner™ has been reduced to",
+            "&7a mere husk of its former glory.",
+            "",
+            "&7The blockchain dream has turned into a nightmare.",
+            "&7The quantum cores have overheated, the circuits",
+            "&7have melted, and all that remains is this slag.",
+            "",
+            "&7And who's to blame? Look no further than the mirror.",
+            "&7Your insatiable greed for MetaCoins™ has led to this disaster.",
+            "&7But don't despair, for every end is a new beginning.",
+            "&7Who knows what the future holds?",
+            "",
+            "&7Owner: %player%",
+            "&7Speed Level: %speed_level%",
+            "&7Production Level: %production_level%",
+            "&7Reliability Level: %reliability_level%"
     );
     public static final SlimefunItemStack META_COIN = new SlimefunItemStack(
             "META_COIN",
@@ -164,6 +203,26 @@ public class ItemStacks {
     );
 
     // FORMAT METHODS
+    // COMMANDS
+    public static ItemStack metaCoinMiner(Player player) {
+        return metaCoinMiner(player, 1, 1, 1);
+    }
+    public static ItemStack metaCoinMiner(Player player, int... levels) {
+        final ItemStack miner = Utils.format(new CustomItemStack(META_COIN_MINER),
+                "player", player.getName(),
+                "speed_level", levels[0],
+                "production_level", levels[1],
+                "reliability_level", levels[2]);
+        final ItemMeta itemMeta = miner.getItemMeta();
+        if (itemMeta != null) {
+            PersistentDataAPI.setString(itemMeta, Keys.owner, player.getUniqueId().toString());
+            PersistentDataAPI.setInt(itemMeta, Keys.speedLevel, levels[0]);
+            PersistentDataAPI.setInt(itemMeta, Keys.productionLevel, levels[1]);
+            PersistentDataAPI.setInt(itemMeta, Keys.reliabilityLevel, levels[2]);
+            miner.setItemMeta(itemMeta);
+        }
+        return miner;
+    }
     // ALL PAGES
     public static ItemStack pageBack(int currentPage, int pageCount) {
         return Utils.format(currentPage > 1

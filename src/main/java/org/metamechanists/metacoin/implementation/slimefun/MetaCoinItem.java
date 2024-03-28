@@ -1,4 +1,4 @@
-package org.metamechanists.metacoin.implementation;
+package org.metamechanists.metacoin.implementation.slimefun;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;

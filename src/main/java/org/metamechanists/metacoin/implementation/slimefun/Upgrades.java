@@ -1,4 +1,4 @@
-package org.metamechanists.metacoin.implementation;
+package org.metamechanists.metacoin.implementation.slimefun;
 
 import lombok.Getter;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;

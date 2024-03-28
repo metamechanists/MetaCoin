@@ -7,9 +7,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class Utils {
+    private static final Date LAST_DAY_OF_EVENT = new Date(1714539600000L);
+
+    public static boolean isPastEvent() {
+        return new Date().after(LAST_DAY_OF_EVENT);
+    }
 
     public static void drawBackground(ChestMenu menu, ItemStack itemStack, int... slots) {
         drawBackground(menu, itemStack, ChestMenuUtils.getEmptyClickHandler(), slots);

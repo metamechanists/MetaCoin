@@ -9,6 +9,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
 import org.metamechanists.metacoin.core.Items;
+import org.metamechanists.metacoin.implementation.commands.CompressCommand;
+import org.metamechanists.metacoin.implementation.commands.MinerCommand;
 import org.metamechanists.metacoin.utils.Language;
 
 import javax.annotation.Nonnull;
@@ -42,7 +44,8 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         final PaperCommandManager manager = new PaperCommandManager(this);
         final CommandCompletions<BukkitCommandCompletionContext> completions = manager.getCommandCompletions();
         manager.enableUnstableAPI("help");
-        // Register any commands here!
+        manager.registerCommand(new MinerCommand());
+        manager.registerCommand(new CompressCommand());
     }
 
     @Override

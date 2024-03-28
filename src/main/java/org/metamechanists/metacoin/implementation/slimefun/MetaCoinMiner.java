@@ -1,6 +1,7 @@
-package org.metamechanists.metacoin.implementation;
+package org.metamechanists.metacoin.implementation.slimefun;
 
 import io.github.bakedlibs.dough.blocks.BlockPosition;
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -161,8 +162,14 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     @Override
     protected void onBlockPlace(@NotNull BlockPlaceEvent event) {
+        final Player player = event.getPlayer();
+        if (PersistentDataAPI.getOptionalBoolean(player, Keys.minerPlaced).orElse(false)) {
+            Language.sendMessage(player, "miner.placed-already");
+            return;
+        }
+
         super.onBlockPlace(event);
-        BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, event.getPlayer().getUniqueId().toString());
+        BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, player.getUniqueId().toString());
         BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_MALFUNCTION_LEVEL, "0");
     }
 
@@ -198,6 +205,12 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void tick(Location minerLocation, BlockPosition minerPosition, int[] levels) {
+        if (Utils.isPastEvent()) {
+            setDisabledCores(minerLocation, new ArrayList<>(ALL_CORES));
+            malfunctionTick(minerLocation);
+            return;
+        }
+
         final List<Integer> disabledCores = getDisabledCores(minerLocation);
         final boolean malfunctioning = !disabledCores.isEmpty();
         boolean productionMalfunction = malfunctioning && Utils.containsAny(disabledCores, PRODUCTION_CORES);
@@ -263,7 +276,12 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         event.setUseBlock(Event.Result.DENY);
         if (!player.getUniqueId().equals(getOwner(miner))) {
-            Language.sendMessage(player, "miner.menu.no-permission");
+            Language.sendMessage(player, "miner.error.no-permission");
+            return;
+        }
+
+        if (Utils.isPastEvent()) {
+            // TODO: add machine slag stuff
             return;
         }
 
@@ -285,10 +303,23 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     @Override
     @ParametersAreNonnullByDefault
     protected void onBlockBreak(BlockBreakEvent event, ItemStack itemStack, List<ItemStack> drops) {
+        final Player player = event.getPlayer();
+        final Block miner = event.getBlock();
+        final Location minerLocation = miner.getLocation();
+        if (!player.getUniqueId().equals(getOwner(miner))) {
+            Language.sendMessage(player, "miner.error.no-permission");
+            return;
+        }
+
+        event.setDropItems(false);
+        miner.getWorld().dropItemNaturally(minerLocation, ItemStacks.metaCoinMiner(player, Upgrades.getLevels(minerLocation)));
+
         super.onBlockBreak(event, itemStack, drops);
-        final BlockMenu menu = BlockStorage.getInventory(event.getBlock());
+        final BlockMenu menu = BlockStorage.getInventory(miner);
         if (menu != null) {
-            menu.dropItems(event.getBlock().getLocation(), MINER_OUTPUT);
+            for (ItemStack coin : MetaCoinItem.withTotalValue(ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT)))) {
+                miner.getWorld().dropItemNaturally(minerLocation, coin);
+            }
         }
     }
 

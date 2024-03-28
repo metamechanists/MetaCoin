@@ -1,5 +1,7 @@
+miner.error.no-permission: "&cThis isn't your miner!"
+miner.error.placed-already: "&cYou have already placed a miner!"
+
 miner.menu.drill.title: "&fMeta Miner - Drill"
-miner.menu.no-permission: "&cThis isn't your miner!"
 
 miner.upgrade.max-level: "&cThat upgrade is already max level!"
 miner.upgrade.too-expensive: "&cYou don't have enough coins! (%,d/%,d)"

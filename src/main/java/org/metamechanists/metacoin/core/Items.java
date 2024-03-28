@@ -4,8 +4,8 @@ import dev.sefiraat.sefilib.slimefun.itemgroup.DummyItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.metamechanists.metacoin.MetaCoin;
-import org.metamechanists.metacoin.implementation.MetaCoinItem;
-import org.metamechanists.metacoin.implementation.MetaCoinMiner;
+import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
+import org.metamechanists.metacoin.implementation.slimefun.MetaCoinMiner;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metalib.utils.ColorUtils;
 
