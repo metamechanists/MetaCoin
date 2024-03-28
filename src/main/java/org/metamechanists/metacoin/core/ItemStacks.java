@@ -135,7 +135,7 @@ public class ItemStacks {
             "&7Experience the future of " + ColorUtils.MM_YELLOW + "decentralized &7finance",
             "&7with the " + ColorUtils.MM_YELLOW + "MetaCoin™ Miner™.",
             "",
-            "&7Owner: %player%",
+            "&7Owner: " + ColorUtils.MM_YELLOW + "%player%",
             "&7Speed Level: " + ColorUtils.MM_YELLOW + "%speed_level%",
             "&7Production Level: " + ColorUtils.MM_YELLOW + "%production_level%",
             "&7Reliability Level: " + ColorUtils.MM_YELLOW + "%reliability_level%"
