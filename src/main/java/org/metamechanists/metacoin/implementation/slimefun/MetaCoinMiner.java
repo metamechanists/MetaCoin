@@ -169,6 +169,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
 
         super.onBlockPlace(event);
+        PersistentDataAPI.setBoolean(player, Keys.minerPlaced, true);
         BlockStorage.addBlockInfo(block, Keys.BS_OWNER, player.getUniqueId().toString());
         BlockStorage.addBlockInfo(block, Keys.BS_MALFUNCTION_LEVEL, "0");
         Upgrades.setLevels(block.getLocation(), event.getItemInHand());
@@ -314,6 +315,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         event.setDropItems(false);
         miner.getWorld().dropItemNaturally(minerLocation, ItemStacks.metaCoinMiner(player, Upgrades.getLevels(minerLocation)));
+        PersistentDataAPI.setBoolean(player, Keys.minerPlaced, false);
 
         super.onBlockBreak(event, itemStack, drops);
         final BlockMenu menu = BlockStorage.getInventory(miner);
