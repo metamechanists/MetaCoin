@@ -1,8 +1,12 @@
 package org.metamechanists.metacoin.core;
 
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.ColorUtils;
 
@@ -175,6 +179,26 @@ public class ItemStacks {
                         : PAGE_FORWARD_DISABLED,
                 "current_page", currentPage,
                 "page_count", pageCount
+        );
+    }
+    // MINER PAGE
+    public static long getCoinValue(ItemStack itemStack) {
+        if (itemStack.getItemMeta() != null && PersistentDataAPI.hasLong(itemStack.getItemMeta(), Keys.coinValue)) {
+            return PersistentDataAPI.getLong(itemStack.getItemMeta(), Keys.coinValue);
+        }
+        return 0;
+    }
+    public static ItemStack coinDisplay(ItemStack previousStack, long value) {
+        return coinDisplay(getCoinValue(previousStack) + value);
+    }
+    public static ItemStack coinDisplay(long value) {
+        return new CustomItemStack(
+                META_COIN,
+                meta -> {
+                    meta.setDisplayName(ChatColors.color("&7Coins ready to Collect: %s%,d&f\uE803".formatted(ColorUtils.MM_YELLOW, value)));
+                    meta.setLore(null);
+                    PersistentDataAPI.setLong(meta, Keys.coinValue, value);
+                }
         );
     }
     // UPGRADES PAGE

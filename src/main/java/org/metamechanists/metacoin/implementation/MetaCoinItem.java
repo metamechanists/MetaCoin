@@ -1,6 +1,5 @@
 package org.metamechanists.metacoin.implementation;
 
-import com.google.common.collect.Lists;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -14,7 +13,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,20 +34,27 @@ public class MetaCoinItem extends SlimefunItem {
         setHidden(true);
     }
 
-    public static int getValueFromProductionLevel(int productionLevel) {
+    public static long valueOf(ItemStack itemStack) {
+        if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem item) {
+            return item.value * itemStack.getAmount();
+        }
+        return 0;
+    }
+
+    public static long valueFromProductionLevel(int productionLevel) {
         if (productionLevel < 65) {
             return productionLevel;
         }
 
         if (productionLevel < 129) {
-            return 64 * (productionLevel - 63);
+            return 64L * (productionLevel - 63);
         }
 
-        return 64 * 64 * (productionLevel - 127);
+        return 64L * 64 * (productionLevel - 127);
     }
 
     public static ItemStack fromProductionLevel(int productionLevel) {
-        return withValue(getValueFromProductionLevel(productionLevel));
+        return withValue(valueFromProductionLevel(productionLevel));
     }
 
     public static ItemStack withValue(long value) {
@@ -64,6 +69,19 @@ public class MetaCoinItem extends SlimefunItem {
         result.setItemMeta(meta);
         return result;
     }
+    public static ItemStack[] withTotalValue(long totalValue) {
+        final List<ItemStack> coins = new ArrayList<>();
+        while (totalValue > 0) {
+            final ItemStack nextStack = withValue(totalValue);
+            if (nextStack.isEmpty()) {
+                break;
+            }
+
+            coins.add(nextStack);
+            totalValue -= valueOf(nextStack);
+        }
+        return coins.toArray(ItemStack[]::new);
+    }
     public static Optional<Long> getClosestValue(long targetValue) {
         for (long value : COINS.keySet()) {
             if (value <= targetValue) {
@@ -76,9 +94,7 @@ public class MetaCoinItem extends SlimefunItem {
     public static long getTotalCoinValue(Player player) {
         long totalValue = 0;
         for (ItemStack itemStack : player.getInventory().getContents()) {
-            if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem metaCoinItem) {
-                totalValue += metaCoinItem.value * itemStack.getAmount();
-            }
+            totalValue += valueOf(itemStack);
         }
         return totalValue;
     }
@@ -87,7 +103,7 @@ public class MetaCoinItem extends SlimefunItem {
         final List<ItemStack> coins = new ArrayList<>();
         for (long value : COINS.keySet()) {
             for (ItemStack itemStack : player.getInventory().getContents()) {
-                if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem coin && coin.value == value) {
+                if (valueOf(itemStack) == value) {
                     coins.add(itemStack);
                 }
             }
@@ -98,13 +114,14 @@ public class MetaCoinItem extends SlimefunItem {
     public static long getRemovableCoinValue(Player player, long coins) {
         long removableCoins = 0;
         for (ItemStack itemStack : getWeightedCoins(player)) {
-            if (!(SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem metaCoinItem) || metaCoinItem.value > coins) {
+            final long value = valueOf(itemStack);
+            if (value <= 0 || value > coins) {
                 continue;
             }
 
-            final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / metaCoinItem.value));
-            coins -= countToRemove * metaCoinItem.value;
-            removableCoins += countToRemove * metaCoinItem.value;
+            final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / value));
+            coins -= countToRemove * value;
+            removableCoins += countToRemove * value;
 
             if (coins <= 0) {
                 break;

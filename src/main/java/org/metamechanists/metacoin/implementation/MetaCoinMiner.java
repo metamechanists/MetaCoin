@@ -9,13 +9,8 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import lombok.Getter;
 import me.justahuman.furnished.displaymodellib.builders.BlockDisplayBuilder;
 import me.justahuman.furnished.displaymodellib.models.ModelBuilder;
-import me.justahuman.furnished.displaymodellib.models.components.ModelComponent;
-import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
-import me.justahuman.furnished.displaymodellib.models.components.ModelDiamond;
-import me.justahuman.furnished.displaymodellib.models.components.ModelItem;
 import me.justahuman.furnished.implementation.furniture.absraction.DisplayModelBlock;
 import me.justahuman.furnished.implementation.furniture.interfaces.Sittable;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
@@ -32,7 +27,6 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
-import org.bukkit.entity.Display.Billboard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -41,9 +35,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.metacoin.core.ItemStacks;
+import org.metamechanists.metacoin.core.Models;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
 import org.metamechanists.metacoin.utils.Utils;
+import org.metamechanists.metalib.utils.ItemUtils;
 import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -58,9 +54,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
-
-import static org.metamechanists.metacoin.core.ItemStacks.META_COIN;
-
 
 @SuppressWarnings("deprecation")
 public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
@@ -128,7 +121,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
                 drawBackground(MINER_BACKGROUND);
                 drawBackground(ItemStacks.MINER_PROGRESS_FALSE, MINER_PROGRESS);
-                addItem(MINER_OUTPUT, new ItemStack(Material.AIR), (o1, o2, o3, o4) -> true);
+                addItem(MINER_OUTPUT, ItemStacks.coinDisplay(0), (o1, o2, o3, o4) -> false);
             }
 
             @Override
@@ -151,7 +144,13 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                     updateMenu(menu, new BlockPosition(miner));
                 });
 
-                menu.addMenuClickHandler(PAGE_FORWARD, (player, ignored1, ignored2, ignored3) -> {
+                menu.addMenuClickHandler(MINER_OUTPUT, (player, o2, o3, o4) -> {
+                    ItemUtils.addOrDropItem(player, MetaCoinItem.withTotalValue(ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT))));
+                    menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(0));
+                    return false;
+                });
+
+                menu.addMenuClickHandler(PAGE_FORWARD, (player, o2, o3, o4) -> {
                     BlockStorage.addBlockInfo(miner, Keys.BS_LAST_MENU, "UPGRADES");
                     openUpgrades(player, menu, minerLocation);
                     return false;
@@ -165,19 +164,6 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         super.onBlockPlace(event);
         BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, event.getPlayer().getUniqueId().toString());
         BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_MALFUNCTION_LEVEL, "0");
-    }
-
-    public void malfunctionModel(Location miner, int malfunctionLevel) {
-        final ModelBuilder malfunctionModel = getDisplayModel();
-        for (ModelComponent component : malfunctionModel.getComponents().values()) {
-            if (component instanceof ModelCuboid cuboid) {
-                cuboid.brightness(15 - malfunctionLevel);
-                cuboid.getRotation().mul(malfunctionLevel * 0.2);
-                cuboid.getLocation().mul(malfunctionLevel * 0.2F);
-                cuboid.getSize().mul(malfunctionLevel * 0.2F);
-            }
-        }
-        updateDisplayModel(miner.getBlock(), getDisplayGroup(miner), malfunctionModel);
     }
 
     public void malfunction(Location miner, int[] levels) {
@@ -227,7 +213,6 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             if (malfunctionLevel > 0) {
                 malfunctionLevel--;
                 setMalfunctionLevel(minerLocation, malfunctionLevel);
-                malfunctionModel(minerLocation, malfunctionLevel);
             }
             MALFUNCTIONING.remove(minerPosition);
         }
@@ -246,16 +231,13 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         PROGRESS.put(minerPosition, 0);
         updateMenu(menu, minerPosition);
-        menu.pushItem(productionMalfunction ? MetaCoinItem.withValue(1) : MetaCoinItem.fromProductionLevel(levels[1]), MINER_OUTPUT);
+        menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(menu.getItemInSlot(MINER_OUTPUT), (productionMalfunction ? 1 : MetaCoinItem.valueFromProductionLevel(levels[1]))));
     }
 
     public void malfunctionTick(Location miner) {
         ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(1, 3));
         ParticleUtils.randomParticle(miner.toCenterLocation(), Particle.LAVA, 0.5, RandomUtils.randomInteger(1, 3));
-        Slimefun.runSync(() -> {
-            miner.getWorld().playSound(miner.toCenterLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F));
-            malfunctionModel(miner, Math.min(getMalfunctionLevel(miner) + 1, 10));
-        });
+        Slimefun.runSync(() -> miner.getWorld().playSound(miner.toCenterLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F)));
     }
 
     public void updateMenu(BlockMenu menu, BlockPosition miner) {
@@ -464,339 +446,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     @Override
     public ModelBuilder getDisplayModel() {
-        return new ModelBuilder()
-                .add("base", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.GLASS)
-                        .size(1.2F)
-                        .location(0, 0, 0))
-
-                .add("base-pillar-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(1.5F, 0.5F, 0.0F)
-                        .rotation(0))
-                .add("base-pillar-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(1.06F, 0.5F, 1.06F)
-                        .rotation(Math.PI / 4))
-                .add("base-pillar-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(0.0F, 0.5F, 1.5F)
-                        .rotation(0))
-                .add("base-pillar-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(-1.06F, 0.5F, 1.06F)
-                        .rotation(Math.PI / 4))
-                .add("base-pillar-5", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(-1.5F, 0.5F, 0.0F)
-                        .rotation(0))
-                .add("base-pillar-6", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(1.06F, 0.5F, -1.06F)
-                        .rotation(Math.PI / 4))
-                .add("base-pillar-7", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(0.0F, 0.5F, -1.5F)
-                        .rotation(0))
-                .add("base-pillar-8", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.0F, 0.35F)
-                        .location(-1.06F, 0.5F, -1.06F)
-                        .rotation(Math.PI / 4))
-
-                .add("bottom-plate-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.4F)
-                        .location(0, 2.0F, 0)
-                        .rotation(0))
-                .add("bottom-plate-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.34F)
-                        .location(0, 2.0F, 0)
-                        .rotation(Math.PI / 4))
-                .add("bottom-plate-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.4F)
-                        .location(0, 2.0F, 0)
-                        .rotation(Math.PI / 2))
-                .add("bottom-plate-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.4F)
-                        .location(0, 2.0F, 0)
-                        .rotation(Math.PI * 3 / 4))
-
-                .add("bottom-plate-outside-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 2.0F, 0)
-                        .rotation(0))
-                .add("bottom-plate-outside-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 2.0F, 0)
-                        .rotation(Math.PI / 4))
-                .add("bottom-plate-outside-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 2.0F, 0)
-                        .rotation(Math.PI / 2))
-                .add("bottom-plate-outside-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 2.0F, 0)
-                        .rotation(Math.PI * 3 / 4))
-
-                .add("bottom-slanted-pillar-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.9F, 3.5F, 0.0F)
-                        .rotation(0, 0, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.64F, 3.5F, -0.64F)
-                        .rotation(0, Math.PI / 4, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.0F, 3.5F, -0.9F)
-                        .rotation(0, Math.PI / 2, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(-0.64F, 3.5F, -0.64F)
-                        .rotation(0, Math.PI * 3 / 4, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-5", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(-0.9F, 3.5F, 0.0F)
-                        .rotation(0, Math.PI, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-6", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(-0.64F, 3.5F, 0.64F)
-                        .rotation(0, Math.PI * 5 / 4, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-7", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0, 3.5F, 0.9F)
-                        .rotation(0, Math.PI * 3 / 2, Math.PI * 1 / 6))
-                .add("bottom-slanted-pillar-8", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.64F, 3.5F, 0.64F)
-                        .rotation(0, Math.PI * 7/ 4, Math.PI * 1 / 6))
-
-                .add("bottom-shroomlight", new ModelDiamond()
-                        .brightness(15)
-                        .material(Material.SHROOMLIGHT)
-                        .size(2.0F)
-                        .location(0.0F, 2.0F, 0.0F))
-
-                .add("bottom-laser", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.RED_CONCRETE)
-                        .size(0.1F, 2.5F, 0.1F)
-                        .location(0, 4.0F, 0))
-
-                .add("metacoin", new ModelItem()
-                        .brightness(15)
-                        .item(META_COIN)
-                        .billboard(Billboard.VERTICAL)
-                        .size(2.0F)
-                        .location(0, 6.0F, 0))
-
-                .add("top-laser", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.RED_CONCRETE)
-                        .size(0.1F, 2.5F, 0.1F)
-                        .location(0, 8.0F, 0))
-
-                .add("top-shroomlight", new ModelDiamond()
-                        .brightness(15)
-                        .material(Material.SHROOMLIGHT)
-                        .size(2.0F)
-                        .location(0.0F, 10.0F, 0.0F))
-
-                .add("top-slanted-pillar-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.9F, 8.5F, 0.0F)
-                        .rotation(0, 0, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.64F, 8.5F, -0.64F)
-                        .rotation(0, Math.PI / 4, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.0F, 8.5F, -0.9F)
-                        .rotation(0, Math.PI / 2, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(-0.64F, 8.5F, -0.64F)
-                        .rotation(0, Math.PI * 3 / 4, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-5", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(-0.9F, 8.5F, 0.0F)
-                        .rotation(0, Math.PI, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-6", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(-0.64F, 8.5F, 0.64F)
-                        .rotation(0, Math.PI * 5 / 4, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-7", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0, 8.5F, 0.9F)
-                        .rotation(0, Math.PI * 3 / 2, -Math.PI * 1 / 6))
-                .add("top-slanted-pillar-8", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 2.5F, 0.35F)
-                        .location(0.64F, 8.5F, 0.64F)
-                        .rotation(0, Math.PI * 7/ 4, -Math.PI * 1 / 6))
-
-                .add("top-plate-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.4F)
-                        .location(0, 10.0F, 0)
-                        .rotation(0))
-                .add("top-plate-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.34F)
-                        .location(0, 10.0F, 0)
-                        .rotation(Math.PI / 4))
-                .add("top-plate-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.4F)
-                        .location(0, 10.0F, 0)
-                        .rotation(Math.PI / 2))
-                .add("top-plate-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(3.4F, 1.0F, 1.4F)
-                        .location(0, 10.0F, 0)
-                        .rotation(Math.PI * 3 / 4))
-
-                .add("top-plate-outside-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 10.0F, 0)
-                        .rotation(0))
-                .add("top-plate-outside-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 10.0F, 0)
-                        .rotation(Math.PI / 4))
-                .add("top-plate-outside-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 10.0F, 0)
-                        .rotation(Math.PI / 2))
-                .add("top-plate-outside-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.BLUE_CONCRETE)
-                        .size(3.5F, 0.7F, 1.1F)
-                        .location(0, 10.0F, 0)
-                        .rotation(Math.PI * 3 / 4))
-
-                .add("top-spike-pillar-1", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(0.9F, 12.7F, 0.0F)
-                        .rotation(0, 0, Math.PI * 1 / 12))
-                .add("top-spike-pillar-2", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(0.64F, 12.7F, -0.64F)
-                        .rotation(0, Math.PI / 4, Math.PI * 1 / 12))
-                .add("top-spike-pillar-3", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(0.0F, 12.7F, -0.9F)
-                        .rotation(0, Math.PI / 2, Math.PI * 1 / 12))
-                .add("top-spike-pillar-4", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(-0.64F, 12.7F, -0.64F)
-                        .rotation(0, Math.PI * 3 / 4, Math.PI * 1 / 12))
-                .add("top-spike-pillar-5", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(-0.9F, 12.7F, 0.0F)
-                        .rotation(0, Math.PI, Math.PI * 1 / 12))
-                .add("top-spike-pillar-6", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(-0.64F, 12.7F, 0.64F)
-                        .rotation(0, Math.PI * 5 / 4, Math.PI * 1 / 12))
-                .add("top-spike-pillar-7", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(0, 12.7F, 0.9F)
-                        .rotation(0, Math.PI * 3 / 2, Math.PI * 1 / 12))
-                .add("top-spike-pillar-8", new ModelCuboid()
-                        .brightness(15)
-                        .material(Material.WHITE_CONCRETE)
-                        .size(0.35F, 5.0F, 0.35F)
-                        .location(0.64F, 12.7F, 0.64F)
-                        .rotation(0, Math.PI * 7/ 4, Math.PI * 1 / 12));
+        return Models.META_COIN_MINER();
     }
 
     @Override
@@ -804,92 +454,5 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         return new BlockDisplayBuilder()
                 .material(Material.AIR)
                 .build(block.getLocation().add(this.getBuildOffset()).add(0.0, 0.3, 0.0));
-    }
-
-    @Getter
-    public enum Upgrades {
-        SPEED(64),
-        PRODUCTION(192) {
-            @Override
-            public long getCost(int currentLevel) {
-                if (currentLevel < 65) {
-                    return (long) Math.ceil(Math.pow(2, 0.2 * currentLevel) - 1 / (double) currentLevel);
-                }
-
-                if (currentLevel < 129) {
-                    return (long) Math.ceil(Math.pow(64, 1 + (1.5 * currentLevel) / 64));
-                }
-
-                return (long) Math.ceil(Math.pow(64 * 64, currentLevel / 60D));
-            }
-        },
-        RELIABILITY(256);
-
-        private final int maxLevel;
-
-        Upgrades(int maxLevel) {
-            this.maxLevel = maxLevel;
-        }
-
-        public ItemStack getDisplay(Location miner) {
-            return switch (this) {
-                case SPEED -> ItemStacks.speedUpgrade(getCost(miner), getLevel(miner), getMaxLevel());
-                case PRODUCTION -> ItemStacks.productionUpgrade(getCost(miner), getLevel(miner), getMaxLevel());
-                case RELIABILITY -> ItemStacks.reliabilityUpgrade(getCost(miner), getLevel(miner), getMaxLevel());
-            };
-        }
-
-        public ChestMenu.MenuClickHandler getClickHandler(ChestMenu menu, Location miner) {
-            return (player, i, o2, o3) -> {
-                final int level = getLevel(miner);
-                if (level >= getMaxLevel()) {
-                    Language.sendMessage(player, "miner.upgrade.max-level");
-                    return false;
-                }
-
-                final long cost = getCost(miner);
-                final long playerValue = MetaCoinItem.getTotalCoinValue(player);
-                if (playerValue < cost) {
-                    Language.sendFormatted(player, "miner.upgrade.too-expensive", playerValue, cost);
-                    return false;
-                }
-
-                final long removableValue = MetaCoinItem.getRemovableCoinValue(player, cost);
-                if (removableValue < cost) {
-                    Language.sendFormatted(player, "miner.upgrade.cant-remove", removableValue, cost);
-                    return false;
-                }
-
-                MetaCoinItem.removeCoins(player, cost);
-                setLevel(miner, level + 1);
-                menu.replaceExistingItem(i, getDisplay(miner));
-                return false;
-            };
-        }
-
-        public long getCost(Location miner) {
-            return getCost(getLevel(miner));
-        }
-
-        public long getCost(int currentLevel) {
-            return currentLevel;
-        }
-
-        public int getLevel(Location miner) {
-            try {
-                return Integer.parseInt(BlockStorage.getLocationInfo(miner, name()));
-            } catch (Exception ignored) {
-                BlockStorage.addBlockInfo(miner, name(), "1");
-                return 1;
-            }
-        }
-
-        public void setLevel(Location miner, int level) {
-            BlockStorage.addBlockInfo(miner, name(), String.valueOf(level));
-        }
-
-        public static int[] getLevels(Location miner) {
-            return new int[] { SPEED.getLevel(miner), PRODUCTION.getLevel(miner), RELIABILITY.getLevel(miner) };
-        }
     }
 }
