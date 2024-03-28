@@ -164,7 +164,8 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         final Block block = event.getBlock();
         final Player player = event.getPlayer();
         if (PersistentDataAPI.getOptionalBoolean(player, Keys.minerPlaced).orElse(false)) {
-            Language.sendMessage(player, "miner.placed-already");
+            Language.sendMessage(player, "miner.error.placed-already");
+            event.setCancelled(true);
             return;
         }
 
