@@ -1,11 +1,14 @@
 package org.metamechanists.metacoin.implementation.slimefun;
 
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import lombok.Getter;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.metamechanists.metacoin.core.ItemStacks;
+import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
 
 @Getter
@@ -88,6 +91,17 @@ public enum Upgrades {
 
     public void setLevel(Location miner, int level) {
         BlockStorage.addBlockInfo(miner, name(), String.valueOf(level));
+    }
+
+    public static void setLevels(Location miner, ItemStack itemStack) {
+        final ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) {
+            return;
+        }
+
+        BlockStorage.addBlockInfo(miner, "SPEED", String.valueOf(PersistentDataAPI.getInt(itemMeta, Keys.speedLevel)));
+        BlockStorage.addBlockInfo(miner, "PRODUCTION", String.valueOf(PersistentDataAPI.getInt(itemMeta, Keys.productionLevel)));
+        BlockStorage.addBlockInfo(miner, "RELIABILITY", String.valueOf(PersistentDataAPI.getInt(itemMeta, Keys.reliabilityLevel)));
     }
 
     public static int[] getLevels(Location miner) {

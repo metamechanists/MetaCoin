@@ -162,6 +162,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
     @Override
     protected void onBlockPlace(@NotNull BlockPlaceEvent event) {
+        final Block block = event.getBlock();
         final Player player = event.getPlayer();
         if (PersistentDataAPI.getOptionalBoolean(player, Keys.minerPlaced).orElse(false)) {
             Language.sendMessage(player, "miner.placed-already");
@@ -169,8 +170,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
 
         super.onBlockPlace(event);
-        BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_OWNER, player.getUniqueId().toString());
-        BlockStorage.addBlockInfo(event.getBlock(), Keys.BS_MALFUNCTION_LEVEL, "0");
+        BlockStorage.addBlockInfo(block, Keys.BS_OWNER, player.getUniqueId().toString());
+        BlockStorage.addBlockInfo(block, Keys.BS_MALFUNCTION_LEVEL, "0");
+        Upgrades.setLevels(block.getLocation(), event.getItemInHand());
     }
 
     public void malfunction(Location miner, int[] levels) {
