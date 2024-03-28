@@ -35,6 +35,10 @@ public class MetaCoinItem extends SlimefunItem {
     }
 
     public static long valueOf(ItemStack itemStack) {
+        return valueOf(itemStack, true);
+    }
+
+    public static long valueOf(ItemStack itemStack, boolean includeAmount) {
         if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem item) {
             return item.value * itemStack.getAmount();
         }
@@ -103,7 +107,7 @@ public class MetaCoinItem extends SlimefunItem {
         final List<ItemStack> coins = new ArrayList<>();
         for (long value : COINS.keySet()) {
             for (ItemStack itemStack : player.getInventory().getContents()) {
-                if (valueOf(itemStack) == value) {
+                if (valueOf(itemStack, false) == value) {
                     coins.add(itemStack);
                 }
             }

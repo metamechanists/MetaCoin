@@ -18,7 +18,7 @@ public class CompressCommand extends BaseCommand {
         if (sender instanceof Player) {
             return;
         }
-        
+
         final long value = MetaCoinItem.getTotalCoinValue(player);
         MetaCoinItem.removeCoins(player, value);
         ItemUtils.addOrDropItem(player, MetaCoinItem.withTotalValue(value));
