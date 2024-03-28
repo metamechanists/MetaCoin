@@ -40,7 +40,7 @@ public class MetaCoinItem extends SlimefunItem {
 
     public static long valueOf(ItemStack itemStack, boolean includeAmount) {
         if (SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem item) {
-            return item.value * itemStack.getAmount();
+            return item.value * (includeAmount ? itemStack.getAmount() : 1);
         }
         return 0;
     }
@@ -55,10 +55,6 @@ public class MetaCoinItem extends SlimefunItem {
         }
 
         return 64L * 64 * (productionLevel - 127);
-    }
-
-    public static ItemStack fromProductionLevel(int productionLevel) {
-        return withValue(valueFromProductionLevel(productionLevel));
     }
 
     public static ItemStack withValue(long value) {
@@ -118,7 +114,7 @@ public class MetaCoinItem extends SlimefunItem {
     public static long getRemovableCoinValue(Player player, long coins) {
         long removableCoins = 0;
         for (ItemStack itemStack : getWeightedCoins(player)) {
-            final long value = valueOf(itemStack);
+            final long value = valueOf(itemStack, false);
             if (value <= 0 || value > coins) {
                 continue;
             }
@@ -136,13 +132,14 @@ public class MetaCoinItem extends SlimefunItem {
 
     public static void removeCoins(Player player, long coins) {
         for (ItemStack itemStack : getWeightedCoins(player)) {
-            if (!(SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem metaCoinItem) || metaCoinItem.value > coins) {
+            final long value = valueOf(itemStack, false);
+            if (value <= 0 || value > coins) {
                 continue;
             }
 
-            final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / metaCoinItem.value));
+            final int countToRemove = Math.min(itemStack.getAmount(), (int) (coins / value));
             itemStack.subtract(countToRemove);
-            coins -= countToRemove * metaCoinItem.value;
+            coins -= countToRemove * value;
 
             if (coins <= 0) {
                 break;
