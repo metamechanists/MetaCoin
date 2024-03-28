@@ -135,10 +135,10 @@ public class ItemStacks {
             "&7Experience the future of " + ColorUtils.MM_YELLOW + "decentralized &7finance",
             "&7with the " + ColorUtils.MM_YELLOW + "MetaCoin™ Miner™.",
             "",
-            "&fOwner&7: %player%",
-            "&eSpeed &7Level: &e%speed_level%",
-            "&bProduction &7Level: &b%production_level%",
-            "&dReliability &7Level: &d%reliability_level%"
+            "&7Owner: %player%",
+            "&7Speed Level: " + ColorUtils.MM_YELLOW + "%speed_level%",
+            "&7Production Level: " + ColorUtils.MM_YELLOW + "%production_level%",
+            "&7Reliability Level: " + ColorUtils.MM_YELLOW + "%reliability_level%"
     );
     public static final SlimefunItemStack MACHINE_SLAG = new SlimefunItemStack(
             "MACHINE_SLAG",
@@ -157,10 +157,10 @@ public class ItemStacks {
             "&7But don't despair, for every end is a new " + ColorUtils.LAVA_ORANGE + "beginning&7.",
             "&7Who knows what the " + ColorUtils.LAVA_ORANGE + "future &7holds?",
             "",
-            ColorUtils.BLAZE_ORANGE + "Owner&7: " + ColorUtils.LAVA_ORANGE + "%player%",
-            ColorUtils.LAVA_ORANGE + "Speed &7Level: " + ColorUtils.LAVA_ORANGE + "%speed_level%",
-            ColorUtils.LAVA_ORANGE + "Production &7Level: " + ColorUtils.LAVA_ORANGE + "%production_level%",
-            ColorUtils.LAVA_ORANGE + "Reliability &7Level: " + ColorUtils.LAVA_ORANGE + "%reliability_level%"
+            "&7Owner: " + ColorUtils.LAVA_ORANGE + "%player%",
+            "&7Speed Level: " + ColorUtils.LAVA_ORANGE + "%speed_level%",
+            "&7Production Level: " + ColorUtils.LAVA_ORANGE + "%production_level%",
+            "&7Reliability Level: " + ColorUtils.LAVA_ORANGE + "%reliability_level%"
     );
     public static final SlimefunItemStack META_COIN = new SlimefunItemStack(
             "META_COIN",
