@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.ThrowableProjectile;
 import org.bukkit.inventory.ItemStack;
@@ -55,7 +56,7 @@ public class MetaCoinItem extends SlimefunItem {
                 event.getItem().subtract();
             }
 
-            player.launchProjectile(ThrowableProjectile.class, player.getEyeLocation().getDirection().multiply(3), projectile -> {
+            player.launchProjectile(Egg.class, player.getEyeLocation().getDirection().multiply(3), projectile -> {
                 projectile.setItem(getItem());
                 projectile.setShooter(player);
             });
