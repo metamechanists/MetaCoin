@@ -10,6 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.entity.ThrowableProjectile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -56,7 +57,7 @@ public class MetaCoinItem extends SlimefunItem {
                 event.getItem().subtract();
             }
 
-            player.launchProjectile(Egg.class, player.getEyeLocation().getDirection().multiply(3), projectile -> {
+            player.launchProjectile(Snowball.class, player.getEyeLocation().getDirection().multiply(2), projectile -> {
                 projectile.setItem(getItem());
                 projectile.setShooter(player);
             });

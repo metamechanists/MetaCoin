@@ -9,9 +9,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class Utils {
+    public static final Random RANDOM = new Random();
     private static final Date LAST_DAY_OF_EVENT = new Date(1714539600000L);
 
     public static boolean isPastEvent() {
