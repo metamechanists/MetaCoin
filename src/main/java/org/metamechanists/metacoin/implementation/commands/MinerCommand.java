@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import me.justahuman.furnished.metalib.utils.ItemUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.metamechanists.metacoin.core.ItemStacks;
@@ -15,12 +16,16 @@ import org.metamechanists.metacoin.utils.Keys;
 public class MinerCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
-    public void giveMiner(CommandSender sender, Player player) {
+    public void giveMiner(CommandSender sender, String playerName) {
         if ((sender instanceof Player playerSender
                 && (!playerSender.isPermissionSet("metaminer.admin")
-                || !playerSender.hasPermission("metaminer.admin")))
-                || PersistentDataAPI.hasBoolean(player, Keys.receivedMiner)) {
+                || !playerSender.hasPermission("metaminer.admin")))) {
              return;
+        }
+
+        final Player player = Bukkit.getPlayer(playerName);
+        if (player == null || PersistentDataAPI.getOptionalBoolean(player, Keys.receivedMiner).orElse(false)) {
+            return;
         }
 
         PersistentDataAPI.setBoolean(player, Keys.receivedMiner, true);
