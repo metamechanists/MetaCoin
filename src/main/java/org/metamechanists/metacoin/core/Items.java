@@ -2,8 +2,6 @@ package org.metamechanists.metacoin.core;
 
 import dev.sefiraat.sefilib.slimefun.itemgroup.DummyItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
@@ -22,10 +20,10 @@ public class Items {
                 ColorUtils.MM_YELLOW + "MetaCoin™"
         ));
 
-        new MetaCoinItem(group, ItemStacks.META_COIN, 1).register(addon);
-        new MetaCoinItem(group, ItemStacks.COMPRESSED_META_COIN, 64).register(addon);
-        new MetaCoinItem(group, ItemStacks.DOUBLE_COMPRESSED_META_COIN, 4096).register(addon);
-        new MetaCoinItem(group, ItemStacks.TRIPLE_COMPRESSED_META_COIN, 262144).register(addon);
+        new MetaCoinItem(group, ItemStacks.META_COIN, 1, 1).register(addon);
+        new MetaCoinItem(group, ItemStacks.COMPRESSED_META_COIN, 4, 64).register(addon);
+        new MetaCoinItem(group, ItemStacks.DOUBLE_COMPRESSED_META_COIN, 10, 4096).register(addon);
+        new MetaCoinItem(group, ItemStacks.TRIPLE_COMPRESSED_META_COIN, 20, 262144).register(addon);
 
         MetaCoinItem.COINS.put(262144L, ItemStacks.TRIPLE_COMPRESSED_META_COIN);
         MetaCoinItem.COINS.put(4096L, ItemStacks.DOUBLE_COMPRESSED_META_COIN);

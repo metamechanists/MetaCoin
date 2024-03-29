@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class CrossbowListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrossbowFired(EntityShootBowEvent event) {
-        if (!(event.getBow().getItemMeta() instanceof CrossbowMeta)) {
+        if (event.getBow() == null || !(event.getBow().getItemMeta() instanceof CrossbowMeta)) {
             return;
         }
 
