@@ -13,7 +13,7 @@ import org.metamechanists.metacoin.implementation.commands.CompressCommand;
 import org.metamechanists.metacoin.implementation.commands.MinerCommand;
 import org.metamechanists.metacoin.implementation.commands.ResetCommand;
 import org.metamechanists.metacoin.implementation.commands.SlagCommand;
-import org.metamechanists.metacoin.implementation.listeners.CrossbowListener;
+import org.metamechanists.metacoin.implementation.listeners.ProjectileListener;
 import org.metamechanists.metacoin.implementation.listeners.MinerListeners;
 import org.metamechanists.metacoin.utils.Language;
 
@@ -38,7 +38,7 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     private void registerListeners() {
         final PluginManager manager = getServer().getPluginManager();
         manager.registerEvents(new MinerListeners(), this);
-        manager.registerEvents(new CrossbowListener(), this);
+        manager.registerEvents(new ProjectileListener(), this);
     }
 
     private void registerRunnables() {

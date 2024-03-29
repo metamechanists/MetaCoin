@@ -21,26 +21,7 @@ import org.metamechanists.metalib.utils.RandomUtils;
 
 import java.util.ArrayList;
 
-public class CrossbowListener implements Listener {
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onCrossbowFired(EntityShootBowEvent event) {
-        if (event.getBow() == null || !(event.getBow().getItemMeta() instanceof CrossbowMeta)) {
-            return;
-        }
-
-        if (!(SlimefunItem.getByItem(event.getConsumable()) instanceof MetaCoinItem coin)) {
-            return;
-        }
-
-        final Entity eventProjectile = event.getProjectile();
-        final Vector velocity = eventProjectile.getVelocity();
-        event.getEntity().launchProjectile(ThrowableProjectile.class, velocity, projectile -> {
-            projectile.setItem(coin.getItem());
-            projectile.setShooter(event.getEntity());
-            eventProjectile.remove();
-        });
-    }
-
+public class ProjectileListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof ThrowableProjectile projectile)

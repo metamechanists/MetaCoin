@@ -9,6 +9,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.ThrowableProjectile;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.CrossbowMeta;
@@ -50,27 +51,14 @@ public class MetaCoinItem extends SlimefunItem {
     public ItemUseHandler onUse() {
         return event -> {
             final Player player = event.getPlayer();
-            final PlayerInventory inventory = player.getInventory();
-            if (!inventory.contains(Material.CROSSBOW)) {
-                Language.sendMessage(player, "metacoin.no-crossbow");
-                return;
+            if (player.getGameMode() != GameMode.CREATIVE) {
+                event.getItem().subtract();
             }
 
-            for (ItemStack itemStack : inventory.getContents()) {
-                if (itemStack != null && itemStack.getItemMeta() instanceof CrossbowMeta crossbow && !crossbow.hasChargedProjectiles()) {
-                    final ItemStack copy = event.getItem().asOne();
-                    if (player.getGameMode() != GameMode.CREATIVE) {
-                        event.getItem().subtract();
-                    }
-
-                    crossbow.setChargedProjectiles(new ArrayList<>(List.of(copy)));
-                    crossbow.setCustomModelData(66614);
-                    itemStack.setItemMeta(crossbow);
-                    return;
-                }
-            }
-
-            Language.sendMessage(player, "metacoin.crossbow-already-loaded");
+            player.launchProjectile(ThrowableProjectile.class, player.getEyeLocation().getDirection().multiply(3), projectile -> {
+                projectile.setItem(getItem());
+                projectile.setShooter(player);
+            });
         };
     }
 
