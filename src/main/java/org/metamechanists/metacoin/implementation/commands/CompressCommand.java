@@ -13,7 +13,7 @@ import org.metamechanists.metalib.utils.ItemUtils;
 @CommandAlias("compresscoin")
 public class CompressCommand extends BaseCommand {
     @Default
-    @CommandCompletion("player")
+    @CommandCompletion("@players")
     public void compressCoins(CommandSender sender, String playerName) {
         if ((sender instanceof Player playerSender
                 && (!playerSender.isPermissionSet("metaminer.admin")
