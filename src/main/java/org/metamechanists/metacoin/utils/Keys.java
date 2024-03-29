@@ -15,7 +15,7 @@ public class Keys {
     public static final String BS_DISABLED_CORES = "DISABLED_CORES";
     public static final String BS_OWNER = "OWNER";
     public static final String BS_LAST_MENU = "LAST_MENU";
-    public static final String BS_MALFUNCTION_LEVEL = "MALFUNCTION_LEVEL";
+    public static final String BS_COIN_CACHE = "COIN_CACHE";
 
     public static NamespacedKey newKey(String key) {
         return new NamespacedKey(MetaCoin.getInstance(), key);

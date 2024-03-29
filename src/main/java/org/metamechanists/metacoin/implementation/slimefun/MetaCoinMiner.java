@@ -146,6 +146,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 menu.addMenuClickHandler(MINER_OUTPUT, (player, o2, o3, o4) -> {
                     ItemUtils.addOrDropItem(player, MetaCoinItem.withTotalValue(ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT))));
                     menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(0));
+                    setCoinCache(minerLocation, 0);
                     return false;
                 });
 
@@ -166,7 +167,6 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         final Player player = event.getPlayer();
         PersistentDataAPI.setBoolean(player, Keys.minerPlaced, true);
         BlockStorage.addBlockInfo(block, Keys.BS_OWNER, player.getUniqueId().toString());
-        BlockStorage.addBlockInfo(block, Keys.BS_MALFUNCTION_LEVEL, "0");
         Upgrades.setLevels(block.getLocation(), event.getItemInHand());
     }
 
@@ -208,22 +208,25 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
+        final BlockMenu menu = BlockStorage.getInventory(minerLocation);
+        if (menu == null) {
+            return;
+        }
+
+        final long coinCache = getCoinCache(minerLocation);
+        if (coinCache > 0 && ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT)) <= 0) {
+            menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(coinCache));
+        }
+
         final List<Integer> disabledCores = getDisabledCores(minerLocation);
         final boolean malfunctioning = !disabledCores.isEmpty();
         boolean productionMalfunction = malfunctioning && Utils.containsAny(disabledCores, PRODUCTION_CORES);
         boolean speedMalfunction = malfunctioning && Utils.containsAny(disabledCores, SPEED_CORES);
-        int malfunctionLevel = getMalfunctionLevel(minerLocation);
 
         if (malfunctioning) {
-            malfunctionLevel++;
             MALFUNCTIONING.add(minerPosition);
             malfunctionTick(minerLocation);
-            setMalfunctionLevel(minerLocation, malfunctionLevel);
         } else {
-            if (malfunctionLevel > 0) {
-                malfunctionLevel--;
-                setMalfunctionLevel(minerLocation, malfunctionLevel);
-            }
             MALFUNCTIONING.remove(minerPosition);
         }
 
@@ -234,14 +237,10 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
-        final BlockMenu menu = BlockStorage.getInventory(minerLocation);
-        if (menu == null) {
-            return;
-        }
-
         PROGRESS.put(minerPosition, 0);
         updateMenu(menu, minerPosition);
         menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(menu.getItemInSlot(MINER_OUTPUT), (productionMalfunction ? 1 : MetaCoinItem.valueFromProductionLevel(levels[1]))));
+        setCoinCache(minerLocation, ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT)));
     }
 
     public void malfunctionTick(Location miner) {
@@ -413,15 +412,15 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
     }
 
-    private void setMalfunctionLevel(Location miner, int level) {
-        BlockStorage.addBlockInfo(miner, Keys.BS_MALFUNCTION_LEVEL, String.valueOf(level));
+    private void setCoinCache(Location miner, long coins) {
+        BlockStorage.addBlockInfo(miner, Keys.BS_COIN_CACHE, String.valueOf(coins));
     }
 
-    private int getMalfunctionLevel(Location miner) {
+    private long getCoinCache(Location miner) {
         try {
-            return Integer.parseInt(BlockStorage.getLocationInfo(miner, Keys.BS_MALFUNCTION_LEVEL));
+            return Long.parseLong(BlockStorage.getLocationInfo(miner, Keys.BS_COIN_CACHE));
         } catch (Exception ignored) {
-            BlockStorage.addBlockInfo(miner, Keys.BS_MALFUNCTION_LEVEL, "0");
+            BlockStorage.addBlockInfo(miner, Keys.BS_COIN_CACHE, "0");
         }
         return 0;
     }
