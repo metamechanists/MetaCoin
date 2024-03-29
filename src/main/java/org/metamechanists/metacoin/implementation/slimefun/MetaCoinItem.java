@@ -1,16 +1,19 @@
 package org.metamechanists.metacoin.implementation.slimefun;
 
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
+import org.metamechanists.metacoin.utils.Language;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -20,17 +23,55 @@ import java.util.Optional;
 
 public class MetaCoinItem extends SlimefunItem {
     public static final Map<Long, ItemStack> COINS = new LinkedHashMap<>();
+    private final int damage;
     private final long value;
 
-    public MetaCoinItem(ItemGroup itemGroup, SlimefunItemStack item, long value) {
+    public MetaCoinItem(ItemGroup itemGroup, SlimefunItemStack item, int damage, long value) {
         super(itemGroup, item, RecipeType.NULL, new ItemStack[0]);
 
+        this.damage = damage;
         this.value = value;
+        addItemHandler(onUse());
     }
 
     @Override
     public void postRegister() {
         setHidden(true);
+    }
+
+    public int getDamage() {
+        return this.damage;
+    }
+
+    public long getValue() {
+        return this.value;
+    }
+
+    public ItemUseHandler onUse() {
+        return event -> {
+            final Player player = event.getPlayer();
+            final PlayerInventory inventory = player.getInventory();
+            if (!inventory.contains(Material.CROSSBOW)) {
+                Language.sendMessage(player, "metacoin.no-crossbow");
+                return;
+            }
+
+            for (ItemStack itemStack : inventory.getContents()) {
+                if (itemStack != null && itemStack.getItemMeta() instanceof CrossbowMeta crossbow && !crossbow.hasChargedProjectiles()) {
+                    final ItemStack copy = event.getItem().asOne();
+                    if (player.getGameMode() != GameMode.CREATIVE) {
+                        event.getItem().subtract();
+                    }
+
+                    crossbow.setChargedProjectiles(new ArrayList<>(List.of(copy)));
+                    crossbow.setCustomModelData(66614);
+                    itemStack.setItemMeta(crossbow);
+                    return;
+                }
+            }
+
+            Language.sendMessage(player, "metacoin.crossbow-already-loaded");
+        };
     }
 
     public static long valueOf(ItemStack itemStack) {

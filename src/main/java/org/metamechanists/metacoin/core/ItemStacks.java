@@ -167,8 +167,9 @@ public class ItemStacks {
             Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "MetaCoin™",
             "&7The hallowed MetaCoin",
-            "&7Can be placed, thrown, compressed",
-            "&7or used to upgrade the MetaMiner™",
+            "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "load &7it in a",
+            "&7crossbow, " + ColorUtils.MM_YELLOW + "compress &7it by the stack,",
+            "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "1&f\uE803"
     );
@@ -177,8 +178,9 @@ public class ItemStacks {
             Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
-            "&7Can be placed, thrown, compressed",
-            "&7or used to upgrade the MetaMiner™",
+            "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "load &7it in a",
+            "&7crossbow, " + ColorUtils.MM_YELLOW + "compress &7it by the stack,",
+            "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "64&f\uE803"
     );
@@ -187,8 +189,9 @@ public class ItemStacks {
             Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "2x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
-            "&7Can be placed, thrown, compressed",
-            "&7or used to upgrade the MetaMiner™",
+            "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "load &7it in a",
+            "&7crossbow, " + ColorUtils.MM_YELLOW + "compress &7it by the stack,",
+            "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "4,096&f\uE803"
     );
@@ -197,8 +200,9 @@ public class ItemStacks {
             Material.HEART_OF_THE_SEA,
             ColorUtils.MM_YELLOW + "3x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
-            "&7Can be placed, thrown, compressed",
-            "&7or used to upgrade the MetaMiner™",
+            "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "load &7it in a",
+            "&7crossbow, " + ColorUtils.MM_YELLOW + "compress &7it by the stack,",
+            "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "262,144&f\uE803"
     );
