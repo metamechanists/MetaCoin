@@ -56,7 +56,5 @@ public class ProjectileListener implements Listener {
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.damage(coin.getDamage(), (Entity) projectile.getShooter());
         }
-
-        entity.remove();
     }
 }
