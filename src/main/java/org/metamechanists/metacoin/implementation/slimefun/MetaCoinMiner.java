@@ -99,7 +99,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 final Location minerLocation = miner.getLocation();
                 final int[] levels = Upgrades.getLevels(minerLocation);
                 final int[] realLevels = { levels[0] - 1, levels[1] - 1, levels[2] - 1 };
-                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(realLevels[0] + realLevels[1] - 2 * realLevels[2])) {
+                if (!MALFUNCTIONING.contains(minerPosition) && RandomUtils.chance(Math.max(1, realLevels[0] + realLevels[1] - 2 * realLevels[2]))) {
                     MetaCoinMiner.this.malfunction(minerLocation, realLevels);
                 }
                 MetaCoinMiner.this.tick(minerLocation, minerPosition, levels);
