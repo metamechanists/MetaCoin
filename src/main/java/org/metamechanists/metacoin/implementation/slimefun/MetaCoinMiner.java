@@ -113,7 +113,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void buildPreset() {
-        new BlockMenuPreset(getId(), "&fMeta Miner - Drill") {
+        new BlockMenuPreset(getId(), "&fMetaMiner™ - Drill™") {
             @Override
             public void init() {
                 setupMenu(this, 1);
@@ -220,8 +220,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
 
         final List<Integer> disabledCores = getDisabledCores(minerLocation);
         final boolean malfunctioning = !disabledCores.isEmpty();
-        boolean productionMalfunction = malfunctioning && Utils.containsAny(disabledCores, PRODUCTION_CORES);
-        boolean speedMalfunction = malfunctioning && Utils.containsAny(disabledCores, SPEED_CORES);
+        boolean reliabilityMalfunction = malfunctioning && Utils.containsAny(disabledCores, RELIABILITY_CORES);
+        boolean productionMalfunction = malfunctioning && (Utils.containsAny(disabledCores, PRODUCTION_CORES) || reliabilityMalfunction);
+        boolean speedMalfunction = malfunctioning && (Utils.containsAny(disabledCores, SPEED_CORES) || reliabilityMalfunction);
 
         if (malfunctioning) {
             MALFUNCTIONING.add(minerPosition);
@@ -382,7 +383,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public ChestMenu setupMenu(String suffix, int page) {
-        final ChestMenu menu = new ChestMenu("&fMetaMiner - " + suffix);
+        final ChestMenu menu = new ChestMenu("&fMetaMiner™ - " + suffix + "™");
         setupMenu(menu, page);
         return menu;
     }
