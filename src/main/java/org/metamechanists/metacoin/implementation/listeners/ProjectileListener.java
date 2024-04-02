@@ -34,7 +34,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class ProjectileListener implements Listener {
-    private static final List<String> DEATH_MESSAGES = List.of(
+    private static final List<String> PLAYER_CAUSED_DEATH_MESSAGES = List.of(
             "%s was annihilated by the volatile fluctuations of %s's MetaCoins™",
             "%s was crushed under the weight of %s's blockchain",
             "%s was bankrupted by %s's MetaCoin™ empire",
@@ -55,6 +55,29 @@ public class ProjectileListener implements Listener {
             "%s was left in the cold by %s's MetaCoin™ warmth",
             "%s was left in the silence by %s's MetaCoin™ noise",
             "%s was left in the chaos by %s's MetaCoin™ order"
+    );
+    
+    private static final List<String> BLOCK_CAUSED_DEATH_MESSAGES = List.of(
+            "%s was consumed by the blockchain's insatiable hunger",
+            "%s was crushed by the weight of a rogue MetaCoin™",
+            "%s was swallowed by a MetaCoin™ mining sinkhole",
+            "%s was vaporized by a MetaCoin™ Miner™ meltdown",
+            "%s was lost in the infinite loop of a MetaCoin™ transaction",
+            "%s was overwhelmed by the sheer magnitude of the MetaCoin™ blockchain",
+            "%s was caught in the explosion of a MetaCoin™ Miner™",
+            "%s was bankrupted by a sudden MetaCoin™ market crash",
+            "%s was left in the dust of a MetaCoin™ mining operation",
+            "%s was outpaced by the speed of a MetaCoin™ transaction",
+            "%s was left in awe of the size of the MetaCoin™ blockchain",
+            "%s was left penniless by a MetaCoin™ heist",
+            "%s was left in ruins by a MetaCoin™ revolution",
+            "%s was left speechless by the extravagance of a MetaCoin™",
+            "%s was left in the shadow of a towering MetaCoin™ Miner™",
+            "%s was left in the past by the future of MetaCoin™",
+            "%s was left in the dark by the enlightenment of MetaCoin™",
+            "%s was left in the cold by the warmth of MetaCoin™",
+            "%s was left in the silence by the noise of MetaCoin™",
+            "%s was left in the chaos by the order of MetaCoin™"
     );
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -131,7 +154,11 @@ public class ProjectileListener implements Listener {
         if (damageSource.getCausingEntity() instanceof Player damager
                 && damageSource.getDirectEntity() instanceof Snowball snowball
                 && SlimefunItem.getByItem(snowball.getItem()) instanceof MetaCoinItem) {
-            event.setDeathMessage(RandomUtils.randomChoice(DEATH_MESSAGES).formatted(player.getName(), damager.getName()));
+            event.setDeathMessage(RandomUtils.randomChoice(PLAYER_CAUSED_DEATH_MESSAGES).formatted(player.getName(), damager.getName()));
+        } else if (damageSource.getCausingEntity() instanceof Snowball
+                && damageSource.getDirectEntity() instanceof  Snowball snowball
+                && SlimefunItem.getByItem(snowball.getItem()) instanceof MetaCoinItem) {
+            event.setDeathMessage(RandomUtils.randomChoice(BLOCK_CAUSED_DEATH_MESSAGES).formatted(player.getName()));
         }
     }
 }
