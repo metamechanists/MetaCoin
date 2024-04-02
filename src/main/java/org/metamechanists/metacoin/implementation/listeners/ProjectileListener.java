@@ -1,16 +1,17 @@
 package org.metamechanists.metacoin.implementation.listeners;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import org.bukkit.Bukkit;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Piglin;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.entity.ThrowableProjectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,7 +19,6 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
-import org.metamechanists.metacoin.implementation.event.MetaCoinDamageEvent;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.RandomUtils;
@@ -51,7 +51,9 @@ public class ProjectileListener implements Listener {
             "%s was left in the chaos by %s's MetaCoin™ order"
     );
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof ThrowableProjectile projectile)
                 || !(SlimefunItem.getByItem(projectile.getItem()) instanceof MetaCoinItem coin)) {
@@ -83,21 +85,24 @@ public class ProjectileListener implements Listener {
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            final MetaCoinDamageEvent damageEvent = new MetaCoinDamageEvent((Entity) projectile.getShooter(), livingEntity, EntityDamageEvent.DamageCause.PROJECTILE, coin.getDamage());
-            Bukkit.getPluginManager().callEvent(damageEvent);
-            if (!damageEvent.isCancelled()) {
-                livingEntity.setLastDamage(damageEvent.getDamage());
-                livingEntity.setLastDamageCause(damageEvent);
-                livingEntity.damage(damageEvent.getDamage());
-            }
+            livingEntity.damage(coin.getDamage(), DamageSource.builder(DamageType.MOB_PROJECTILE)
+                    .withCausingEntity((Entity) projectile.getShooter())
+                    .withDirectEntity(projectile).build());
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         final Player player = event.getPlayer();
-        if (player.getLastDamageCause() instanceof MetaCoinDamageEvent damageEvent) {
-            event.setDeathMessage(RandomUtils.randomChoice(DEATH_MESSAGES).formatted(player.getName(), damageEvent.getDamager().getName()));
+        if (player.getLastDamageCause() == null) {
+            return;
+        }
+
+        final DamageSource damageSource = player.getLastDamageCause().getDamageSource();
+        if (damageSource.getCausingEntity() instanceof Player damager
+                && damageSource.getDirectEntity() instanceof Snowball snowball
+                && SlimefunItem.getByItem(snowball.getItem()) instanceof MetaCoinItem) {
+            event.setDeathMessage(RandomUtils.randomChoice(DEATH_MESSAGES).formatted(player.getName(), damager.getName()));
         }
     }
 }
