@@ -20,6 +20,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.joml.Vector3d;
 import org.metamechanists.metalib.utils.LocationUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -90,7 +91,7 @@ public class MetaCoinItem extends SlimefunItem {
                         .item(getItem())
                         .billboard(Display.Billboard.FIXED)
                         .size(0.3F)
-                        .rotation(Math.PI / 4)
+                        .rotation(new Vector3d(Math.PI / 4, 0, 0))
                         .build(handLocation);
 
 
