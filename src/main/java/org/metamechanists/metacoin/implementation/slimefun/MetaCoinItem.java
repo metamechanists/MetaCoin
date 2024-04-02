@@ -6,12 +6,14 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import lombok.Getter;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.metamechanists.metalib.utils.RandomUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,8 +21,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Getter
 public class MetaCoinItem extends SlimefunItem {
-    public static final Map<Long, ItemStack> COINS = new LinkedHashMap<>();
+    private static final Map<Long, ItemStack> COINS = new LinkedHashMap<>();
+    private static final List<String> FLIP_MESSAGES = List.of(
+            "The MetaCoin™ flips through the air, glinting in the light. It lands... heads!",
+            "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
+            "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
+            "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
+            "Theᵥ MetaCoin™ᵢ fliesₗ intoₗ theₐ airᵍ.... andₑ hitsᵣ you in the head.",
+            "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",
+            "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!",
+            "The MetaCoin™ flips, catching the light. It lands... heads!",
+            "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
+            "Theᵈ MetaCoin™ᵢ fliesₛ intoₚ theₑ airₙ.... andₛ hitsₑ youᵣ in the head.",
+            "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
+            "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
+            "Try loading a MetaCoin™ into a dispenser. You might be surprised at what happens!",
+            "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",
+            "Theₚ MetaCoin™ᵢ fliesᵍ intoₗ theᵢ airₙ.... and hits you in the head.",
+            "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!",
+            "Did you know? Hitting a player with a MetaCoin™ can have some... interesting results!"
+    );
     private final int damage;
     private final long value;
 
@@ -37,16 +59,12 @@ public class MetaCoinItem extends SlimefunItem {
         setHidden(true);
     }
 
-    public int getDamage() {
-        return this.damage;
-    }
-
-    public long getValue() {
-        return this.value;
-    }
-
     public ItemUseHandler onUse() {
         return event -> {
+            if (event.getClickedBlock().isPresent()) {
+                return;
+            }
+
             event.cancel();
 
             final Player player = event.getPlayer();
@@ -56,9 +74,11 @@ public class MetaCoinItem extends SlimefunItem {
 
             // If Sneaking flip the coin
             if (player.isSneaking()) {
-
+                // TODO: flip coin visual
+                player.sendMessage(RandomUtils.randomChoice(FLIP_MESSAGES));
                 return;
             }
+
             // If not sneaking, throw the coin
             player.launchProjectile(Snowball.class, player.getEyeLocation().getDirection().multiply(2), projectile -> {
                 projectile.setItem(getItem());
@@ -178,5 +198,9 @@ public class MetaCoinItem extends SlimefunItem {
                 break;
             }
         }
+    }
+
+    public static Map<Long, ItemStack> getCoins() {
+        return COINS;
     }
 }
