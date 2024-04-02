@@ -113,9 +113,10 @@ public class ProjectileListener implements Listener {
         }
 
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.damage(coin.getDamage(), DamageSource.builder(DamageType.MOB_PROJECTILE)
-                    .withCausingEntity((Entity) projectile.getShooter())
-                    .withDirectEntity(projectile).build());
+            final DamageSource.Builder source = DamageSource.builder(DamageType.MOB_PROJECTILE);
+            source.withCausingEntity(projectile.getShooter() instanceof Entity shooter ? shooter : projectile);
+            source.withDirectEntity(projectile);
+            livingEntity.damage(coin.getDamage(), source.build());
         }
     }
 
