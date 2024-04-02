@@ -24,9 +24,8 @@ public class Leaderboard {
                 LEADERBOARD.add(0L);
                 LEADERBOARD.sort(LongComparators.NATURAL_COMPARATOR);
             }
-            return String.valueOf(LEADERBOARD.size() + 1);
         }
-        return String.valueOf(LEADERBOARD.indexOf(VALUES.get(uuid)));
+        return String.valueOf(LEADERBOARD.indexOf(VALUES.get(uuid)) + 1);
     }
 
     public static String getPlayersAt(int position) {
