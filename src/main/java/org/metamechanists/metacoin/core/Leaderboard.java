@@ -54,11 +54,11 @@ public class Leaderboard {
 
     public static void updateLeaderboard(UUID uuid, long value) {
         final long oldValue = VALUES.getOrDefault(uuid, 0L);
+        VALUES.put(uuid, value);
         if (!VALUES.containsValue(oldValue)) {
             LEADERBOARD.remove(oldValue);
         }
-
-        VALUES.put(uuid, value);
+        
         if (!LEADERBOARD.contains(value)) {
             LEADERBOARD.add(value);
             LEADERBOARD.sort(LongComparators.OPPOSITE_COMPARATOR);
