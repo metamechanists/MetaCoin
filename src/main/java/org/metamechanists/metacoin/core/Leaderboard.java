@@ -58,7 +58,7 @@ public class Leaderboard {
         if (!VALUES.containsValue(oldValue)) {
             LEADERBOARD.remove(oldValue);
         }
-        
+
         if (!LEADERBOARD.contains(value)) {
             LEADERBOARD.add(value);
             LEADERBOARD.sort(LongComparators.OPPOSITE_COMPARATOR);
