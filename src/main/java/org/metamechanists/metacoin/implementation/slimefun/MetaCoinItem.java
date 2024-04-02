@@ -91,7 +91,8 @@ public class MetaCoinItem extends SlimefunItem {
                         .item(getItem())
                         .billboard(Display.Billboard.FIXED)
                         .size(0.3F)
-                        .rotation(new Vector3d(Math.PI / 4, 0, 0))
+                        .location(0.5F, 0.5F, 0.5F)
+                        .rotation(new Vector3d(Math.PI / 2, 0, 0))
                         .build(handLocation);
 
 
