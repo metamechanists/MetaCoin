@@ -27,10 +27,14 @@ public class PapiIntegration extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer offlinePlayer, String placeholder) {
-        if (placeholder.equals("#")) {
+        if (placeholder.equals("position")) {
             return offlinePlayer != null
                 ? Leaderboard.getPosition(offlinePlayer.getUniqueId())
                 : "-1";
+        } else if (placeholder.equals("value")) {
+            return offlinePlayer != null
+                ? String.valueOf(Leaderboard.getValue(offlinePlayer.getUniqueId()))
+                : "0";
         }
 
         try {

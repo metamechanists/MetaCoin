@@ -19,6 +19,11 @@ public class Leaderboard {
 
     public static String getPosition(UUID uuid) {
         if (!VALUES.containsKey(uuid)) {
+            VALUES.put(uuid, 0L);
+            if (!LEADERBOARD.contains(0L)) {
+                LEADERBOARD.add(0L);
+                LEADERBOARD.sort(LongComparators.NATURAL_COMPARATOR);
+            }
             return String.valueOf(LEADERBOARD.size() + 1);
         }
         return String.valueOf(LEADERBOARD.indexOf(VALUES.get(uuid)));

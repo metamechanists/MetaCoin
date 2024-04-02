@@ -11,6 +11,7 @@ import org.metamechanists.metacoin.core.Groups;
 import org.metamechanists.metacoin.core.Items;
 import org.metamechanists.metacoin.core.Leaderboard;
 import org.metamechanists.metacoin.implementation.commands.CompressCommand;
+import org.metamechanists.metacoin.implementation.commands.DepositCommand;
 import org.metamechanists.metacoin.implementation.commands.MinerCommand;
 import org.metamechanists.metacoin.implementation.commands.ResetCommand;
 import org.metamechanists.metacoin.implementation.commands.SlagCommand;
@@ -56,6 +57,7 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         manager.enableUnstableAPI("help");
         manager.registerCommand(new MinerCommand());
         manager.registerCommand(new CompressCommand());
+        manager.registerCommand(new DepositCommand());
         manager.registerCommand(new SlagCommand());
         manager.registerCommand(new ResetCommand());
     }
