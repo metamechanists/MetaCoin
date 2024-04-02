@@ -22,14 +22,14 @@ public class Leaderboard {
             VALUES.put(uuid, 0L);
             if (!LEADERBOARD.contains(0L)) {
                 LEADERBOARD.add(0L);
-                LEADERBOARD.sort(LongComparators.NATURAL_COMPARATOR);
+                LEADERBOARD.sort(LongComparators.OPPOSITE_COMPARATOR);
             }
         }
         return String.valueOf(LEADERBOARD.indexOf(VALUES.get(uuid)) + 1);
     }
 
     public static String getPlayersAt(int position) {
-        if (LEADERBOARD.size() > position) {
+        if (LEADERBOARD.size() < position) {
             return "";
         }
 
@@ -61,7 +61,7 @@ public class Leaderboard {
         VALUES.put(uuid, value);
         if (!LEADERBOARD.contains(value)) {
             LEADERBOARD.add(value);
-            LEADERBOARD.sort(LongComparators.NATURAL_COMPARATOR);
+            LEADERBOARD.sort(LongComparators.OPPOSITE_COMPARATOR);
         }
 
         save();
@@ -100,7 +100,7 @@ public class Leaderboard {
             }
         }
 
-        LEADERBOARD.sort(LongComparators.NATURAL_COMPARATOR);
+        LEADERBOARD.sort(LongComparators.OPPOSITE_COMPARATOR);
     }
 
     public static void save() {
