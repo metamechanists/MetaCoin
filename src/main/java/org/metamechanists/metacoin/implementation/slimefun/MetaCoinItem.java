@@ -1,5 +1,6 @@
 package org.metamechanists.metacoin.implementation.slimefun;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -9,9 +10,14 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import lombok.Getter;
 import me.justahuman.furnished.displaymodellib.models.components.ModelItem;
+import me.justahuman.furnished.utils.Utils;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
@@ -20,7 +26,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.BoundingBox;
+import org.bukkit.util.VoxelShape;
 import org.joml.Vector3d;
+import org.metamechanists.metacoin.utils.Language;
 import org.metamechanists.metalib.utils.LocationUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -86,14 +95,16 @@ public class MetaCoinItem extends SlimefunItem {
                 final boolean leftHand = (player.getMainHand() == MainHand.LEFT && event.getHand() == EquipmentSlot.HAND)
                         || (player.getMainHand() != MainHand.LEFT && event.getHand() == EquipmentSlot.OFF_HAND);
                 final Location handLocation = LocationUtils.getHandLocation(player, leftHand);
-
+                //final List<Location> path = createFlipPath(handLocation);
                 final ItemDisplay coin = new ModelItem()
                         .item(getItem())
                         .billboard(Display.Billboard.FIXED)
                         .size(0.3F)
-                        .location(0.5F, 0.5F, 0.5F)
                         .rotation(new Vector3d(Math.PI / 2, 0, 0))
                         .build(handLocation);
+                new ParticleBuilder(Particle.REDSTONE).data(new Particle.DustOptions(Color.BLUE, 1));
+
+                //final Block endLocation = handLocation.
 
 
                 Slimefun.runSync(() -> {
@@ -112,6 +123,13 @@ public class MetaCoinItem extends SlimefunItem {
                 projectile.setShooter(player);
             });
         };
+    }
+
+    private List<Location> createFlipPath(Player player, Location startLocation) {
+        final BoundingBox entityBoundingBox = new BoundingBox();
+        final List<Location> path = new ArrayList<>();
+
+        return null;
     }
 
     public static long valueOf(ItemStack itemStack) {
