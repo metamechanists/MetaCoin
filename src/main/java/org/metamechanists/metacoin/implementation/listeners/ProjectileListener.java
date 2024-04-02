@@ -56,7 +56,7 @@ public class ProjectileListener implements Listener {
             "%s was left in the silence by %s's MetaCoin™ noise",
             "%s was left in the chaos by %s's MetaCoin™ order"
     );
-    
+
     private static final List<String> BLOCK_CAUSED_DEATH_MESSAGES = List.of(
             "%s was consumed by the blockchain's insatiable hunger",
             "%s was crushed by the weight of a rogue MetaCoin™",
@@ -143,7 +143,7 @@ public class ProjectileListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         final Player player = event.getPlayer();
         if (player.getLastDamageCause() == null) {
