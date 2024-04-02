@@ -102,7 +102,7 @@ public class MetaCoinItem extends SlimefunItem {
                         .size(0.3F)
                         .rotation(new Vector3d(Math.PI / 2, 0, 0))
                         .build(handLocation);
-                new ParticleBuilder(Particle.REDSTONE).data(new Particle.DustOptions(Color.BLUE, 1));
+                new ParticleBuilder(Particle.REDSTONE).data(new Particle.DustOptions(Color.BLUE, 1)).location(handLocation).spawn();
 
                 //final Block endLocation = handLocation.
 
