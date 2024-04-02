@@ -33,7 +33,7 @@ public class PapiIntegration extends PlaceholderExpansion {
                 : "-1";
         } else if (placeholder.equals("value")) {
             return offlinePlayer != null
-                ? String.valueOf(Leaderboard.getValue(offlinePlayer.getUniqueId()))
+                ? "%,d".formatted(Leaderboard.getValue(offlinePlayer.getUniqueId()))
                 : "0";
         }
 
