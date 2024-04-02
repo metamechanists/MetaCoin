@@ -43,10 +43,8 @@ public class MetaCoinItem extends SlimefunItem {
             "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
             "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
             "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
-            "Try loading a MetaCoin™ into a dispenser. You might be surprised at what happens!",
             "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",
-            "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!",
-            "Did you know? Hitting a player with a MetaCoin™ can have some... interesting results!"
+            "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!"
     );
     private static final List<String> HINTS = List.of(
             "Theᵥ MetaCoin™ᵢ fliesₗ intoₗ theₐ airᵍ.... andₑ hitsᵣ you in the head.",
@@ -92,7 +90,7 @@ public class MetaCoinItem extends SlimefunItem {
                         .item(getItem())
                         .billboard(Display.Billboard.FIXED)
                         .size(0.3F)
-                        .rotation(90)
+                        .rotation(Math.PI / 4)
                         .build(handLocation);
 
 
