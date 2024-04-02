@@ -124,6 +124,13 @@
         </dependency>
 
         <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>me.justahuman.furnished</groupId>
             <artifactId>Furnished</artifactId>
             <version>0</version>

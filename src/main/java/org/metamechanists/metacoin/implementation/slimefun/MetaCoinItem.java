@@ -8,15 +8,10 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
-import org.bukkit.entity.ThrowableProjectile;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.metamechanists.metacoin.utils.Language;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -52,11 +47,19 @@ public class MetaCoinItem extends SlimefunItem {
 
     public ItemUseHandler onUse() {
         return event -> {
+            event.cancel();
+
             final Player player = event.getPlayer();
             if (player.getGameMode() != GameMode.CREATIVE) {
                 event.getItem().subtract();
             }
 
+            // If Sneaking flip the coin
+            if (player.isSneaking()) {
+
+                return;
+            }
+            // If not sneaking, throw the coin
             player.launchProjectile(Snowball.class, player.getEyeLocation().getDirection().multiply(2), projectile -> {
                 projectile.setItem(getItem());
                 projectile.setShooter(player);

@@ -9,6 +9,6 @@ description: MetaCoin™️ :D
 website: metamechanists.org
 
 permissions:
-  metaminer.admin:
+  metacoin.admin:
     default: op
     description: Allows the usage of commands as a player

@@ -7,14 +7,14 @@ import co.aikar.commands.annotation.Default;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.metamechanists.metacoin.core.Leaderboard;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
-import org.metamechanists.metalib.utils.ItemUtils;
 
-@CommandAlias("compresscoin")
-public class CompressCommand extends BaseCommand {
+@CommandAlias("depositcoins")
+public class DepositCommand extends BaseCommand {
     @Default
     @CommandCompletion("@players")
-    public void compressCoins(CommandSender sender, String playerName) {
+    public void depositCoins(CommandSender sender, String playerName) {
         if ((sender instanceof Player playerSender
                 && (!playerSender.isPermissionSet("metacoin.admin")
                 || !playerSender.hasPermission("metacoin.admin")))) {
@@ -28,6 +28,6 @@ public class CompressCommand extends BaseCommand {
 
         final long value = MetaCoinItem.getTotalCoinValue(player);
         MetaCoinItem.removeCoins(player, value);
-        ItemUtils.addOrDropItem(player, MetaCoinItem.withTotalValue(value));
+        Leaderboard.updateLeaderboard(player.getUniqueId(), Leaderboard.getValue(player.getUniqueId()) + value);
     }
 }

@@ -9,10 +9,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
 import org.metamechanists.metacoin.core.Items;
+import org.metamechanists.metacoin.core.Leaderboard;
 import org.metamechanists.metacoin.implementation.commands.CompressCommand;
 import org.metamechanists.metacoin.implementation.commands.MinerCommand;
 import org.metamechanists.metacoin.implementation.commands.ResetCommand;
 import org.metamechanists.metacoin.implementation.commands.SlagCommand;
+import org.metamechanists.metacoin.implementation.compat.PapiIntegration;
 import org.metamechanists.metacoin.implementation.listeners.ProjectileListener;
 import org.metamechanists.metacoin.implementation.listeners.MinerListeners;
 import org.metamechanists.metacoin.utils.Language;
@@ -26,9 +28,12 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
 
+        Leaderboard.init();
         Language.init();
         Groups.init();
         Items.init();
+
+        new PapiIntegration();
 
         registerListeners();
         registerRunnables();

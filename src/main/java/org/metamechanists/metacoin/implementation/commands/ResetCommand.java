@@ -10,7 +10,7 @@ import org.metamechanists.metacoin.utils.Keys;
 
 @CommandAlias("resetstuff")
 
-@CommandPermission("metaminer.admin")
+@CommandPermission("metacoin.admin")
 public class ResetCommand extends BaseCommand {
     @Default
     public void resetStuff(Player player) {

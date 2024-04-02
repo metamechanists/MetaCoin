@@ -13,7 +13,7 @@ import org.metamechanists.metacoin.implementation.slimefun.Upgrades;
 import org.metamechanists.metalib.utils.ItemUtils;
 
 @CommandAlias("becomeslag")
-@CommandPermission("metaminer.admin")
+@CommandPermission("metacoin.admin")
 public class SlagCommand extends BaseCommand {
     @Default
     public void becomeSlag(Player player) {
