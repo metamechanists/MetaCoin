@@ -1,6 +1,11 @@
 package org.metamechanists.metacoin.implementation.listeners;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.papermc.paper.event.block.BlockPreDispenseEvent;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Dispenser;
+import org.bukkit.block.data.Directional;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Entity;
@@ -19,6 +24,7 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
+import org.bukkit.util.Vector;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.RandomUtils;
@@ -51,7 +57,28 @@ public class ProjectileListener implements Listener {
             "%s was left in the chaos by %s's MetaCoin™ order"
     );
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDispenserFire(BlockPreDispenseEvent event) {
+        final ItemStack itemStack = event.getItemStack();
+        if (!(SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem)) {
+            return;
+        }
 
+        final Block block = event.getBlock();
+        final ItemStack snowballStack = itemStack.asQuantity(1);
+
+        event.setCancelled(true);
+        itemStack.subtract();
+
+        if (block.getState() instanceof Dispenser dispenser && block.getBlockData() instanceof Directional directional) {
+            final BlockFace blockFace = directional.getFacing();
+            block.getWorld().spawn(block.getLocation().clone().add(0.5, 0.5, 0.5).add(blockFace.getDirection()), Snowball.class, snowball -> {
+                snowball.setItem(snowballStack);
+                snowball.setShooter(dispenser.getBlockProjectileSource());
+                snowball.setVelocity(blockFace.getDirection().add(new Vector(0, 0.1, 0)).multiply(2).multiply(new Vector(RandomUtils.randomDouble(), RandomUtils.randomDouble(), RandomUtils.randomDouble())));
+            });
+        }
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent event) {
