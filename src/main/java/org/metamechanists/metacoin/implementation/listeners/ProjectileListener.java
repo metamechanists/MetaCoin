@@ -75,7 +75,7 @@ public class ProjectileListener implements Listener {
             block.getWorld().spawn(block.getLocation().clone().add(0.5, 0.5, 0.5).add(blockFace.getDirection()), Snowball.class, snowball -> {
                 snowball.setItem(snowballStack);
                 snowball.setShooter(dispenser.getBlockProjectileSource());
-                snowball.setVelocity(blockFace.getDirection().add(new Vector(0, 0.1, 0)).multiply(2)
+                snowball.setVelocity(blockFace.getDirection().add(new Vector(0, 0.1, 0)).multiply(0.6)
                         .multiply(new Vector(RandomUtils.randomDouble(0.9, 1.1), RandomUtils.randomDouble(0.9, 1.1), RandomUtils.randomDouble(0.9, 1.1))));
             });
         }
