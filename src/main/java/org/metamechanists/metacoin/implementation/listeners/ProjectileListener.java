@@ -86,9 +86,9 @@ public class ProjectileListener implements Listener {
             final MetaCoinDamageEvent damageEvent = new MetaCoinDamageEvent((Entity) projectile.getShooter(), livingEntity, EntityDamageEvent.DamageCause.PROJECTILE, coin.getDamage());
             Bukkit.getPluginManager().callEvent(damageEvent);
             if (!damageEvent.isCancelled()) {
-                livingEntity.damage(damageEvent.getDamage());
                 livingEntity.setLastDamage(damageEvent.getDamage());
                 livingEntity.setLastDamageCause(damageEvent);
+                livingEntity.damage(damageEvent.getDamage());
             }
         }
     }
