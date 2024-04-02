@@ -5,14 +5,22 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import lombok.Getter;
+import me.justahuman.furnished.displaymodellib.models.components.ModelItem;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.MainHand;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.metamechanists.metalib.utils.LocationUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
 import java.util.ArrayList;
@@ -29,19 +37,21 @@ public class MetaCoinItem extends SlimefunItem {
             "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
             "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
             "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
-            "Theᵥ MetaCoin™ᵢ fliesₗ intoₗ theₐ airᵍ.... andₑ hitsᵣ you in the head.",
             "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",
             "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!",
             "The MetaCoin™ flips, catching the light. It lands... heads!",
             "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
-            "Theᵈ MetaCoin™ᵢ fliesₛ intoₚ theₑ airₙ.... andₛ hitsₑ youᵣ in the head.",
             "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
             "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
             "Try loading a MetaCoin™ into a dispenser. You might be surprised at what happens!",
             "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",
-            "Theₚ MetaCoin™ᵢ fliesᵍ intoₗ theᵢ airₙ.... and hits you in the head.",
             "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!",
             "Did you know? Hitting a player with a MetaCoin™ can have some... interesting results!"
+    );
+    private static final List<String> HINTS = List.of(
+            "Theᵥ MetaCoin™ᵢ fliesₗ intoₗ theₐ airᵍ.... andₑ hitsᵣ you in the head.",
+            "Theᵈ MetaCoin™ᵢ fliesₛ intoₚ theₑ airₙ.... andₛ hitsₑ youᵣ in the head.",
+            "Theₚ MetaCoin™ᵢ fliesᵍ intoₗ theᵢ airₙ.... and hits you in the head."
     );
     private final int damage;
     private final long value;
@@ -74,8 +84,25 @@ public class MetaCoinItem extends SlimefunItem {
 
             // If Sneaking flip the coin
             if (player.isSneaking()) {
-                // TODO: flip coin visual
-                player.sendMessage(RandomUtils.randomChoice(FLIP_MESSAGES));
+                final boolean leftHand = (player.getMainHand() == MainHand.LEFT && event.getHand() == EquipmentSlot.HAND)
+                        || (player.getMainHand() != MainHand.LEFT && event.getHand() == EquipmentSlot.OFF_HAND);
+                final Location handLocation = LocationUtils.getHandLocation(player, leftHand);
+
+                final ItemDisplay coin = new ModelItem()
+                        .item(getItem())
+                        .billboard(Display.Billboard.FIXED)
+                        .size(0.3F)
+                        .rotation(90)
+                        .build(handLocation);
+
+
+                Slimefun.runSync(() -> {
+                    if (coin.isValid()) {
+                        coin.remove();
+                    }
+
+                    player.sendMessage(RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
+                }, 20L);
                 return;
             }
 
