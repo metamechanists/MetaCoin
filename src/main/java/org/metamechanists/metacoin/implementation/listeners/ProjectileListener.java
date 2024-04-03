@@ -25,7 +25,6 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
-import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.util.Vector;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
 import org.metamechanists.metacoin.utils.Keys;
