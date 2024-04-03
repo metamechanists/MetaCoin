@@ -66,10 +66,12 @@ public class CoinFlipRunnable extends BukkitRunnable {
         // Still Falling
         if (landed == -1) {
             final TransformationMatrixBuilder builder = new TransformationMatrixBuilder();
-            builder.rotate(Math.PI / 6 * ticks, 0, 0);
+            if (ticks != 0 && ticks % 5 == 0) {
+                builder.rotate(Math.PI / 6 * (ticks / 5), 0, 0);
+            }
 
             itemDisplay.setInterpolationDelay(-1);
-            itemDisplay.setInterpolationDuration(1);
+            itemDisplay.setInterpolationDuration(4);
             itemDisplay.setTransformationMatrix(builder.buildForItemDisplay());
         }
 
