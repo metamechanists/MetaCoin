@@ -66,7 +66,7 @@ public class CoinFlipRunnable extends BukkitRunnable {
         // Still Falling
         if (landed == -1) {
             final Matrix4f transformation = new TransformationMatrixBuilder()
-                    .rotate(ticks != 0 && ticks % 4 == 0 ? 0 : Math.PI / 2, 0, 0)
+                    .rotate(Math.PI / 2 + ((Math.PI * 2 / 3) * Math.floorDiv(ticks, 3)), 0, 0)
                     .buildForItemDisplay();
 
             itemDisplay.setInterpolationDelay(-1);
@@ -95,6 +95,7 @@ public class CoinFlipRunnable extends BukkitRunnable {
         if (this.display != null && this.display.get() != null) {
             this.display.get().remove();
         }
+        RUNNABLES.remove(this.player.getUniqueId());
         super.cancel();
     }
 

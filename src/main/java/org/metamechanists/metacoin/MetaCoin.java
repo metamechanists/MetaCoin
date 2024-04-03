@@ -29,12 +29,12 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
 
-        Leaderboard.init();
+        //Leaderboard.init();
         Language.init();
         Groups.init();
         Items.init();
 
-        new PapiIntegration();
+        //new PapiIntegration();
 
         registerListeners();
         registerRunnables();
@@ -57,7 +57,7 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         manager.enableUnstableAPI("help");
         manager.registerCommand(new MinerCommand());
         manager.registerCommand(new CompressCommand());
-        manager.registerCommand(new DepositCommand());
+        //manager.registerCommand(new DepositCommand());
         manager.registerCommand(new SlagCommand());
         manager.registerCommand(new ResetCommand());
     }

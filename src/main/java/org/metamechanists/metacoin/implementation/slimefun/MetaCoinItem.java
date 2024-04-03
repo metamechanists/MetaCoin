@@ -74,8 +74,11 @@ public class MetaCoinItem extends SlimefunItem {
             }
 
             // If Sneaking flip the coin
-            if (player.isSneaking() && !CoinFlipRunnable.isFlipping(player)) {
-                new CoinFlipRunnable(this, player, RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
+            if (player.isSneaking()) {
+                if (CoinFlipRunnable.isFlipping(player)) {
+                    return;
+                }
+                //new CoinFlipRunnable(this, player, RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
                 return;
             }
 
