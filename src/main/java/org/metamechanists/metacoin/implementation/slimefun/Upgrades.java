@@ -25,7 +25,7 @@ public enum Upgrades {
                 return (long) Math.ceil(Math.pow(64, 1 + (1.5 * currentLevel) / 64));
             }
 
-            return (long) Math.ceil(Math.pow(64 * 64, 0.81 * currentLevel / 64D));
+            return (long) Math.ceil(Math.pow(64 * 64, currentLevel / 60D));
         }
     },
     RELIABILITY(256);
