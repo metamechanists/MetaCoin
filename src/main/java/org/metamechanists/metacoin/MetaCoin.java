@@ -29,12 +29,12 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
 
-        //Leaderboard.init();
+        Leaderboard.init();
         Language.init();
         Groups.init();
         Items.init();
 
-        //new PapiIntegration();
+        new PapiIntegration();
 
         registerListeners();
         registerRunnables();

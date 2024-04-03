@@ -82,10 +82,6 @@ public class ProjectileListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDispenserFire(BlockPreDispenseEvent event) {
-        if (true) {
-            return;
-        }
-
         final ItemStack itemStack = event.getItemStack();
         if (!(SlimefunItem.getByItem(itemStack) instanceof MetaCoinItem)) {
             return;
@@ -149,10 +145,6 @@ public class ProjectileListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (true) {
-            return;
-        }
-
         final Player player = event.getPlayer();
         if (player.getLastDamageCause() == null) {
             return;

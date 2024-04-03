@@ -7,6 +7,7 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -76,9 +77,10 @@ public class MetaCoinItem extends SlimefunItem {
             // If Sneaking flip the coin
             if (player.isSneaking()) {
                 if (CoinFlipRunnable.isFlipping(player)) {
+                    player.sendMessage(ChatColor.RED + "You are already flipping a coin!");
                     return;
                 }
-                //new CoinFlipRunnable(this, player, RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
+                new CoinFlipRunnable(this, player, RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
                 return;
             }
 
