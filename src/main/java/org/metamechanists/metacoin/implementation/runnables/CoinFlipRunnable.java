@@ -66,9 +66,7 @@ public class CoinFlipRunnable extends BukkitRunnable {
         // Still Falling
         if (landed == -1) {
             final TransformationMatrixBuilder builder = new TransformationMatrixBuilder();
-            if (ticks != 0 && ticks % 5 == 0) {
-                builder.rotate(Math.PI / 6 * (ticks / 5), 0, 0);
-            }
+            builder.rotate(Math.PI / 6 * Math.ceilDiv(ticks, 5), 0, 0);
 
             itemDisplay.setInterpolationDelay(-1);
             itemDisplay.setInterpolationDuration(4);
