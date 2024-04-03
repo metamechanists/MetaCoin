@@ -1,5 +1,6 @@
 package org.metamechanists.metacoin.implementation.listeners;
 
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.papermc.paper.event.block.BlockPreDispenseEvent;
 import org.bukkit.block.Block;
@@ -26,6 +27,7 @@ import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
 import org.bukkit.util.Vector;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
+import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -108,6 +110,10 @@ public class ProjectileListener implements Listener {
     public void onProjectileHit(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof ThrowableProjectile projectile)
                 || !(SlimefunItem.getByItem(projectile.getItem()) instanceof MetaCoinItem coin)) {
+            return;
+        }
+
+        if (PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)) {
             return;
         }
 

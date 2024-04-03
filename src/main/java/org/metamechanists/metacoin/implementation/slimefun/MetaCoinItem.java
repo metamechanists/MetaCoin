@@ -1,5 +1,6 @@
 package org.metamechanists.metacoin.implementation.slimefun;
 
+import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -14,7 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.metamechanists.metacoin.implementation.runnables.CoinFlipRunnable;
+import org.bukkit.util.Vector;
+import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metalib.utils.RandomUtils;
 
 import java.util.ArrayList;
@@ -76,11 +78,17 @@ public class MetaCoinItem extends SlimefunItem {
 
             // If Sneaking flip the coin
             if (player.isSneaking()) {
-                if (CoinFlipRunnable.isFlipping(player)) {
+                if (PersistentDataAPI.hasBoolean(player, Keys.flippingCoin)) {
                     player.sendMessage(ChatColor.RED + "You are already flipping a coin!");
                     return;
                 }
-                new CoinFlipRunnable(this, player, RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
+
+                player.sendMessage(RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
+                player.launchProjectile(Snowball.class, player.getEyeLocation().getDirection().multiply(0.5).add(new Vector(0, 1, 0)), projectile -> {
+                    projectile.setItem(getItem());
+                    projectile.setShooter(player);
+                    PersistentDataAPI.setBoolean(projectile, Keys.flippingCoin, true);
+                });
                 return;
             }
 
