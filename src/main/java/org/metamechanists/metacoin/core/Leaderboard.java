@@ -28,6 +28,10 @@ public class Leaderboard {
         return String.valueOf(LEADERBOARD.indexOf(VALUES.get(uuid)) + 1);
     }
 
+    public static String getValueAt(int position) {
+        return LEADERBOARD.size() < position ? "" : "%,d".formatted(LEADERBOARD.get(position - 1));
+    }
+
     public static String getPlayersAt(int position) {
         if (LEADERBOARD.size() < position) {
             return "";

@@ -37,6 +37,15 @@ public class PapiIntegration extends PlaceholderExpansion {
                 : "0";
         }
 
+        if (placeholder.contains("_value")) {
+            final String position = placeholder.substring(0, placeholder.indexOf("_value"));
+            try {
+                return Leaderboard.getValueAt(Integer.parseInt(position));
+            } catch (Exception ignored) {
+                return "";
+            }
+        }
+
         try {
             return Leaderboard.getPlayersAt(Integer.parseInt(placeholder));
         } catch (Exception ignored) {
