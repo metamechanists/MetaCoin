@@ -9,7 +9,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.metamechanists.metacoin.MetaCoin;
 
@@ -65,13 +64,14 @@ public class CoinFlipRunnable extends BukkitRunnable {
 
         // Still Falling
         if (landed == -1) {
-            final Matrix4f transformation = new TransformationMatrixBuilder()
-                    .rotate(Math.PI / 2 + ((Math.PI * 2 / 3) * Math.floorDiv(ticks, 3)), 0, 0)
-                    .buildForItemDisplay();
+            final TransformationMatrixBuilder builder = new TransformationMatrixBuilder();
+            if (ticks != 0 && ticks % 3 == 0) {
+                builder.rotate(Math.PI / 2 + ((Math.PI * 2 / 3) * Math.floorDiv(ticks, 3)), 0, 0);
+            }
 
             itemDisplay.setInterpolationDelay(-1);
-            itemDisplay.setInterpolationDuration(4);
-            itemDisplay.setTransformationMatrix(transformation);
+            itemDisplay.setInterpolationDuration(3);
+            itemDisplay.setTransformationMatrix(builder.buildForItemDisplay());
         }
 
         // Can despawn now
