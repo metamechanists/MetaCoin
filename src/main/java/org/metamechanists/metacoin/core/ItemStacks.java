@@ -209,6 +209,30 @@ public class ItemStacks {
             "",
             "&7Value: " + ColorUtils.MM_YELLOW + "262,144&f\uE803"
     );
+    public static final SlimefunItemStack QUADRUPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
+            "QUADRUPLE_COMPRESSED_META_COIN",
+            Material.HEART_OF_THE_SEA,
+            ColorUtils.MM_YELLOW + "4x Compressed MetaCoin™",
+            "&7The hallowed MetaCoin",
+            "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
+            "&7projectile, " + ColorUtils.MM_YELLOW + "compress &7it by the stack,",
+            ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
+            "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
+            "",
+            "&7Value: " + ColorUtils.MM_YELLOW + "16,777,216&f\uE803"
+    );
+    public static final SlimefunItemStack QUINTUPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
+            "QUINTUPLE_COMPRESSED_META_COIN",
+            Material.HEART_OF_THE_SEA,
+            ColorUtils.MM_YELLOW + "5x Compressed MetaCoin™",
+            "&7The hallowed MetaCoin",
+            "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
+            "&7projectile, " + ColorUtils.MM_YELLOW + "compress &7it by the stack,",
+            ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
+            "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
+            "",
+            "&7Value: " + ColorUtils.MM_YELLOW + "1,073,741,824&f\uE803"
+    );
 
     // FORMAT METHODS
     // COMMANDS
