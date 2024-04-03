@@ -25,6 +25,7 @@ import org.bukkit.inventory.Merchant;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTables;
+import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.util.Vector;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
 import org.metamechanists.metacoin.utils.Keys;
@@ -114,6 +115,9 @@ public class ProjectileListener implements Listener {
         }
 
         if (PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)) {
+            if (projectile.getShooter() instanceof PersistentDataHolder holder) {
+                PersistentDataAPI.remove(holder, Keys.flippingCoin);
+            }
             return;
         }
 
