@@ -24,7 +24,11 @@ public class Items {
         new MetaCoinItem(group, ItemStacks.COMPRESSED_META_COIN, 4, 64).register(addon);
         new MetaCoinItem(group, ItemStacks.DOUBLE_COMPRESSED_META_COIN, 10, 4096).register(addon);
         new MetaCoinItem(group, ItemStacks.TRIPLE_COMPRESSED_META_COIN, 20, 262144).register(addon);
+        new MetaCoinItem(group, ItemStacks.QUADRUPLE_COMPRESSED_META_COIN, 20, 16777216).register(addon);
+        new MetaCoinItem(group, ItemStacks.QUINTUPLE_COMPRESSED_META_COIN, 20, 1073741824).register(addon);
 
+        MetaCoinItem.getCoins().put(1073741824L, ItemStacks.QUINTUPLE_COMPRESSED_META_COIN);
+        MetaCoinItem.getCoins().put(16777216L, ItemStacks.QUADRUPLE_COMPRESSED_META_COIN);
         MetaCoinItem.getCoins().put(262144L, ItemStacks.TRIPLE_COMPRESSED_META_COIN);
         MetaCoinItem.getCoins().put(4096L, ItemStacks.DOUBLE_COMPRESSED_META_COIN);
         MetaCoinItem.getCoins().put(64L, ItemStacks.COMPRESSED_META_COIN);
