@@ -92,6 +92,9 @@ public class CoinFlipRunnable extends BukkitRunnable {
     @Override
     public synchronized void cancel() throws IllegalStateException {
         this.player.sendMessage(this.message);
+        if (this.display != null && this.display.get() != null) {
+            this.display.get().remove();
+        }
         super.cancel();
     }
 
