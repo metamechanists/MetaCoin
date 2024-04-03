@@ -115,8 +115,9 @@ public class ProjectileListener implements Listener {
         }
 
         if (PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)) {
-            if (projectile.getShooter() instanceof PersistentDataHolder holder) {
-                PersistentDataAPI.remove(holder, Keys.flippingCoin);
+            if (projectile.getShooter() instanceof Player player) {
+                MetaCoinItem.sendFlipResult(player);
+                PersistentDataAPI.remove(player, Keys.flippingCoin);
             }
             return;
         }
