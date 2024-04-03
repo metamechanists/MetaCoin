@@ -28,13 +28,13 @@ public class MetaCoinItem extends SlimefunItem {
     private static final Map<Long, ItemStack> COINS = new LinkedHashMap<>();
     private static final List<String> FLIP_MESSAGES = List.of(
             "The MetaCoin™ flips through the air, glinting in the light. It lands... heads!",
-            "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
+            "You flip the MetaCoin™. It spins, a blur of orange, yellow, and blue, and lands... tails!",
             "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
             "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
             "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",
             "You toss the MetaCoin™ high. It descends slowly, finally landing... tails!",
             "The MetaCoin™ flips, catching the light. It lands... heads!",
-            "You flip the MetaCoin™. It spins, a blur of gold and silver, and lands... tails!",
+            "You flip the MetaCoin™. It spins, a blur of orange, yellow, and blue, and lands... tails!",
             "The MetaCoin™ flips end over end, landing with a soft clink. It's... heads!",
             "You give the MetaCoin™ a flick. It twirls in the air and lands... tails!",
             "The MetaCoin™ soars through the air, spinning wildly. It lands... heads!",

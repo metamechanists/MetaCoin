@@ -47,9 +47,10 @@ public class CoinFlipRunnable extends BukkitRunnable {
 
             final ItemDisplay itemDisplay = new ModelItem()
                     .item(slimefunItem.getItem())
-                    .billboard(Display.Billboard.FIXED)
+                    .size(0.33F)
                     .rotation(new Vector3d(Math.PI / 2, 0, 0))
                     .brightness(15)
+                    .billboard(Display.Billboard.FIXED)
                     .build(spawnLocation);
 
             this.display = new WeakReference<>(itemDisplay);
