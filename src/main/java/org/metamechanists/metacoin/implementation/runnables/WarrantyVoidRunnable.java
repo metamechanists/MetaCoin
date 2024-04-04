@@ -1,11 +1,14 @@
 package org.metamechanists.metacoin.implementation.runnables;
 
+import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
 import me.justahuman.furnished.displaymodellib.sefilib.entity.display.DisplayGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,6 +20,8 @@ import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -40,13 +45,27 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
+        final Map<String, Display> displays = this.group.getDisplays();
+
         // Start another fire?
         if (RandomUtils.chance(50)) {
+            final List<Display> displayList = new ArrayList<>(displays.values());
+            for (int i = 0; i < displayList.size(); i++) {
+                final Display display = RandomUtils.randomChoice(displayList);
+                if (display instanceof BlockDisplay blockDisplay && blockDisplay.getBlock().getMaterial() == Material.FIRE) {
+                    continue;
+                }
 
+                displays.put("fire_" + ticks, new ModelCuboid()
+                        .material(Material.FIRE)
+                        .brightness(15)
+                        .size(0.01F)
+                        .build(display.getLocation()));
+                break;
+            }
         }
 
         // Grow the existing fires
-        final Map<String, Display> displays = this.group.getDisplays();
         for (String name : displays.keySet()) {
             if (!name.contains("fire")) {
                 continue;
@@ -78,6 +97,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         }
 
         // Go Kaboom
+        cancel();
     }
 
     public static boolean isVoided(Block miner) {
