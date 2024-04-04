@@ -30,23 +30,13 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WarrantyVoidRunnable extends BukkitRunnable {
     private static final List<Sound> ALARM_SOUNDS = List.of(
             Sound.BLOCK_NOTE_BLOCK_BANJO,
-            Sound.BLOCK_NOTE_BLOCK_BASEDRUM,
             Sound.BLOCK_NOTE_BLOCK_BASS,
             Sound.BLOCK_NOTE_BLOCK_BELL,
             Sound.BLOCK_NOTE_BLOCK_BIT,
             Sound.BLOCK_NOTE_BLOCK_CHIME,
-            Sound.BLOCK_NOTE_BLOCK_COW_BELL,
-            Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO,
             Sound.BLOCK_NOTE_BLOCK_FLUTE,
             Sound.BLOCK_NOTE_BLOCK_GUITAR,
             Sound.BLOCK_NOTE_BLOCK_HARP,
-            Sound.BLOCK_NOTE_BLOCK_HAT,
-            Sound.BLOCK_NOTE_BLOCK_IMITATE_CREEPER,
-            Sound.BLOCK_NOTE_BLOCK_IMITATE_ENDER_DRAGON,
-            Sound.BLOCK_NOTE_BLOCK_IMITATE_PIGLIN,
-            Sound.BLOCK_NOTE_BLOCK_IMITATE_SKELETON,
-            Sound.BLOCK_NOTE_BLOCK_IMITATE_WITHER_SKELETON,
-            Sound.BLOCK_NOTE_BLOCK_IMITATE_ZOMBIE,
             Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE,
             Sound.BLOCK_NOTE_BLOCK_PLING,
             Sound.BLOCK_NOTE_BLOCK_SNARE,
@@ -112,7 +102,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
             final Display display = displays.get(name);
             final Transformation transformation = display.getTransformation();
-            if (transformation.getScale().x() < 1) {
+            if (transformation.getScale().x() <= 0.011F) {
                 display.setInterpolationDelay(-1);
                 display.setInterpolationDuration(4);
                 display.setTransformation(new Transformation(
@@ -130,8 +120,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
             ParticleUtils.randomParticle(location, Particle.LAVA, 0.5, RandomUtils.randomInteger(5, 20));
             miner.getWorld().playSound(location, Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, random.nextFloat(0.1F, 1.0F));
             miner.getWorld().playSound(location, Sound.BLOCK_LAVA_POP, 0.1F, random.nextFloat(0.1F, 1.0F));
-            // todo figure out which of these is the alarm sounding one
-            miner.getWorld().playSound(location, RandomUtils.randomChoice(ALARM_SOUNDS), 1, random.nextFloat(0.1F, 1.0F));
+            miner.getWorld().playSound(location, RandomUtils.randomChoice(ALARM_SOUNDS), 1, 1);
             ticks++;
             return;
         }
