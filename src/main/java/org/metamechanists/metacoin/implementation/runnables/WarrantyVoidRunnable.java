@@ -80,11 +80,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                         .material(Material.FIRE)
                         .brightness(15)
                         .size(0.01F)
-                        .rotation(
-                                random.nextFloat((float) (Math.PI * 2)),
-                                random.nextFloat((float) (Math.PI * 2)),
-                                random.nextFloat((float) (Math.PI * 2))
-                        ).location(transformation.getTranslation().add(
+                        .location(transformation.getTranslation().add(
                                 random.nextFloat(-scale.x(), scale.x()),
                                 random.nextFloat(-scale.y(), scale.y()),
                                 random.nextFloat(-scale.z(), scale.z())
@@ -118,8 +114,8 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         if (ticks < 10 * 20) {
             ParticleUtils.randomParticle(location, Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(4, 10));
             ParticleUtils.randomParticle(location, Particle.LAVA, 0.5, RandomUtils.randomInteger(5, 20));
-            miner.getWorld().playSound(location, Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, random.nextFloat(0.1F, 1.0F));
-            miner.getWorld().playSound(location, Sound.BLOCK_LAVA_POP, 0.1F, random.nextFloat(0.1F, 1.0F));
+            miner.getWorld().playSound(location, Sound.BLOCK_LAVA_EXTINGUISH, 0.5F, random.nextFloat(0.1F, 1.0F));
+            miner.getWorld().playSound(location, Sound.BLOCK_LAVA_POP, 0.5F, random.nextFloat(0.1F, 1.0F));
             miner.getWorld().playSound(location, RandomUtils.randomChoice(ALARM_SOUNDS), 1, 1);
             ticks++;
             return;
@@ -135,7 +131,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         for (Display display : displays.values()) {
             final Transformation transformation = display.getTransformation();
             display.setInterpolationDelay(-1);
-            display.setInterpolationDuration(40);
+            display.setInterpolationDuration(15);
             display.setTransformation(new Transformation(transformation.getTranslation().mul(
                     new Vector3f(RandomUtils.randomInteger(-4 , 4),
                             RandomUtils.randomInteger(-4 , 4),
@@ -146,7 +142,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         }
 
         BlockStorage.clearBlockInfo(miner);
-        Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), group::remove, 60L);
+        Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), group::remove, 30L);
     }
 
     public static boolean isVoided(Block miner) {
