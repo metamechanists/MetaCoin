@@ -19,6 +19,7 @@ import org.metamechanists.metacoin.implementation.commands.MinerCommand;
 import org.metamechanists.metacoin.implementation.commands.MinerTrimCommand;
 import org.metamechanists.metacoin.implementation.commands.ResetCommand;
 import org.metamechanists.metacoin.implementation.commands.SlagCommand;
+import org.metamechanists.metacoin.implementation.commands.VoidWarrantyCommand;
 import org.metamechanists.metacoin.implementation.compat.PapiIntegration;
 import org.metamechanists.metacoin.implementation.listeners.ProjectileListener;
 import org.metamechanists.metacoin.implementation.listeners.MinerListeners;
@@ -69,6 +70,7 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         manager.registerCommand(new SlagCommand());
         manager.registerCommand(new ResetCommand());
         manager.registerCommand(new MinerTrimCommand());
+        manager.registerCommand(new VoidWarrantyCommand());
 
         final CommandCompletions<BukkitCommandCompletionContext> completions = manager.getCommandCompletions();
 
