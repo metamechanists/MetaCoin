@@ -3,6 +3,7 @@ package org.metamechanists.metacoin.implementation.runnables;
 import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
 import me.justahuman.furnished.displaymodellib.sefilib.entity.display.DisplayGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -15,6 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
 import org.metamechanists.metacoin.MetaCoin;
+import org.metamechanists.metacoin.core.ItemStacks;
+import org.metamechanists.metacoin.implementation.slimefun.Upgrades;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
@@ -26,7 +29,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WarrantyVoidRunnable extends BukkitRunnable {
-    private final WeakReference<Player> playerReference;
+    private final Player player;
     private final Block miner;
     private final Location location;
     private final DisplayGroup group;
@@ -34,7 +37,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
     private int ticks = 0;
 
     public WarrantyVoidRunnable(Player player, Block miner, DisplayGroup group) {
-        this.playerReference = new WeakReference<>(player);
+        this.player = player;
         this.miner = miner;
         this.location = miner.getLocation().toCenterLocation();
         this.group = group;
@@ -60,7 +63,8 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                         .material(Material.FIRE)
                         .brightness(15)
                         .size(0.01F)
-                        .location(display.getTransformation().getTranslation())
+                        .location(display.getTransformation().getTranslation()
+                                .add((float) RandomUtils.randomDouble(), (float) RandomUtils.randomDouble(), (float) RandomUtils.randomDouble()))
                         .build(display.getLocation()));
                 break;
             }
@@ -80,7 +84,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                 display.setTransformation(new Transformation(
                         transformation.getTranslation(),
                         transformation.getLeftRotation(),
-                        new Vector3f(transformation.getScale()).mul(3),
+                        new Vector3f(transformation.getScale()).mul(1.5F),
                         transformation.getRightRotation()
                 ));
             }
@@ -100,9 +104,19 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
         // Go Kaboom
         cancel();
-        group.remove();
-        BlockStorage.clearBlockInfo(miner);
+
         miner.setType(Material.AIR);
+        miner.getWorld().dropItemNaturally(location, ItemStacks.machineSlag(this.player, Upgrades.getLevels(location)));
+
+        for (Display display : displays.values()) {
+            final Transformation transformation = display.getTransformation();
+            display.setInterpolationDelay(-1);
+            display.setInterpolationDuration(40);
+            display.setTransformation(new Transformation(new Vector3f(), transformation.getLeftRotation(), new Vector3f(), transformation.getRightRotation()));
+        }
+
+        BlockStorage.clearBlockInfo(miner);
+        Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), group::remove, 60L);
     }
 
     public static boolean isVoided(Block miner) {
