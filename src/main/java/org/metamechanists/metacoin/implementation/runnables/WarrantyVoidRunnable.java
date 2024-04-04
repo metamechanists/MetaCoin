@@ -80,11 +80,10 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                         .material(Material.FIRE)
                         .brightness(15)
                         .size(0.01F)
-                        .location(transformation.getTranslation().add(
-                                random.nextFloat(-scale.x(), scale.x()),
-                                random.nextFloat(-scale.y(), scale.y()),
-                                random.nextFloat(-scale.z(), scale.z())
-                        ))
+                        .location(display.getTransformation().getTranslation().add(
+                                (float) (0.1 * Math.pow(-1, ticks)),
+                                (float) (0.1 * Math.pow(-1, ticks + 1)),
+                                (float) (0.1 * Math.pow(-1, ticks))))
                         .build(display.getLocation()));
                 break;
             }
