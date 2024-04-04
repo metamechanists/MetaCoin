@@ -25,6 +25,7 @@ import org.metamechanists.metalib.utils.RandomUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WarrantyVoidRunnable extends BukkitRunnable {
@@ -47,10 +48,11 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
+        final ThreadLocalRandom random = RandomUtils.randomThread;
         final Map<String, Display> displays = this.group.getDisplays();
 
         // Start another fire?
-        if (ticks % 6 == 0) {
+        if (ticks % 3 == 0) {
             final List<Display> displayList = new ArrayList<>(displays.values());
             for (int i = 0; i < displayList.size(); i++) {
                 final Display display = RandomUtils.randomChoice(displayList);
@@ -58,12 +60,21 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                     continue;
                 }
 
+                final Transformation transformation = display.getTransformation();
+                final Vector3f scale = transformation.getScale();
                 this.group.addDisplay("fire_" + ticks, new ModelCuboid()
                         .material(Material.FIRE)
                         .brightness(15)
                         .size(0.01F)
-                        .location(display.getTransformation().getTranslation()
-                                .add(new Vector3f((float) (0.1 * Math.pow(-1, ticks)), (float) (0.1 * Math.pow(-1, ticks + 1)), (float) (0.1 * Math.pow(-1, ticks)))))
+                        .rotation(
+                                random.nextFloat((float) (Math.PI * 2)),
+                                random.nextFloat((float) (Math.PI * 2)),
+                                random.nextFloat((float) (Math.PI * 2))
+                        ).location(transformation.getTranslation().add(
+                                random.nextFloat(-scale.x(), scale.x()),
+                                random.nextFloat(-scale.y(), scale.y()),
+                                random.nextFloat(-scale.z(), scale.z())
+                        ))
                         .build(display.getLocation()));
                 break;
             }
@@ -71,7 +82,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
         // Grow the existing fires
         for (String name : displays.keySet()) {
-            if (!name.contains("fire")) {
+            if (!name.contains("fire") && !name.contains(String.valueOf(ticks))) {
                 continue;
             }
 
@@ -83,14 +94,14 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                 display.setTransformation(new Transformation(
                         transformation.getTranslation(),
                         transformation.getLeftRotation(),
-                        new Vector3f(0.7F),
+                        new Vector3f(random.nextFloat(0.4F, 0.8F)),
                         transformation.getRightRotation()
                 ));
             }
         }
 
-        // Player gets 15 seconds to run away :D
-        if (ticks < 15 * 20) {
+        // Player gets 10 seconds to run away :D
+        if (ticks < 10 * 20) {
             ParticleUtils.randomParticle(location, Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(4, 10));
             ParticleUtils.randomParticle(location, Particle.LAVA, 0.5, RandomUtils.randomInteger(5, 20));
             miner.getWorld().playSound(location, Sound.BLOCK_LAVA_EXTINGUISH, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F));
@@ -106,17 +117,18 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
         miner.setType(Material.AIR);
         miner.getWorld().dropItemNaturally(location, ItemStacks.machineSlag(this.player, Upgrades.getLevels(location)));
+        miner.getWorld().createExplosion(location, 4F * 8, true, true);
 
         for (Display display : displays.values()) {
             final Transformation transformation = display.getTransformation();
             display.setInterpolationDelay(-1);
             display.setInterpolationDuration(40);
-            display.setTransformation(new Transformation(new Vector3f(),
+            display.setTransformation(new Transformation(transformation.getTranslation().mul(
+                    new Vector3f(RandomUtils.randomInteger(-4 , 4),
+                            RandomUtils.randomInteger(-4 , 4),
+                            RandomUtils.randomInteger(-4 , 4))),
                     transformation.getLeftRotation(),
-                    transformation.getTranslation().mul(
-                            new Vector3f(RandomUtils.randomInteger(-4 , 4),
-                                    RandomUtils.randomInteger(-4 , 4),
-                                    RandomUtils.randomInteger(-4 , 4))),
+                    new Vector3f(),
                     transformation.getRightRotation()));
         }
 
