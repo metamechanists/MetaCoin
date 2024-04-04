@@ -22,7 +22,6 @@ import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +83,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                 display.setTransformation(new Transformation(
                         transformation.getTranslation(),
                         transformation.getLeftRotation(),
-                        new Vector3f(transformation.getScale()).mul(1),
+                        new Vector3f(0.7F),
                         transformation.getRightRotation()
                 ));
             }
@@ -112,7 +111,13 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
             final Transformation transformation = display.getTransformation();
             display.setInterpolationDelay(-1);
             display.setInterpolationDuration(40);
-            display.setTransformation(new Transformation(new Vector3f(), transformation.getLeftRotation(), new Vector3f(), transformation.getRightRotation()));
+            display.setTransformation(new Transformation(new Vector3f(),
+                    transformation.getLeftRotation(),
+                    transformation.getTranslation().mul(
+                            new Vector3f(RandomUtils.randomInteger(-4 , 4),
+                                    RandomUtils.randomInteger(-4 , 4),
+                                    RandomUtils.randomInteger(-4 , 4))),
+                    transformation.getRightRotation()));
         }
 
         BlockStorage.clearBlockInfo(miner);
