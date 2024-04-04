@@ -1,5 +1,6 @@
 package org.metamechanists.metacoin.implementation.listeners;
 
+import com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent;
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.papermc.paper.event.block.BlockPreDispenseEvent;
@@ -169,6 +170,16 @@ public class ProjectileListener implements Listener {
                 && damageSource.getDirectEntity() instanceof  Snowball snowball
                 && SlimefunItem.getByItem(snowball.getItem()) instanceof MetaCoinItem) {
             event.setDeathMessage(RandomUtils.randomChoice(BLOCK_CAUSED_DEATH_MESSAGES).formatted(player.getName()));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEntityRemoved(EntityRemoveFromWorldEvent event) {
+        if (event.getEntity() instanceof ThrowableProjectile projectile
+                && PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)
+                && projectile.getShooter() instanceof Player player) {
+            MetaCoinItem.sendFlipResult(player);
+            PersistentDataAPI.remove(player, Keys.flippingCoin);
         }
     }
 }

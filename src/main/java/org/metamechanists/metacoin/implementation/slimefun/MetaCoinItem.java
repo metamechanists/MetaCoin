@@ -83,7 +83,7 @@ public class MetaCoinItem extends SlimefunItem {
                     return;
                 }
 
-                player.launchProjectile(Snowball.class, player.getEyeLocation().getDirection().add(new Vector(0, 0.5, 0)).multiply(0.25), projectile -> {
+                player.launchProjectile(Snowball.class, player.getEyeLocation().getDirection().add(new Vector(0, 0.5, 0)).multiply(0.15), projectile -> {
                     projectile.setItem(getItem());
                     projectile.setShooter(player);
                     PersistentDataAPI.setBoolean(player, Keys.flippingCoin, true);
@@ -101,7 +101,7 @@ public class MetaCoinItem extends SlimefunItem {
     }
 
     public static void sendFlipResult(Player player) {
-        player.sendMessage(RandomUtils.randomChoice(RandomUtils.chance(5) ? HINTS : FLIP_MESSAGES));
+        player.sendMessage(RandomUtils.randomChoice(RandomUtils.chance(1) ? HINTS : FLIP_MESSAGES));
     }
 
     public static long valueOf(ItemStack itemStack) {
