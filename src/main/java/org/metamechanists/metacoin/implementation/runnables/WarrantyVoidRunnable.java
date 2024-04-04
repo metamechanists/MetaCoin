@@ -51,7 +51,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         final Map<String, Display> displays = this.group.getDisplays();
 
         // Start another fire?
-        if (RandomUtils.chance(50)) {
+        if (ticks % 6 == 0) {
             final List<Display> displayList = new ArrayList<>(displays.values());
             for (int i = 0; i < displayList.size(); i++) {
                 final Display display = RandomUtils.randomChoice(displayList);
@@ -64,7 +64,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                         .brightness(15)
                         .size(0.01F)
                         .location(display.getTransformation().getTranslation()
-                                .add((float) RandomUtils.randomDouble(), (float) RandomUtils.randomDouble(), (float) RandomUtils.randomDouble()))
+                                .add(new Vector3f((float) (0.1 * Math.pow(-1, ticks)), (float) (0.1 * Math.pow(-1, ticks + 1)), (float) (0.1 * Math.pow(-1, ticks)))))
                         .build(display.getLocation()));
                 break;
             }
@@ -84,7 +84,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                 display.setTransformation(new Transformation(
                         transformation.getTranslation(),
                         transformation.getLeftRotation(),
-                        new Vector3f(transformation.getScale()).mul(1.5F),
+                        new Vector3f(transformation.getScale()).mul(1),
                         transformation.getRightRotation()
                 ));
             }
