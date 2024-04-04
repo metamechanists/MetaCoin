@@ -6,6 +6,8 @@ import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.Registry;
+import org.bukkit.inventory.meta.trim.TrimMaterial;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
@@ -23,10 +25,14 @@ import org.metamechanists.metacoin.implementation.listeners.MinerListeners;
 import org.metamechanists.metacoin.utils.Language;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     private static @Getter MetaCoin instance;
+    private static @Getter Map<String, TrimPattern> trimPatterns = new HashMap<>();
+    private static @Getter Map<String, TrimMaterial> trimMaterials = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -65,10 +71,15 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         manager.registerCommand(new MinerTrimCommand());
 
         final CommandCompletions<BukkitCommandCompletionContext> completions = manager.getCommandCompletions();
-        final List<String> patterns = Registry.TRIM_PATTERN.stream().map(pattern -> pattern.getKey().getKey()).toList();
-        final List<String> materials = Registry.TRIM_MATERIAL.stream().map(pattern -> pattern.getKey().getKey()).toList();
-        completions.registerStaticCompletion("trim_patterns", () -> patterns);
-        completions.registerStaticCompletion("trim_materials", () -> materials);
+
+        Registry.TRIM_PATTERN.stream().forEach(pattern -> {
+            trimPatterns.put(pattern.getKey().getKey(), pattern);
+        });
+        Registry.TRIM_MATERIAL.stream().forEach(material -> {
+            trimMaterials.put(material.getKey().getKey(), material);
+        });
+        completions.registerStaticCompletion("trim_patterns", () -> trimPatterns.keySet());
+        completions.registerStaticCompletion("trim_materials", () -> trimMaterials.keySet());
     }
 
     @Override

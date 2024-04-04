@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
+import org.metamechanists.metacoin.MetaCoin;
 
 @CommandAlias("minertrim")
 @CommandPermission("metacoin.admin")
@@ -25,7 +26,7 @@ public class MinerTrimCommand extends BaseCommand {
         }
 
         try {
-            armorMeta.setTrim(new ArmorTrim(Registry.TRIM_MATERIAL.get(NamespacedKey.minecraft(trimMaterial)), Registry.TRIM_PATTERN.get(NamespacedKey.minecraft(trimPattern))));
+            armorMeta.setTrim(new ArmorTrim(MetaCoin.getTrimMaterials().get(trimMaterial), MetaCoin.getTrimPatterns().get(trimPattern)));
             itemStack.setItemMeta(armorMeta);
         } catch (Exception ignored) {
             player.sendMessage(ChatColor.RED + "Invalid arguments!");
