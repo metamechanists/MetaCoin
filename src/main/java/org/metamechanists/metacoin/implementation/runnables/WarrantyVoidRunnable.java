@@ -56,7 +56,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                     continue;
                 }
 
-                displays.put("fire_" + ticks, new ModelCuboid()
+                this.group.addDisplay("fire_" + ticks, new ModelCuboid()
                         .material(Material.FIRE)
                         .brightness(15)
                         .size(0.01F)
