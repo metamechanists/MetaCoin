@@ -36,6 +36,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.core.Models;
+import org.metamechanists.metacoin.implementation.runnables.WarrantyVoidRunnable;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
 import org.metamechanists.metacoin.utils.Utils;
@@ -278,7 +279,9 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
         }
 
         if (Utils.isPastEvent()) {
-            // TODO: add machine slag stuff
+            if (!WarrantyVoidRunnable.isVoided(miner)) {
+                new WarrantyVoidRunnable(player, miner, getDisplayGroup(miner));
+            }
             return;
         }
 

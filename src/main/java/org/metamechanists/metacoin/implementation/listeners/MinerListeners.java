@@ -4,12 +4,14 @@ import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.events.SlimefunBlockBreakEvent;
 import io.github.thebusybiscuit.slimefun4.api.events.SlimefunBlockPlaceEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.metamechanists.metacoin.implementation.runnables.WarrantyVoidRunnable;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinMiner;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
@@ -51,14 +53,20 @@ public class MinerListeners implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onSlimefunBlockPlace(SlimefunBlockBreakEvent event) {
+    public void onSlimefunBlockBreak(SlimefunBlockBreakEvent event) {
         if (!(event.getSlimefunItem() instanceof MetaCoinMiner)) {
             return;
         }
 
         final Player player = event.getPlayer();
-        if (!player.getUniqueId().equals(MetaCoinMiner.getOwner(event.getBlockBroken()))) {
+        final Block miner = event.getBlockBroken();
+        if (!player.getUniqueId().equals(MetaCoinMiner.getOwner(miner))) {
             Language.sendMessage(player, "miner.error.no-permission");
+            event.setCancelled(true);
+            return;
+        }
+
+        if (WarrantyVoidRunnable.isVoided(miner)) {
             event.setCancelled(true);
         }
     }

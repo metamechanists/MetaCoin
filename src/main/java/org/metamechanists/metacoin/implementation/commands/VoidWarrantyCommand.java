@@ -16,8 +16,8 @@ public class VoidWarrantyCommand extends BaseCommand {
     @Default
     public void voidWarranty(Player player) {
         final Block block = player.getTargetBlockExact(7);
-        if (block != null && BlockStorage.check(block) instanceof MetaCoinMiner) {
-            new WarrantyVoidRunnable(player, block);
+        if (block != null && BlockStorage.check(block) instanceof MetaCoinMiner miner) {
+            new WarrantyVoidRunnable(player, block, miner.getDisplayGroup(block));
         }
     }
 }
