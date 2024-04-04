@@ -60,6 +60,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                         .material(Material.FIRE)
                         .brightness(15)
                         .size(0.01F)
+                        .location(display.getTransformation().getTranslation())
                         .build(display.getLocation()));
                 break;
             }
@@ -79,7 +80,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                 display.setTransformation(new Transformation(
                         transformation.getTranslation(),
                         transformation.getLeftRotation(),
-                        new Vector3f(transformation.getScale()).mul(10),
+                        new Vector3f(transformation.getScale()).mul(3),
                         transformation.getRightRotation()
                 ));
             }
@@ -99,6 +100,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
 
         // Go Kaboom
         cancel();
+        group.remove();
         BlockStorage.clearBlockInfo(miner);
         miner.setType(Material.AIR);
     }
