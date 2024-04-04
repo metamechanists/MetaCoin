@@ -93,11 +93,14 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
             miner.getWorld().playSound(location, Sound.BLOCK_LAVA_POP, 0.1F, ThreadLocalRandom.current().nextFloat(0.1F, 1.0F));
             // todo figure out which of these is the alarm sounding one
             miner.getWorld().playSound(location, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            ticks++;
             return;
         }
 
         // Go Kaboom
         cancel();
+        BlockStorage.clearBlockInfo(miner);
+        miner.setType(Material.AIR);
     }
 
     public static boolean isVoided(Block miner) {
