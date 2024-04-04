@@ -65,8 +65,8 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         final ThreadLocalRandom random = RandomUtils.randomThread;
         final Map<String, Display> displays = this.group.getDisplays();
 
-        // Start another fire?
-        if (ticks % 3 == 0) {
+        // Start another fire
+        if (ticks % 2 == 0) {
             final List<Display> displayList = new ArrayList<>(displays.values());
             for (int i = 0; i < displayList.size(); i++) {
                 final Display display = RandomUtils.randomChoice(displayList);
@@ -109,8 +109,8 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
             }
         }
 
-        // Player gets 10 seconds to run away :D
-        if (ticks < 10 * 20) {
+        // Player gets 5 seconds to run away :D
+        if (ticks < 5 * 20) {
             ParticleUtils.randomParticle(location, Particle.CAMPFIRE_SIGNAL_SMOKE, 0.5, RandomUtils.randomInteger(4, 10));
             ParticleUtils.randomParticle(location, Particle.LAVA, 0.5, RandomUtils.randomInteger(5, 20));
             miner.getWorld().playSound(location, Sound.BLOCK_LAVA_EXTINGUISH, 0.5F, random.nextFloat(0.1F, 1.0F));
@@ -124,7 +124,6 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         cancel();
 
         miner.setType(Material.AIR);
-        miner.getWorld().dropItemNaturally(location, ItemStacks.machineSlag(this.player, Upgrades.getLevels(location)));
         miner.getWorld().createExplosion(location, 4F * 8, true, true);
 
         for (Display display : displays.values()) {
@@ -141,7 +140,10 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         }
 
         BlockStorage.clearBlockInfo(miner);
-        Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), group::remove, 30L);
+        Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), () -> {
+            group.remove();
+            miner.getWorld().dropItemNaturally(location, ItemStacks.machineSlag(this.player, Upgrades.getLevels(location)));
+        }, 30L);
     }
 
     public static boolean isVoided(Block miner) {
