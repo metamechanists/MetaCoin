@@ -110,15 +110,8 @@ public class ProjectileListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onProjectileHit(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof ThrowableProjectile projectile)
+                || PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)
                 || !(SlimefunItem.getByItem(projectile.getItem()) instanceof MetaCoinItem coin)) {
-            return;
-        }
-
-        if (PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)) {
-            if (projectile.getShooter() instanceof Player player) {
-                MetaCoinItem.sendFlipResult(player);
-                PersistentDataAPI.remove(player, Keys.flippingCoin);
-            }
             return;
         }
 

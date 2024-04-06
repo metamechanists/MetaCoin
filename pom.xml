@@ -117,6 +117,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.Slimefun-Addon-Community</groupId>
+            <artifactId>WorldEditSlimeFun</artifactId>
+            <version>15</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>net.luckperms</groupId>
             <artifactId>api</artifactId>
             <version>5.4</version>

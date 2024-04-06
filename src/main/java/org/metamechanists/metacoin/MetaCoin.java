@@ -20,6 +20,7 @@ import org.metamechanists.metacoin.implementation.commands.MinerTrimCommand;
 import org.metamechanists.metacoin.implementation.commands.ResetCommand;
 import org.metamechanists.metacoin.implementation.commands.SlagCommand;
 import org.metamechanists.metacoin.implementation.commands.VoidWarrantyCommand;
+import org.metamechanists.metacoin.implementation.commands.flags.FunnyFlags;
 import org.metamechanists.metacoin.implementation.compat.PapiIntegration;
 import org.metamechanists.metacoin.implementation.listeners.ProjectileListener;
 import org.metamechanists.metacoin.implementation.listeners.MinerListeners;
@@ -82,6 +83,10 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         });
         completions.registerStaticCompletion("trim_patterns", () -> trimPatterns.keySet());
         completions.registerStaticCompletion("trim_materials", () -> trimMaterials.keySet());
+
+        if (getServer().getPluginManager().isPluginEnabled("WorldEditSlimefun")) {
+            FunnyFlags.init();
+        }
     }
 
     @Override

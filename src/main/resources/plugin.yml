@@ -3,7 +3,7 @@ version: '${project.version}'
 main: org.metamechanists.metacoin.MetaCoin
 api-version: '1.20'
 prefix: MC
-softdepend: [Slimefun, LuckPerms, PlaceholderAPI]
+softdepend: [Slimefun, LuckPerms, PlaceholderAPI, WorldEditSlimefun]
 authors: [JustAHuman]
 description: MetaCoin™️ :D
 website: metamechanists.org

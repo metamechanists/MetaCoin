@@ -74,8 +74,6 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                     continue;
                 }
 
-                final Transformation transformation = display.getTransformation();
-                final Vector3f scale = transformation.getScale();
                 this.group.addDisplay("fire_" + ticks, new ModelCuboid()
                         .material(Material.FIRE)
                         .brightness(15)
