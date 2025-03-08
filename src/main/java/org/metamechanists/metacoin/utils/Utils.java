@@ -14,7 +14,7 @@ import java.util.Random;
 @SuppressWarnings("deprecation")
 public class Utils {
     public static final Random RANDOM = new Random();
-    private static final Date LAST_DAY_OF_EVENT = new Date(1714539600000L);
+    private static final Date LAST_DAY_OF_EVENT = new Date(System.currentTimeMillis() * 10);
 
     public static boolean isPastEvent() {
         return new Date().after(LAST_DAY_OF_EVENT);
