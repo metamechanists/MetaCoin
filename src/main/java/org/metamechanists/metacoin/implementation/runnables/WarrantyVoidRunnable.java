@@ -20,6 +20,7 @@ import org.metamechanists.metacoin.MetaCoin;
 import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.implementation.slimefun.Upgrades;
 import org.metamechanists.metacoin.utils.Keys;
+import org.metamechanists.metalib.utils.ItemUtils;
 import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -142,7 +143,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         BlockStorage.clearBlockInfo(miner);
         Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), () -> {
             group.remove();
-            miner.getWorld().dropItemNaturally(location, slag);
+            ItemUtils.addOrDropItem(player, slag);
         }, 30L);
     }
 
