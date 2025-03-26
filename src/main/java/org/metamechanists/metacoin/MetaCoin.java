@@ -73,6 +73,8 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         manager.registerCommand(new MinerTrimCommand());
         manager.registerCommand(new VoidWarrantyCommand());
 
+        saveDefaultConfig();
+
         final CommandCompletions<BukkitCommandCompletionContext> completions = manager.getCommandCompletions();
 
         Registry.TRIM_PATTERN.stream().forEach(pattern -> {

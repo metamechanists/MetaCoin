@@ -1,0 +1,4 @@
+auto-update: true
+
+# Setting this to true voids warranties on all existing miners, permanently destroying them when they are opened.
+warranties-voided: false

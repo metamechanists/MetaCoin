@@ -6,7 +6,6 @@ prefix: MC
 softdepend: [Slimefun, LuckPerms, PlaceholderAPI, WorldEditSlimefun]
 authors: [JustAHuman]
 description: MetaCoin™️ :D
-website: metamechanists.org
 
 permissions:
   metacoin.admin:

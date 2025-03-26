@@ -203,7 +203,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     }
 
     public void tick(Location minerLocation, BlockPosition minerPosition, int[] levels) {
-        if (Utils.isPastEvent()) {
+        if (Utils.WARRANTIES_VOIDED) {
             setDisabledCores(minerLocation, new ArrayList<>(ALL_CORES));
             malfunctionTick(minerLocation);
             return;
@@ -278,7 +278,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
             return;
         }
 
-        if (Utils.isPastEvent()) {
+        if (Utils.WARRANTIES_VOIDED) {
             if (!WarrantyVoidRunnable.isVoided(miner)) {
                 new WarrantyVoidRunnable(player, miner, getDisplayGroup(miner));
             }

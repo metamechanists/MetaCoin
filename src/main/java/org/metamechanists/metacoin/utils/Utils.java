@@ -5,20 +5,17 @@ import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.metamechanists.metacoin.MetaCoin;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 @SuppressWarnings("deprecation")
 public class Utils {
     public static final Random RANDOM = new Random();
-    private static final Date LAST_DAY_OF_EVENT = new Date(System.currentTimeMillis() * 10);
 
-    public static boolean isPastEvent() {
-        return new Date().after(LAST_DAY_OF_EVENT);
-    }
+    public static final boolean WARRANTIES_VOIDED = MetaCoin.getInstance().getConfig().getBoolean("warrantiesVoided");
 
     public static void drawBackground(ChestMenu menu, ItemStack itemStack, int... slots) {
         drawBackground(menu, itemStack, ChestMenuUtils.getEmptyClickHandler(), slots);
