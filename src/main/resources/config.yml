@@ -1,4 +1,3 @@
-auto-update: true
-
 # Setting this to true voids warranties on all existing miners, permanently destroying them when they are opened.
-warranties-voided: false
+# Server must be restarted for this to take effect
+warrantiesVoided: false

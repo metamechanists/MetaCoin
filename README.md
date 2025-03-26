@@ -44,3 +44,11 @@
   - Can be placed as a display model
     - you can place multiple in a block and it will stack together
     - send stuff to #alerts in case anything goes wrong
+
+- 2025 TODO
+  - auto updater
+  - check with sefi this is ok lmao
+  - /invest command
+  - make sure softdepends are actually soft depends
+  - test on local server with only slimefun
+  - 
