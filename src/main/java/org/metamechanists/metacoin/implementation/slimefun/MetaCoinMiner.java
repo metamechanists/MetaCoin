@@ -9,10 +9,6 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.justahuman.furnished.displaymodellib.builders.BlockDisplayBuilder;
-import me.justahuman.furnished.displaymodellib.models.ModelBuilder;
-import me.justahuman.furnished.implementation.furniture.absraction.DisplayModelBlock;
-import me.justahuman.furnished.implementation.furniture.interfaces.Sittable;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -26,7 +22,6 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -34,6 +29,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.core.Models;
 import org.metamechanists.metacoin.implementation.runnables.WarrantyVoidRunnable;
@@ -57,7 +53,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 @SuppressWarnings("deprecation")
-public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
+public class MetaCoinMiner extends DisplayModelBlock {
     // All Pages
     private static final int[] SPEED_DISPLAY = { 0, 1, 2, 36, 37, 38 };
     private static final int[] PRODUCTION_DISPLAY = { 3, 4, 5, 39, 40, 41 };
@@ -122,6 +118,7 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
                 drawBackground(MINER_BACKGROUND);
                 drawBackground(ItemStacks.MINER_PROGRESS_FALSE, MINER_PROGRESS);
                 addItem(MINER_OUTPUT, ItemStacks.coinDisplay(0), (o1, o2, o3, o4) -> false);
+                setPlayerInventoryClickable(false);
             }
 
             @Override
@@ -476,12 +473,5 @@ public class MetaCoinMiner extends DisplayModelBlock implements Sittable {
     @Override
     public ModelBuilder getDisplayModel() {
         return Models.META_COIN_MINER();
-    }
-
-    @Override
-    public Display getSeat(Block block) {
-        return new BlockDisplayBuilder()
-                .material(Material.AIR)
-                .build(block.getLocation().add(this.getBuildOffset()).add(0.0, 0.3, 0.0));
     }
 }

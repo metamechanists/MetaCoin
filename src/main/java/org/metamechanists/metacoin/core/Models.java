@@ -1,16 +1,16 @@
 package org.metamechanists.metacoin.core;
 
-import me.justahuman.furnished.displaymodellib.models.ModelBuilder;
-import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
-import me.justahuman.furnished.displaymodellib.models.components.ModelDiamond;
-import me.justahuman.furnished.displaymodellib.models.components.ModelItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Display;
+import org.metamechanists.displaymodellib.models.ModelBuilder;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelDiamond;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
 
 import static org.metamechanists.metacoin.core.ItemStacks.META_COIN;
 
 public class Models {
-    public static ModelBuilder META_COIN_MINER() {
+    public static org.metamechanists.displaymodellib.models.ModelBuilder META_COIN_MINER() {
         return new ModelBuilder()
                 .add("base", new ModelCuboid()
                         .brightness(15)

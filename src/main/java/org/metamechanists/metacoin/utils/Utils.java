@@ -5,6 +5,8 @@ import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Transformation;
+import org.joml.Matrix4f;
 import org.metamechanists.metacoin.MetaCoin;
 
 import java.util.ArrayList;
@@ -54,5 +56,9 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static Matrix4f transformationToMatrix(Transformation transformation) {
+        return new Matrix4f().translation(transformation.getTranslation()).rotate(transformation.getLeftRotation()).scale(transformation.getScale()).rotate(transformation.getRightRotation());
     }
 }

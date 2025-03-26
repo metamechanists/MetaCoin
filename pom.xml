@@ -137,20 +137,19 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>me.justahuman.furnished</groupId>
-            <artifactId>Furnished</artifactId>
-            <version>0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/libs/Furnished.jar</systemPath>
-        </dependency>
-
         <!-- Compile Time Dependencies -->
 
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>MetaLib</artifactId>
             <version>66</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.metamechanists</groupId>
+            <artifactId>DisplayModelLib</artifactId>
+            <version>17</version>
             <scope>compile</scope>
         </dependency>
 
