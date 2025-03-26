@@ -129,7 +129,7 @@ public class ItemStacks {
             "",
             "&7With its patented " + ColorUtils.MM_YELLOW + "Proof-of-Play™ &7algorithm,",
             "&7it ensures a fair distribution of " + ColorUtils.MM_YELLOW + "&7MetaCoins™",
-            "&7to all players in the " + ColorUtils.MM_YELLOW + "&7MetaMechanists UniVerse™.",
+            "&7to all players in the " + ColorUtils.MM_YELLOW + "&7Metacoin UniVerse™.",
             "",
             "&7Experience the future of " + ColorUtils.MM_YELLOW + "decentralized &7finance",
             "&7with the " + ColorUtils.MM_YELLOW + "MetaCoin™ Miner™.",

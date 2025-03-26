@@ -51,4 +51,6 @@
   - /invest command
   - make sure softdepends are actually soft depends
   - test on local server with only slimefun
-  - 
+  - improve/add messages
+  - check perms are correct
+  - check this still works on metamechanists lmao

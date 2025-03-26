@@ -13,13 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
 import org.metamechanists.metacoin.core.Items;
 import org.metamechanists.metacoin.core.Leaderboard;
-import org.metamechanists.metacoin.implementation.commands.CompressCommand;
-import org.metamechanists.metacoin.implementation.commands.DepositCommand;
-import org.metamechanists.metacoin.implementation.commands.MinerCommand;
-import org.metamechanists.metacoin.implementation.commands.MinerTrimCommand;
-import org.metamechanists.metacoin.implementation.commands.ResetCommand;
-import org.metamechanists.metacoin.implementation.commands.SlagCommand;
-import org.metamechanists.metacoin.implementation.commands.VoidWarrantyCommand;
+import org.metamechanists.metacoin.implementation.commands.MetaCoinCommand;
 import org.metamechanists.metacoin.implementation.commands.flags.FunnyFlags;
 import org.metamechanists.metacoin.implementation.compat.PapiIntegration;
 import org.metamechanists.metacoin.implementation.listeners.ProjectileListener;
@@ -28,7 +22,6 @@ import org.metamechanists.metacoin.utils.Language;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
@@ -65,13 +58,7 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     private void registerCommands() {
         final PaperCommandManager manager = new PaperCommandManager(this);
         manager.enableUnstableAPI("help");
-        manager.registerCommand(new MinerCommand());
-        manager.registerCommand(new CompressCommand());
-        manager.registerCommand(new DepositCommand());
-        manager.registerCommand(new SlagCommand());
-        manager.registerCommand(new ResetCommand());
-        manager.registerCommand(new MinerTrimCommand());
-        manager.registerCommand(new VoidWarrantyCommand());
+        manager.registerCommand(new MetaCoinCommand());
 
         saveDefaultConfig();
 
@@ -105,6 +92,6 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     @Nonnull
     @Override
     public String getBugTrackerURL() {
-        return "discord.metamechanists.org";
+        return "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     }
 }
