@@ -43,6 +43,10 @@
                             <pattern>co.aikar.locales</pattern>
                             <shadedPattern>org.metamechanists.metacoin.locales</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>me.justahuman.furnished</pattern>
+                            <shadedPattern>org.metamechanists.metacoin.furnished</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
