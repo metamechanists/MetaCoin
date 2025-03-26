@@ -48,9 +48,9 @@
 - 2025 TODO
   - auto updater
   - check with sefi this is ok lmao
-  - /invest command
+  - /invest command (done)
   - make sure softdepends are actually soft depends
   - test on local server with only slimefun
-  - improve/add messages
-  - check perms are correct
+  - improve/add messages (they're fine actually lol)
+  - check perms are correct (done)
   - check this still works on metamechanists lmao

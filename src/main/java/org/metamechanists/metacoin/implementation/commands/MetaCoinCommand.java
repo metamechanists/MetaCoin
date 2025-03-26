@@ -59,6 +59,7 @@ public class MetaCoinCommand extends BaseCommand {
         }
 
         if (PersistentDataAPI.getOptionalBoolean(player, Keys.receivedMiner).orElse(false)) {
+            player.sendMessage("You ABSOLUTE BUFFON. you cannot acquire a second MetaMiner. You had just ONCE CHANCE to redeem yourself in this life, and you failed.");
             return;
         }
 

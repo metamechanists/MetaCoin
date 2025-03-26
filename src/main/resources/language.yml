@@ -8,3 +8,5 @@ miner.upgrade.too-expensive: "&cYou don't have enough coins! (%,d/%,d)"
 miner.upgrade.cant-remove: "&cYour coins are not the right sizes! (Can only remove %,d/%,d)"
 
 metacoin.flip.obstructed: "&cThere are blocks in the way!"
+
+# this is barely even used ngl, half the plugin just doesnt use it??

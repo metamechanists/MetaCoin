@@ -38,13 +38,13 @@ import java.util.List;
 
 public class ProjectileListener implements Listener {
     private static final List<String> PLAYER_CAUSED_DEATH_MESSAGES = List.of(
-            "%s was annihilated by the volatile fluctuations of %s's MetaCoins™",
+            "%s was annihilated by the volatile fluctuations of %s's MetaCoin™ network",
             "%s was crushed under the weight of %s's blockchain",
             "%s was bankrupted by %s's MetaCoin™ empire",
             "%s was overwhelmed by the complexity of %s's blockchain",
             "%s was lost in the labyrinth of %s's MetaCoin™ transactions",
             "%s was caught in the crossfire of %s's MetaCoin™ mining operation",
-            "%s was obliterated by the sheer power of %s's MetaCoin™ Miner™",
+            "%s was obliterated by the sheer power of %s's MetaMiner™",
             "%s was caught off guard by %s's sudden MetaCoin™ wealth",
             "%s was left in the dust of %s's MetaCoin™ mining speed",
             "%s was outpaced by %s's MetaCoin™ production level",
