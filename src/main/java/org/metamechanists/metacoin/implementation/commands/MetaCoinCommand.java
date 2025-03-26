@@ -27,7 +27,7 @@ public class MetaCoinCommand extends BaseCommand {
     @Subcommand("deposit")
     @Description("Deposits your pathetically small number of coins to the leaderboard")
     @CommandPermission("metacoin.command.deposit")
-    public static void deposit(CommandSender sender, String playerName) {
+    public static void deposit(CommandSender sender) {
         if (!(sender instanceof Player player)) {
             return;
         }
@@ -40,7 +40,7 @@ public class MetaCoinCommand extends BaseCommand {
     @Subcommand("compress")
     @Description("Compresses all coins in your inventory using ADVANCED NANOTECHNOLOGY")
     @CommandPermission("metacoin.command.compress")
-    public static void compress(CommandSender sender, String playerName) {
+    public static void compress(CommandSender sender) {
         if (!(sender instanceof Player player)) {
             return;
         }
@@ -50,10 +50,10 @@ public class MetaCoinCommand extends BaseCommand {
         ItemUtils.addOrDropItem(player, MetaCoinItem.withTotalValue(value));
     }
 
-    @Subcommand("give")
+    @Subcommand("invest")
     @Description("Start your adventure in blockchain by acquiring a MetaMiner")
     @CommandPermission("metacoin.command.invest")
-    public static void invest(CommandSender sender, String playerName) {
+    public static void invest(CommandSender sender) {
         if (!(sender instanceof Player player)) {
             return;
         }
@@ -76,7 +76,7 @@ public class MetaCoinCommand extends BaseCommand {
 
     @Subcommand("becomeslag")
     @Description("Uses the power of CRYPTOGRAPHY to turn the metaminer you're looking at into slag")
-    @CommandPermission("metacoin.admin")
+    @CommandPermission("metacoin.command.becomeslag")
     public static void becomeSlag(Player player) {
         final Block block = player.getTargetBlockExact(7);
         if (block != null && BlockStorage.check(block) instanceof MetaCoinMiner) {
@@ -86,7 +86,7 @@ public class MetaCoinCommand extends BaseCommand {
 
     @Subcommand("voidwarranty")
     @Description("Uses the power of CRYPTOGRAPHY to void the warranty on the metaminer you're looking at")
-    @CommandPermission("metacoin.admin")
+    @CommandPermission("metacoin.command.voidwarranty")
     public static void voidWarranty(Player player) {
         final Block block = player.getTargetBlockExact(7);
         if (block != null && BlockStorage.check(block) instanceof MetaCoinMiner miner) {

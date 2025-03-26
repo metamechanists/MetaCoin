@@ -8,6 +8,18 @@ authors: [JustAHuman]
 description: MetaCoin™️ :D
 
 permissions:
-  metacoin.admin:
+  metacoin.command.deposit:
+    default: true
+  metacoin.command.compress:
+    default: true
+  metacoin.command.invest:
+    default: true
+  metacoin.command.reset:
+    default: op
+    description: BECOME THE METACOIN ADMINISTRATOR AND TRANSCEND REALITY
+  metacoin.command.becomeslag:
+    default: op
+    description: BECOME THE METACOIN ADMINISTRATOR AND TRANSCEND REALITY
+  metacoin.command.voidwarranty:
     default: op
     description: BECOME THE METACOIN ADMINISTRATOR AND TRANSCEND REALITY
