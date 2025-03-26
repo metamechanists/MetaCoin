@@ -49,6 +49,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
     private final Block miner;
     private final Location location;
     private final DisplayGroup group;
+    private final ItemStack slag;
 
     private int ticks = 0;
 
@@ -57,7 +58,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         this.miner = miner;
         this.location = miner.getLocation().toCenterLocation();
         this.group = group;
-
+        this.slag = ItemStacks.machineSlag(this.player, Upgrades.getLevels(miner.getLocation()));;
         BlockStorage.addBlockInfo(miner, Keys.BS_WARRANTY_VOID, "TRUE");
         runTaskTimer(MetaCoin.getInstance(), 0, 1);
     }
@@ -139,7 +140,6 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
                     transformation.getRightRotation()));
         }
 
-        ItemStack slag = ItemStacks.machineSlag(this.player, Upgrades.getLevels(location));
         BlockStorage.clearBlockInfo(miner);
         Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), () -> {
             group.remove();
