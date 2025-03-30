@@ -8,11 +8,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.metamechanists.metacoin.MetaCoin;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Utils;
 import org.metamechanists.metalib.utils.ColorUtils;
 
 public class ItemStacks {
+    public static final String METACOIN_SYMBOL = MetaCoin.getInstance().getConfig().getString("metacoinSymbol");
+
     // GUI ITEMS
     // ALL PAGES
     public static final ItemStack SPEED_DISPLAY = new SlimefunItemStack(
@@ -77,7 +80,7 @@ public class ItemStacks {
             "&8⇨ &aIncreases &7the rate of production",
             "&8⇨ &cDecreases &7machine reliability",
             "",
-            "&8⇨ &eCost: &7%upgrade_cost%\uE803",
+            "&8⇨ &eCost: &7%upgrade_cost%" + METACOIN_SYMBOL,
             "&8⇨ &eUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
     );
     public static final ItemStack PRODUCTION_UPGRADE = new SlimefunItemStack(
@@ -87,7 +90,7 @@ public class ItemStacks {
             "&8⇨ &aIncreases &7the production amount",
             "&8⇨ &cDecreases &7machine reliability",
             "",
-            "&8⇨ &bCost: &7%upgrade_cost%&f\uE803",
+            "&8⇨ &bCost: &7%upgrade_cost%&f" + METACOIN_SYMBOL,
             "&8⇨ &bUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
     );
     public static final ItemStack RELIABILITY_UPGRADE = new SlimefunItemStack(
@@ -96,7 +99,7 @@ public class ItemStacks {
             "&dReliability Upgrade",
             "&8⇨ &aIncreases &7machine reliability",
             "",
-            "&8⇨ &dCost: &7%upgrade_cost%&f\uE803",
+            "&8⇨ &dCost: &7%upgrade_cost%&f" + METACOIN_SYMBOL,
             "&8⇨ &dUpgrade Level: &7%upgrade_level%/%max_upgrade_level%"
     );
     // PANEL PAGE
@@ -171,7 +174,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
             "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
-            "&7Value: " + ColorUtils.MM_YELLOW + "1&f\uE803"
+            "&7Value: " + ColorUtils.MM_YELLOW + "1&f" + METACOIN_SYMBOL
     );
     public static final SlimefunItemStack COMPRESSED_META_COIN = new SlimefunItemStack(
             "COMPRESSED_META_COIN",
@@ -183,7 +186,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
             "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
-            "&7Value: " + ColorUtils.MM_YELLOW + "64&f\uE803"
+            "&7Value: " + ColorUtils.MM_YELLOW + "64&f" + METACOIN_SYMBOL
     );
     public static final SlimefunItemStack DOUBLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "DOUBLE_COMPRESSED_META_COIN",
@@ -195,7 +198,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
             "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
-            "&7Value: " + ColorUtils.MM_YELLOW + "4,096&f\uE803"
+            "&7Value: " + ColorUtils.MM_YELLOW + "4,096&f" + METACOIN_SYMBOL
     );
     public static final SlimefunItemStack TRIPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "TRIPLE_COMPRESSED_META_COIN",
@@ -207,7 +210,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
             "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
-            "&7Value: " + ColorUtils.MM_YELLOW + "262,144&f\uE803"
+            "&7Value: " + ColorUtils.MM_YELLOW + "262,144&f" + METACOIN_SYMBOL
     );
     public static final SlimefunItemStack QUADRUPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "QUADRUPLE_COMPRESSED_META_COIN",
@@ -219,7 +222,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
             "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
-            "&7Value: " + ColorUtils.MM_YELLOW + "16,777,216&f\uE803"
+            "&7Value: " + ColorUtils.MM_YELLOW + "16,777,216&f" + METACOIN_SYMBOL
     );
     public static final SlimefunItemStack QUINTUPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "QUINTUPLE_COMPRESSED_META_COIN",
@@ -231,7 +234,7 @@ public class ItemStacks {
             ColorUtils.MM_YELLOW + "settle &7a bet with a coin flip,",
             "&7or use it to upgrade the " + ColorUtils.MM_YELLOW + "MetaMiner™",
             "",
-            "&7Value: " + ColorUtils.MM_YELLOW + "1,073,741,824&f\uE803"
+            "&7Value: " + ColorUtils.MM_YELLOW + "1,073,741,824&f" + METACOIN_SYMBOL
     );
 
     // FORMAT METHODS
@@ -293,7 +296,7 @@ public class ItemStacks {
         return new CustomItemStack(
                 META_COIN,
                 meta -> {
-                    meta.setDisplayName(ChatColors.color("&7Coins ready to Collect: %s%,d&f\uE803".formatted(ColorUtils.MM_YELLOW, value)));
+                    meta.setDisplayName(ChatColors.color("&7Coins ready to Collect: %s%,d&f%s".formatted(ColorUtils.MM_YELLOW, value, METACOIN_SYMBOL)));
                     meta.setLore(null);
                     PersistentDataAPI.setLong(meta, Keys.coinValue, value);
                 }

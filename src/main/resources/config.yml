@@ -1,3 +1,6 @@
 # Setting this to true voids warranties on all existing miners, permanently destroying them when they are opened.
 # Server must be restarted for this to take effect
 warrantiesVoided: false
+
+# Beware: Changing this will stop all existing metacoins from stacking with the new ones!
+metacoinSymbol: $™
