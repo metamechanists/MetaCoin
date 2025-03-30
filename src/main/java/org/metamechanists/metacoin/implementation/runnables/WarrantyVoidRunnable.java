@@ -1,7 +1,6 @@
 package org.metamechanists.metacoin.implementation.runnables;
 
-import me.justahuman.furnished.displaymodellib.models.components.ModelCuboid;
-import me.justahuman.furnished.displaymodellib.sefilib.entity.display.DisplayGroup;
+import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,13 +11,16 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.joml.Vector3f;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.metacoin.MetaCoin;
 import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.implementation.slimefun.Upgrades;
 import org.metamechanists.metacoin.utils.Keys;
+import org.metamechanists.metalib.utils.ItemUtils;
 import org.metamechanists.metalib.utils.ParticleUtils;
 import org.metamechanists.metalib.utils.RandomUtils;
 
@@ -47,6 +49,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
     private final Block miner;
     private final Location location;
     private final DisplayGroup group;
+    private final ItemStack slag;
 
     private int ticks = 0;
 
@@ -55,7 +58,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         this.miner = miner;
         this.location = miner.getLocation().toCenterLocation();
         this.group = group;
-
+        this.slag = ItemStacks.machineSlag(this.player, Upgrades.getLevels(miner.getLocation()));;
         BlockStorage.addBlockInfo(miner, Keys.BS_WARRANTY_VOID, "TRUE");
         runTaskTimer(MetaCoin.getInstance(), 0, 1);
     }
@@ -140,7 +143,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         BlockStorage.clearBlockInfo(miner);
         Bukkit.getScheduler().runTaskLater(MetaCoin.getInstance(), () -> {
             group.remove();
-            miner.getWorld().dropItemNaturally(location, ItemStacks.machineSlag(this.player, Upgrades.getLevels(location)));
+            ItemUtils.addOrDropItem(player, slag);
         }, 30L);
     }
 

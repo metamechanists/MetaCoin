@@ -26,8 +26,6 @@ import java.util.Map;
 
 public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     private static @Getter MetaCoin instance;
-    private static @Getter Map<String, TrimPattern> trimPatterns = new HashMap<>();
-    private static @Getter Map<String, TrimMaterial> trimMaterials = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -61,17 +59,6 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         manager.registerCommand(new MetaCoinCommand());
 
         saveDefaultConfig();
-
-        final CommandCompletions<BukkitCommandCompletionContext> completions = manager.getCommandCompletions();
-
-        Registry.TRIM_PATTERN.stream().forEach(pattern -> {
-            trimPatterns.put(pattern.getKey().getKey(), pattern);
-        });
-        Registry.TRIM_MATERIAL.stream().forEach(material -> {
-            trimMaterials.put(material.getKey().getKey(), material);
-        });
-        completions.registerStaticCompletion("trim_patterns", () -> trimPatterns.keySet());
-        completions.registerStaticCompletion("trim_materials", () -> trimMaterials.keySet());
 
         if (getServer().getPluginManager().isPluginEnabled("WorldEditSlimefun")) {
             FunnyFlags.init();
