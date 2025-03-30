@@ -2,6 +2,7 @@ package org.metamechanists.metacoin;
 
 import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.BlobBuildUpdater;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -35,6 +36,12 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
             new PapiIntegration();
         }
 
+        saveDefaultConfig();
+
+        if (getConfig().getBoolean("auto-update") && getDescription().getVersion().startsWith("DEV")) {
+            new BlobBuildUpdater(this, getFile(), "MetaCoin").start();
+        }
+
         // Global Mined MetaCoins
 
         // Global Acquired MetaMiners
@@ -60,8 +67,6 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         final PaperCommandManager manager = new PaperCommandManager(this);
         manager.enableUnstableAPI("help");
         manager.registerCommand(new MetaCoinCommand());
-
-        saveDefaultConfig();
 
         if (getServer().getPluginManager().isPluginEnabled("WorldEditSlimefun")) {
             FunnyFlags.init();
