@@ -3,6 +3,7 @@ package org.metamechanists.metacoin;
 import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
@@ -29,7 +30,9 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         Groups.init();
         Items.init();
 
-        new PapiIntegration();
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PapiIntegration();
+        }
 
         registerListeners();
         registerCommands();
