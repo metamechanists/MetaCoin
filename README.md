@@ -11,6 +11,8 @@ If you chose to use the MetaCoin™️ leaderboard system, there are some placeh
 - `%MetaCoin™_#_value%` - Displays the amount of coins the players at position # have submitted to the leaderboard
 
 ## Permissions & Commands
+- `metacoin.command.trailer` - Gives access to the `/metacoin™ trailer` command, which sends the player a link to the MetaCoin™ trailer
+- `metacoin.command.statistics` - Gives access to the `/metacoin™ statistics` command, which sends the player a link to the bstats page
 - `metacoin.command.deposit` - Gives access to the `/metacoin™ deposit` command, used to deposit any coins in your inventory to the leaderboard
 - `metacoin.command.resetleaderboard` - Gives access to the `/metacoin™ resetleaderboard` command, used to reset the leaderboard COMPLETELY
 - `metacoin.command.compress` - Gives access to the `/metacoin™ compress` command, used to compress all metacoins in your inventory down

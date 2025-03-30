@@ -32,6 +32,12 @@ public class MetaCoinCommand extends BaseCommand {
         sender.sendMessage("https://bstats.org/plugin/bukkit/MetaCoin/");
     }
 
+    @Subcommand("trailer")
+    @Description("See the trailer for this exquisite blockchain project")
+    @CommandPermission("metacoin.command.trailer")
+    public static void trailer(CommandSender sender) {
+        sender.sendMessage("https://youtu.be/71UOYQNsnXE");
+    }
 
     @Subcommand("deposit")
     @Description("Deposits your pathetically small number of coins to the leaderboard")

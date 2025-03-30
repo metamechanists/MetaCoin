@@ -10,6 +10,8 @@ description: MetaCoin™️ :D
 permissions:
   metacoin.command.statistics:
     default: true
+  metacoin.command.trailer:
+    default: true
   metacoin.command.deposit:
     default: true
   metacoin.command.resetleaderboard:
