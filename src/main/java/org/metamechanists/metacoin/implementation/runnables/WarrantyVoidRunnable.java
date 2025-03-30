@@ -18,6 +18,7 @@ import org.joml.Vector3f;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.metacoin.MetaCoin;
 import org.metamechanists.metacoin.core.ItemStacks;
+import org.metamechanists.metacoin.core.Statistics;
 import org.metamechanists.metacoin.implementation.slimefun.Upgrades;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metalib.utils.ItemUtils;
@@ -61,6 +62,7 @@ public class WarrantyVoidRunnable extends BukkitRunnable {
         this.slag = ItemStacks.machineSlag(this.player, Upgrades.getLevels(miner.getLocation()));;
         BlockStorage.addBlockInfo(miner, Keys.BS_WARRANTY_VOID, "TRUE");
         runTaskTimer(MetaCoin.getInstance(), 0, 1);
+        Statistics.addVoidedWarranty(player);
     }
 
     @Override

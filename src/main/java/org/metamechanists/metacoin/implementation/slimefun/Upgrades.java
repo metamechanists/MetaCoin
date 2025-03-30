@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.metamechanists.metacoin.core.ItemStacks;
+import org.metamechanists.metacoin.core.Statistics;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
 
@@ -68,6 +69,7 @@ public enum Upgrades {
             MetaCoinItem.removeCoins(player, cost);
             setLevel(miner, level + 1);
             menu.replaceExistingItem(i, getDisplay(miner));
+            Statistics.updateUpgrades(player, getLevels(miner));
             return false;
         };
     }
@@ -105,6 +107,6 @@ public enum Upgrades {
     }
 
     public static int[] getLevels(Location miner) {
-        return new int[]{SPEED.getLevel(miner), PRODUCTION.getLevel(miner), RELIABILITY.getLevel(miner)};
+        return new int[] { SPEED.getLevel(miner), PRODUCTION.getLevel(miner), RELIABILITY.getLevel(miner) };
     }
 }
