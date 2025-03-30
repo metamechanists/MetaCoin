@@ -47,7 +47,7 @@
 
 - 2025 TODO
   - auto updater
-  - check with sefi this is ok lmao
+  - check with sefi this is ok lmao (done)
   - /invest command (done)
   - make sure softdepends are actually soft depends
   - test on local server with only slimefun

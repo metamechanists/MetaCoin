@@ -71,6 +71,11 @@ public class Leaderboard {
         save();
     }
 
+    public static void reset() {
+        LEADERBOARD.clear();
+        VALUES.clear();
+    }
+
     public static void init() {
         final MetaCoin instance = MetaCoin.getInstance();
         final Logger logger = instance.getLogger();
