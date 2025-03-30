@@ -22,7 +22,7 @@ import org.metamechanists.metalib.utils.ItemUtils;
 
 
 @SuppressWarnings("unused")
-@CommandAlias("metacoin|blockchain")
+@CommandAlias("metacoin™|metacoin|blockchain")
 public class MetaCoinCommand extends BaseCommand {
 
     @Subcommand("deposit")
@@ -59,7 +59,7 @@ public class MetaCoinCommand extends BaseCommand {
     }
 
     @Subcommand("invest")
-    @Description("Start your adventure in blockchain by acquiring a MetaMiner")
+    @Description("Start your adventure in blockchain by acquiring a MetaMiner™")
     @CommandPermission("metacoin.command.invest")
     public static void invest(CommandSender sender) {
         if (!(sender instanceof Player player)) {
@@ -67,7 +67,7 @@ public class MetaCoinCommand extends BaseCommand {
         }
 
         if (PersistentDataAPI.getOptionalBoolean(player, Keys.receivedMiner).orElse(false)) {
-            player.sendMessage("You ABSOLUTE BUFFON. you cannot acquire a second MetaMiner. You had just ONCE CHANCE to redeem yourself in this life, and you failed.");
+            player.sendMessage("You ABSOLUTE BUFFON. you cannot acquire a second MetaMiner™. You had just ONCE CHANCE to redeem yourself in this life, and you failed.");
             return;
         }
 
@@ -98,7 +98,7 @@ public class MetaCoinCommand extends BaseCommand {
     }
 
     @Subcommand("voidwarranty")
-    @Description("Uses the power of CRYPTOGRAPHY to void the warranty on the metaminer you're looking at")
+    @Description("Uses the power of CRYPTOGRAPHY to void the warranty on the MetaMiner™ you're looking at")
     @CommandPermission("metacoin.command.voidwarranty")
     public static void voidWarranty(CommandSender sender) {
         if (!(sender instanceof Player player)) {

@@ -121,7 +121,7 @@ public class ProjectileListener implements Listener {
         }
 
         if (entity instanceof Merchant merchant) {
-            if (coin.getValue() < 64 || merchant.getRecipeCount() < 1) {
+            if (!coin.getAllowTrading().getValue() || merchant.getRecipeCount() < 1) {
                 return;
             }
 
@@ -129,7 +129,7 @@ public class ProjectileListener implements Listener {
             entity.getWorld().dropItemNaturally(entity.getLocation(), recipe.getResult());
             return;
         } else if (entity instanceof Piglin piglin) {
-            if (coin.getValue() < 64) {
+            if (!coin.getAllowTrading().getValue()) {
                 return;
             }
 
@@ -143,7 +143,7 @@ public class ProjectileListener implements Listener {
             final DamageSource.Builder source = DamageSource.builder(DamageType.MOB_PROJECTILE);
             source.withCausingEntity(projectile.getShooter() instanceof Entity shooter ? shooter : projectile);
             source.withDirectEntity(projectile);
-            livingEntity.damage(coin.getDamage(), source.build());
+            livingEntity.damage(coin.getDamage().getValue(), source.build());
         }
     }
 
@@ -170,8 +170,9 @@ public class ProjectileListener implements Listener {
     public void onEntityRemoved(EntityRemoveFromWorldEvent event) {
         if (event.getEntity() instanceof ThrowableProjectile projectile
                 && PersistentDataAPI.hasBoolean(projectile, Keys.flippingCoin)
+                && SlimefunItem.getByItem(projectile.getItem()) instanceof MetaCoinItem coin
                 && projectile.getShooter() instanceof Player player) {
-            MetaCoinItem.sendFlipResult(player);
+            coin.sendFlipResult(player);
             PersistentDataAPI.remove(player, Keys.flippingCoin);
         }
     }

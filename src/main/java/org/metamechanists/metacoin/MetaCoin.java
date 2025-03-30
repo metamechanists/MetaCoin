@@ -1,13 +1,8 @@
 package org.metamechanists.metacoin;
 
-import co.aikar.commands.BukkitCommandCompletionContext;
-import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
-import org.bukkit.Registry;
-import org.bukkit.inventory.meta.trim.TrimMaterial;
-import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.metacoin.core.Groups;
@@ -21,8 +16,6 @@ import org.metamechanists.metacoin.implementation.listeners.MinerListeners;
 import org.metamechanists.metacoin.utils.Language;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     private static @Getter MetaCoin instance;
@@ -39,7 +32,6 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         new PapiIntegration();
 
         registerListeners();
-        registerRunnables();
         registerCommands();
     }
 
@@ -47,10 +39,6 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         final PluginManager manager = getServer().getPluginManager();
         manager.registerEvents(new MinerListeners(), this);
         manager.registerEvents(new ProjectileListener(), this);
-    }
-
-    private void registerRunnables() {
-        // Register any runnables here!
     }
 
     private void registerCommands() {
@@ -66,18 +54,14 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     }
 
     @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
+    public void onDisable() {}
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public JavaPlugin getJavaPlugin() {
         return this;
     }
 
-    @Nonnull
-    @Override
+    @Nonnull @Override
     public String getBugTrackerURL() {
         return "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     }

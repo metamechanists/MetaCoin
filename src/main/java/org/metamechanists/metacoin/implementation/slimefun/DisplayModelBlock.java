@@ -1,6 +1,5 @@
 package org.metamechanists.metacoin.implementation.slimefun;
 
-import com.destroystokyo.paper.ParticleBuilder;
 import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import dev.sefiraat.sefilib.entity.display.DisplayInteractable;
 import io.github.bakedlibs.dough.items.CustomItemStack;
@@ -18,30 +17,20 @@ import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
 import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.joml.Matrix4f;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
-import org.metamechanists.metacoin.utils.Utils;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public abstract class DisplayModelBlock extends SlimefunItem implements DisplayInteractable {
@@ -55,46 +44,12 @@ public abstract class DisplayModelBlock extends SlimefunItem implements DisplayI
         this(itemGroup, item, recipeType, recipe, new CustomItemStack(item, 1));
     }
 
-
     public abstract Vector getBuildOffset();
     public abstract Material getBaseMaterial();
-    public abstract Material getFakeMaterial();
-    public Material getFakeMaterial(Block block) {
-        return getFakeMaterial();
-    }
     public abstract ModelBuilder getDisplayModel();
     public ModelBuilder getDisplayModel(ItemStack itemStack) {
         return getDisplayModel();
     }
-
-    public void playCrackSound(Player player, Block block) {}
-    public void playBreakSound(Player player, Block block) {}
-
-    public void playCrackingAnimation(Block block, BlockFace blockFace) {
-        final double x = blockFace.getModX() / 2D;
-        final double y = blockFace.getModY() / 2D;
-        final double z = blockFace.getModZ() / 2D;
-
-        new ParticleBuilder(Particle.BLOCK_CRACK)
-                .data(getFakeMaterial(block).createBlockData())
-                .location(block.getLocation().toCenterLocation().add(x, y, z))
-                .offset(0.25 - (x / 2), 0.25 - (y / 2), 0.25 - (z / 2))
-                .spawn();
-    }
-
-    public void playBreakingAnimation(Block block) {
-        new ParticleBuilder(Particle.BLOCK_DUST)
-                .data(getFakeMaterial(block).createBlockData())
-                .location(block.getLocation().toCenterLocation())
-                .offset(0.25, 0.25, 0.25)
-                .count(64)
-                .spawn();
-    }
-
-    protected void playBlockSound(Player player, Block block, Sound sound, float volume, float pitch) {
-        player.playSound(block.getLocation(), sound, volume, pitch);
-    }
-
 
     protected void onBlockPlace(@Nonnull BlockPlaceEvent event) {
         final Block block = event.getBlock();
@@ -118,36 +73,6 @@ public abstract class DisplayModelBlock extends SlimefunItem implements DisplayI
 
     protected void onBlockUse(@Nonnull PlayerRightClickEvent event) {
 
-    }
-
-    protected void updateDisplayModel(Block block, DisplayGroup group, ModelBuilder builder) {
-        final Map<String, ModelComponent> components = builder.getComponents();
-        final Map<String, Display> displays = group.getDisplays();
-        for (String name : new HashSet<>(group.getDisplays().keySet())) {
-            if (!components.containsKey(name)) {
-                Optional.ofNullable(group.removeDisplay(name)).ifPresent(Entity::remove);
-                continue;
-            }
-
-            final ModelComponent component = components.get(name);
-            if (!(component instanceof ModelCuboid cuboid)) {
-                continue;
-            }
-
-            final Display display = group.getDisplays().get(name);
-            final Matrix4f displayMatrix = Utils.transformationToMatrix(display.getTransformation());
-            final Matrix4f matrix = cuboid.getMatrix();
-
-            if (!displayMatrix.equals(matrix)) {
-                display.setTransformationMatrix(matrix);
-            }
-        }
-
-        for (Map.Entry<String, ModelComponent> component : components.entrySet()) {
-            if (!displays.containsKey(component.getKey())) {
-                group.addDisplay(component.getKey(), component.getValue().build(block.getLocation().add(getBuildOffset())));
-            }
-        }
     }
 
     protected DisplayGroup buildDisplayModel(Player player, ItemStack itemStack, Block block) {
@@ -178,7 +103,6 @@ public abstract class DisplayModelBlock extends SlimefunItem implements DisplayI
             @ParametersAreNonnullByDefault
             public void onPlayerBreak(BlockBreakEvent event, ItemStack itemStack, List<ItemStack> drops) {
                 onBlockBreak(event, itemStack, drops);
-
                 if (event.isCancelled()) {
                     return;
                 }

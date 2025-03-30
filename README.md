@@ -1,3 +1,24 @@
+# MetaCoin™️ Plugin
+
+## Leaderboard
+TODO: FILL THIS OUT (include that multiple people can be ranked at the same position if they have equal coins)
+
+## Placeholders (PAPI)
+If you chose to use the MetaCoin™️ leaderboard system, there are some placeholders you can use.
+- `%MetaCoin™_position%` - Displays the position of the player in the leaderboard
+- `%MetaCoin™_value%` - Displays the amount of coins the player has submitted to the leaderboard
+- `%MetaCoin™_#%` - Displays the names of the players at position #
+- `%MetaCoin™_#_value%` - Displays the amount of coins the players at position # have submitted to the leaderboard
+
+## Permissions & Commands
+- `metacoin.command.deposit` - Gives access to the `/metacoin™ deposit` command, used to deposit any coins in your inventory to the leaderboard
+- `metacoin.command.resetleaderboard` - Gives access to the `/metacoin™ resetleaderboard` command, used to reset the leaderboard COMPLETELY
+- `metacoin.command.compress` - Gives access to the `/metacoin™ compress` command, used to compress all metacoins in your inventory down
+- `metacoin.command.invest` - Gives access to the `/metacoin™ invest` command, which gives the player their ONLY MetaMiner™ (however the reset command below will allow you to use this command again)
+- `metacoin.command.reset` - Gives access to the `/metacoin™ reset <player>` command, which resets a players MetaMiner™ data (allowing the acquiring of a new miner)
+- `metacoin.command.becomeslag` - Gives access to the `/metacoin™ becomeslag` command, which gives a MachineSlag™ of the targeted placed MetaMiner™
+- `metacoin.command.voidwarranty` - Gives access to the `/metacoin™ voidwarranty` command, which voids the warranty of the targeted placed MetaMiner™
+
 - Npcs setup at spawn
     - Name: Indra
       - Idra but in a trench coat
@@ -14,7 +35,7 @@
         - is at minimum 8 sections long
         - talks all about how metacoin is the future of cc
 
-- MetaCoin:tm: Miner
+- MetaCoin™️ Miner
   - has owner, upgrade levels, and total coins mined in the lore 
   - Slowly mines for meta coin (like void harvester)
   - requires no energy
