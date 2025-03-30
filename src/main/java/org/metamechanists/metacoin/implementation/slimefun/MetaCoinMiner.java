@@ -397,7 +397,6 @@ public class MetaCoinMiner extends DisplayModelBlock {
 
         menu.addItem(PAGE_BACK, ItemStacks.pageBack(page, 3), ChestMenuUtils.getEmptyClickHandler());
         menu.addItem(PAGE_FORWARD, ItemStacks.pageForward(page, 3), ChestMenuUtils.getEmptyClickHandler());
-        menu.setPlayerInventoryClickable(true);
     }
 
     public static UUID getOwner(Block miner) {
@@ -459,14 +458,8 @@ public class MetaCoinMiner extends DisplayModelBlock {
         return new Vector(0.5, 0.5, 0.5);
     }
 
-    @Override
-    @Nonnull
+    @Override @Nonnull
     public Material getBaseMaterial() {
-        return Material.BEACON;
-    }
-
-    @Override
-    public Material getFakeMaterial() {
         return Material.BEACON;
     }
 

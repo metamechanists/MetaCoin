@@ -2,6 +2,7 @@ package org.metamechanists.metacoin.implementation.slimefun;
 
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -47,13 +48,16 @@ public class MetaCoinItem extends SlimefunItem {
             "Theᵈ MetaCoin™ᵢ fliesₛ intoₚ theₑ airₙ.... andₛ hitsₑ youᵣ in the head.",
             "Theₚ MetaCoin™ᵢ fliesᵍ intoₗ theᵢ airₙ.... and hits you in the head."
     );
-    private final int damage;
+
+    private final ItemSetting<Boolean> allowTrading;
+    private final ItemSetting<Double> damage;
     private final long value;
 
-    public MetaCoinItem(ItemGroup itemGroup, SlimefunItemStack item, int damage, long value) {
+    public MetaCoinItem(ItemGroup itemGroup, SlimefunItemStack item, double damage, long value) {
         super(itemGroup, item, RecipeType.NULL, new ItemStack[0]);
 
-        this.damage = damage;
+        this.allowTrading = new ItemSetting<>(this, "allow-trading", value >= 64);
+        this.damage = new ItemSetting<>(this, "damage", damage);
         this.value = value;
         addItemHandler(onUse());
     }
@@ -100,8 +104,8 @@ public class MetaCoinItem extends SlimefunItem {
         };
     }
 
-    public static void sendFlipResult(Player player) {
-        player.sendMessage(RandomUtils.randomChoice(RandomUtils.chance(1) ? HINTS : FLIP_MESSAGES));
+    public void sendFlipResult(Player player) {
+        player.sendMessage(RandomUtils.randomChoice(allowTrading.getValue() && RandomUtils.chance(1) ? HINTS : FLIP_MESSAGES));
     }
 
     public static long valueOf(ItemStack itemStack) {

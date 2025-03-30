@@ -11,21 +11,6 @@ public class PapiIntegration extends PlaceholderExpansion {
     }
 
     @Override
-    public @NotNull String getIdentifier() {
-        return "MetaCoin™";
-    }
-
-    @Override
-    public @NotNull String getAuthor() {
-        return "MetaMechanists";
-    }
-
-    @Override
-    public @NotNull String getVersion() {
-        return "1.0";
-    }
-
-    @Override
     public String onRequest(OfflinePlayer offlinePlayer, String placeholder) {
         if (placeholder.equals("position")) {
             return offlinePlayer != null
@@ -56,5 +41,20 @@ public class PapiIntegration extends PlaceholderExpansion {
     @Override
     public boolean persist() {
         return true;
+    }
+
+    @Override
+    public @NotNull String getIdentifier() {
+        return "MetaCoin™";
+    }
+
+    @Override
+    public @NotNull String getAuthor() {
+        return "JustAHuman, ADankCoconut, Idra";
+    }
+
+    @Override
+    public @NotNull String getVersion() {
+        return "1.0";
     }
 }
