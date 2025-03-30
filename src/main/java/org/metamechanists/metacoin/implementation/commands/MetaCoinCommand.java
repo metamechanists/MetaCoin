@@ -77,7 +77,7 @@ public class MetaCoinCommand extends BaseCommand {
 
     @Subcommand("reset")
     @Description("Allows a player to run /invest again to get another miner")
-    @CommandPermission("metacoin.admin")
+    @CommandPermission("metacoin.command.reset")
     public static void resetStuff(CommandSender sender, @NotNull Player player) {
         PersistentDataAPI.remove(player, Keys.minerPlaced);
         PersistentDataAPI.remove(player, Keys.receivedMiner);
