@@ -25,6 +25,14 @@ import org.metamechanists.metalib.utils.ItemUtils;
 @CommandAlias("metacoin™|metacoin|blockchain")
 public class MetaCoinCommand extends BaseCommand {
 
+    @Subcommand("statistics")
+    @Description("View how MetaCoin™ is getting on around the world")
+    @CommandPermission("metacoin.command.statistics")
+    public static void statistics(CommandSender sender) {
+        sender.sendMessage("https://bstats.org/plugin/bukkit/MetaCoin/");
+    }
+
+
     @Subcommand("deposit")
     @Description("Deposits your pathetically small number of coins to the leaderboard")
     @CommandPermission("metacoin.command.deposit")

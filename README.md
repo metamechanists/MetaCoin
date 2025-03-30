@@ -70,8 +70,8 @@ If you chose to use the MetaCoin™️ leaderboard system, there are some placeh
   - auto updater
   - check with sefi this is ok lmao (done)
   - /invest command (done)
-  - make sure softdepends are actually soft depends
-  - test on local server with only slimefun
+  - make sure softdepends are actually soft depends (done)
+  - test on local server with only slimefun (done)
   - improve/add messages (they're fine actually lol)
   - check perms are correct (done)
-  - check this still works on metamechanists lmao
+  - check this still works on metamechanists lmao (done)
