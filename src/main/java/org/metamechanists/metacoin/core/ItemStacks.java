@@ -166,7 +166,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack META_COIN = new SlimefunItemStack(
             "META_COIN",
-            Material.HEART_OF_THE_SEA,
+            Material.HONEYCOMB,
             ColorUtils.MM_YELLOW + "MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
@@ -178,7 +178,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack COMPRESSED_META_COIN = new SlimefunItemStack(
             "COMPRESSED_META_COIN",
-            Material.HEART_OF_THE_SEA,
+            Material.HONEYCOMB,
             ColorUtils.MM_YELLOW + "Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
@@ -190,7 +190,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack DOUBLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "DOUBLE_COMPRESSED_META_COIN",
-            Material.HEART_OF_THE_SEA,
+            Material.HONEYCOMB,
             ColorUtils.MM_YELLOW + "2x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
@@ -202,7 +202,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack TRIPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "TRIPLE_COMPRESSED_META_COIN",
-            Material.HEART_OF_THE_SEA,
+            Material.HONEYCOMB,
             ColorUtils.MM_YELLOW + "3x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
@@ -214,7 +214,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack QUADRUPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "QUADRUPLE_COMPRESSED_META_COIN",
-            Material.HEART_OF_THE_SEA,
+            Material.HONEYCOMB,
             ColorUtils.MM_YELLOW + "4x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",
@@ -226,7 +226,7 @@ public class ItemStacks {
     );
     public static final SlimefunItemStack QUINTUPLE_COMPRESSED_META_COIN = new SlimefunItemStack(
             "QUINTUPLE_COMPRESSED_META_COIN",
-            Material.HEART_OF_THE_SEA,
+            Material.HONEYCOMB,
             ColorUtils.MM_YELLOW + "5x Compressed MetaCoin™",
             "&7The hallowed MetaCoin",
             "&7Gain " + ColorUtils.MM_YELLOW + "bragging &7rights, " + ColorUtils.MM_YELLOW + "throw &7it like a",

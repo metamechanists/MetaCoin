@@ -3,6 +3,7 @@ package org.metamechanists.metacoin;
 import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,6 +34,17 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PapiIntegration();
         }
+
+        // Global Mined MetaCoins
+
+        // Global Acquired MetaMiners
+        // Global Voided Warranties
+
+        // Richest Player per Server
+
+        // Highest Upgrades
+        // Average Upgrades
+        Metrics metrics = new Metrics(this, 25310);
 
         registerListeners();
         registerCommands();
