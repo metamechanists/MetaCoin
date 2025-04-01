@@ -22,7 +22,7 @@ import org.metamechanists.metalib.utils.ItemUtils;
 
 
 @SuppressWarnings("unused")
-@CommandAlias("metacoin™|metacoin|blockchain")
+@CommandAlias("metacoin™|metacoin|blockchain|™")
 public class MetaCoinCommand extends BaseCommand {
 
     @Subcommand("statistics")
