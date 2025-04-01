@@ -1,8 +1,5 @@
 # MetaCoin™️ Plugin
 
-## Leaderboard
-TODO: FILL THIS OUT (include that multiple people can be ranked at the same position if they have equal coins)
-
 ## Placeholders (PAPI)
 If you chose to use the MetaCoin™️ leaderboard system, there are some placeholders you can use.
 - `%MetaCoin™_position%` - Displays the position of the player in the leaderboard

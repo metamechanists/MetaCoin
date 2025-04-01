@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.core.Leaderboard;
+import org.metamechanists.metacoin.core.Statistics;
 import org.metamechanists.metacoin.implementation.runnables.WarrantyVoidRunnable;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinItem;
 import org.metamechanists.metacoin.implementation.slimefun.MetaCoinMiner;
@@ -87,6 +88,7 @@ public class MetaCoinCommand extends BaseCommand {
 
         PersistentDataAPI.setBoolean(player, Keys.receivedMiner, true);
         ItemUtils.addOrDropItemMainHand(player, ItemStacks.metaCoinMiner(player));
+        Statistics.addMetaMiner(player);
     }
 
     @Subcommand("reset")

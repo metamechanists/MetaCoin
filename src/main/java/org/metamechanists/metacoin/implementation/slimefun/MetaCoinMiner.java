@@ -32,6 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.metacoin.core.ItemStacks;
 import org.metamechanists.metacoin.core.Models;
+import org.metamechanists.metacoin.core.Statistics;
 import org.metamechanists.metacoin.implementation.runnables.WarrantyVoidRunnable;
 import org.metamechanists.metacoin.utils.Keys;
 import org.metamechanists.metacoin.utils.Language;
@@ -238,8 +239,10 @@ public class MetaCoinMiner extends DisplayModelBlock {
 
         PROGRESS.put(minerPosition, 0);
         updateMenu(menu, minerPosition);
-        menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(menu.getItemInSlot(MINER_OUTPUT), (productionMalfunction ? 1 : MetaCoinItem.valueFromProductionLevel(levels[1]))));
+        long production = (productionMalfunction ? 1 : MetaCoinItem.valueFromProductionLevel(levels[1]));
+        menu.replaceExistingItem(MINER_OUTPUT, ItemStacks.coinDisplay(menu.getItemInSlot(MINER_OUTPUT), production));
         setCoinCache(minerLocation, ItemStacks.getCoinValue(menu.getItemInSlot(MINER_OUTPUT)));
+        Statistics.addMinedMetaCoins(production);
     }
 
     public void malfunctionTick(Location miner) {
