@@ -70,7 +70,12 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         metrics.addCustomChart(new SimplePie("median_" + upgrade + "_upgrade", () -> {
             List<Integer> levels = Statistics.getAllUpgradeLevels(upgrade);
             levels.sort(Integer::compareTo);
-            return String.valueOf(levels.size() % 2 == 0 ? levels.get(levels.size() / 2) : levels.get((levels.size() - 1) / 2));
+            int size = levels.size();
+            if (size % 2 == 0) {
+                return size ==  0 ? "0" : String.valueOf(levels.get(size / 2 - 1));
+            } else {
+                return String.valueOf(levels.get(size / 2));
+            }
         }));
     }
 
