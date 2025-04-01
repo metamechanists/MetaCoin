@@ -2,11 +2,13 @@ package org.metamechanists.metacoin.implementation.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -94,7 +96,15 @@ public class MetaCoinCommand extends BaseCommand {
     @Subcommand("reset")
     @Description("Allows a player to run /invest again to get another miner")
     @CommandPermission("metacoin.command.reset")
-    public static void resetStuff(CommandSender sender, @NotNull Player player) {
+    @CommandCompletion("@players")
+    public static void resetStuff(CommandSender sender, String name) {
+        Player player = Bukkit.getPlayer(name);
+
+        if (player == null) {
+            sender.sendMessage("That player does not exist!");
+            return;
+        }
+
         PersistentDataAPI.remove(player, Keys.minerPlaced);
         PersistentDataAPI.remove(player, Keys.receivedMiner);
     }
