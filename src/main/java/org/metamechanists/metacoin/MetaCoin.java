@@ -31,6 +31,8 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
 
+        saveDefaultConfig();
+
         Statistics.init();
         Leaderboard.init();
         Language.init();
@@ -40,8 +42,6 @@ public final class MetaCoin extends JavaPlugin implements SlimefunAddon {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PapiIntegration();
         }
-
-        saveDefaultConfig();
 
         if (getConfig().getBoolean("auto-update") && getDescription().getVersion().startsWith("DEV")) {
             new BlobBuildUpdater(this, getFile(), "MetaCoin").start();
